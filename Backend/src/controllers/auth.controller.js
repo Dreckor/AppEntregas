@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 
 export const register = async (req, res, next) => {
-  const { email, password, username } = req.body;
+  const { email, password, username, address, role } = req.body;
 
   try {
     const passwordHash = await bcrypt.hash(password, 10)
@@ -12,6 +12,8 @@ export const register = async (req, res, next) => {
       username,
       email,
       password: passwordHash,
+      address,
+      role
     });
 
     const savedUser = await newUser.save();
@@ -60,12 +62,15 @@ export const logout =  (req, res) =>{
   return res.sendStatus(200)
 }
 
-export const profile = (req, res)=>{
-  const userFound = User.findById(req.user.id)
+export const profile = async (req, res)=>{
+  const userFound = await User.findById(req.user.id)
   if(!userFound) return res.status(400).json({message: "User not found"})
-  res.json({
+  return res.json({
     id: userFound._id,
     username: userFound.username,
-    email: userFound.email
+    email: userFound.email,
+    role: userFound.role,
+    orders: userFound.orders,
+    asignedOrders: userFound.asignedOrders
   })
 }
