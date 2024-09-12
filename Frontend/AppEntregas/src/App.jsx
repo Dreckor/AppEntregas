@@ -1,5 +1,6 @@
-import { CustomRouter } from '../routes/Router.jsx'
+import { CustomRouter } from './routes/Router.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import { OrderProvider } from './context/OrderContext.jsx';
 import './App.css'
 
 function App() {
@@ -7,7 +8,9 @@ function App() {
 
   return (
     <AuthProvider>
-      <CustomRouter/>
+      <OrderProvider>
+        <CustomRouter/>
+      </OrderProvider>
     </AuthProvider>
       
     

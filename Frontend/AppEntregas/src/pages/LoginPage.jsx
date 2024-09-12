@@ -3,13 +3,11 @@ import { Form, Input, Button, message } from "antd";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-//TODO: Arreglar error usuario null antes de autenticar
-
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
-  const { signIn, user, isAuthenticated } = useAuth()
+  const { signIn, user, errors, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const onFinish  = async (values) => {
+  const onFinish = async (values) => {
     setLoading(true);
     try {
       //const response = {
@@ -18,21 +16,11 @@ export default function LoginPage() {
       //};
       //console.log(values)
       await signIn(values);
-      
-      console.log(user)
-      
-      if (user && user.success) {
-        localStorage.setItem('token', user.token);
-        message.success(user.message);
-        
-      } else {
-        handleError(user.errorCode, user.message);
-      }
     } catch (error) {
       if (error.response && error.response.data) {
         handleError(error.response.data.errorCode, error.response.data.message);
       } else {
-        console.log(error)
+        console.log(error);
         message.error("Error de conexión al servidor");
       }
     }
@@ -40,36 +28,49 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
+    if (isAuthenticated && user && user.success) {
+      localStorage.setItem("token", user.token); 
+      message.success(user.message); 
+      navigate("/createorder");
     }
   }, [isAuthenticated]);
+  useEffect(() => {
+    if (errors && errors.length > 0) {
+      errors.forEach((error) => {
+        console.log(error);
+        handleError(error.data.errorCode, error.data.message); 
+      });
+    }
+  }, [errors]);
 
   const handleError = (errorCode, errorMessage) => {
+    
     switch (errorCode) {
-      case 'USER_NOT_FOUND':
-        message.error('El usuario no existe. Por favor, verifica tu correo.');
+      case "USER_NOT_FOUND":
+        message.error("El usuario no existe. Por favor, verifica tu correo.");
         break;
-      case 'INVALID_CREDENTIALS':
-        message.error('La contraseña es incorrecta. Intenta nuevamente.');
+      case "INVALID_CREDENTIALS":
+        message.error("La contraseña es incorrecta. Intenta nuevamente.");
         break;
-      case 'SERVER_ERROR':
-        message.error('Ocurrió un error en el servidor. Intenta más tarde.');
+      case "SERVER_ERROR":
+        message.error("Ocurrió un error en el servidor. Intenta más tarde.");
         break;
       default:
-        message.error(errorMessage || 'Error desconocido');
+        message.error(errorMessage || "Error desconocido");
     }
   };
 
   return (
-    <Form
-      layout="vertical"
-      onFinish={onFinish}
-    >
+    <Form layout="vertical" onFinish={onFinish}>
       <Form.Item
         label="Correo Electrónico"
         name="email"
-        rules={[{ required: true, message: 'Por favor ingresa tu correo electrónico!' }]}
+        rules={[
+          {
+            required: true,
+            message: "Por favor ingresa tu correo electrónico!",
+          },
+        ]}
       >
         <Input placeholder="Introduce tu correo" />
       </Form.Item>
@@ -77,7 +78,9 @@ export default function LoginPage() {
       <Form.Item
         label="Contraseña"
         name="password"
-        rules={[{ required: true, message: 'Por favor ingresa tu contraseña!' }]}
+        rules={[
+          { required: true, message: "Por favor ingresa tu contraseña!" },
+        ]}
       >
         <Input.Password placeholder="Introduce tu contraseña" />
       </Form.Item>

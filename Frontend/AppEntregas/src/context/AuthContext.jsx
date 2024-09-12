@@ -1,6 +1,8 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
-import {loginRequets} from '../api/auth.js';
+import Cookies from "js-cookie";
+
+import {loginRequets, verifyTokenRequest} from '../api/auth.js';
 
 export const AuthContext =  createContext();
 
@@ -14,21 +16,50 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [errors, setErrors] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
   
     const signIn = async (user) => {
         try {
           const res = await loginRequets(user);
-          setUser(res.data);
+          
           setIsAuthenticated(true);
+          setUser(res.data);
+          
         } catch (error) {
-          console.log(error);
-         
+          setErrors([error.response]);
+          setIsAuthenticated(false);
         }
       };
-  
+
+      useEffect(() => {
+        const checkLogin = async () => {
+          const cookies = Cookies.get();
+          console.log(cookies)
+          if (!cookies.token) {
+            setIsAuthenticated(false);
+            setLoading(false);
+            return;
+          }
+    
+          try {
+            const res = await verifyTokenRequest(cookies.token);
+            console.log(res);
+            if (!res.data) return setIsAuthenticated(false);
+            setIsAuthenticated(true);
+            setUser(res.data);
+            setLoading(false);
+          } catch (error) {
+           
+            setIsAuthenticated(false);
+            setLoading(false);
+          }
+        };
+        checkLogin();
+      }, []);
     return (
-      <AuthContext.Provider value={{ signIn, user,isAuthenticated }}>
+      <AuthContext.Provider value={{ signIn, user,isAuthenticated,errors, loading }}>
         {children}
       </AuthContext.Provider>
     );

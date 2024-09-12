@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginPage from '../src/pages/LoginPage';
-import OrdersForm from '../src/pages/OrdersForm';
-import Home from '../src/pages/Home';
-import ProtectedRoute from '../src/ProtectedRoute';
+import LoginPage from '../pages/LoginPage';
+import OrdersForm from '../pages/OrdersForm';
+import Home from '../pages/Home';
+import ProtectedRoute from '../ProtectedRoute';
 
 export const CustomRouter = ()=>{
     return (
@@ -12,6 +12,7 @@ export const CustomRouter = ()=>{
                 <Route path='/login' element={<LoginPage/>} />
                 
                 <Route element={<ProtectedRoute/>}>
+                    
                     <Route path='/createuser' element={<h1>createuser</h1>} />
                     <Route path='/createorder' element={<OrdersForm/>} />
                 </Route>
