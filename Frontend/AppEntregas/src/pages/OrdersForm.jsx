@@ -1,13 +1,20 @@
 import { useState } from "react";
-import { Form, Input, Button, message, Select } from "antd";
+import { Form, Input, Button, Select, Modal, message } from "antd";
 import { useOrders } from "../context/OrderContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 // TODO: Arreglar tipo de dato productos
 const { Option } = Select;
 
 export default function OrdersForm() {
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [repartidores, setRepartidores] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [productModalVisible, setProductModalVisible] = useState(false);
+  
+  const [editingProduct, setEditingProduct] = useState(null);
   const { createOrder } = useOrders();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -26,6 +33,32 @@ export default function OrdersForm() {
       message.error("Error creando la orden");
     }
     setLoading(false);
+  };
+
+  const handleAddProduct = () => {
+    setEditingProduct({ name: "", quantity: 1 });
+    setProductModalVisible(true);
+  };
+
+  const handleEditProduct = (index) => {
+    setEditingProduct(products[index]);
+    setProductModalVisible(true);
+  };
+
+  const handleSaveProduct = () => {
+    if (editingProduct.index !== undefined) {
+      const updatedProducts = [...products];
+      updatedProducts[editingProduct.index] = editingProduct;
+      setProducts(updatedProducts);
+    } else {
+      setProducts([...products, editingProduct]);
+    }
+    setProductModalVisible(false);
+    setEditingProduct(null);
+  };
+
+  const handleDeleteProduct = (index) => {
+    setProducts(products.filter((_, i) => i !== index));
   };
 
   return (
@@ -68,13 +101,28 @@ export default function OrdersForm() {
           <Input placeholder="Introduce el punto de destino" />
         </Form.Item>
 
-        <Form.Item
-          label="Productos"
-          name="products"
-          rules={[{ required: true, message: "Por favor ingresa los productos de la orden" }]}
-        >
-          <Input placeholder="Introduce los productos" />
-        </Form.Item>
+        <Form.Item label="Productos">
+        <Button type="dashed" onClick={handleAddProduct} icon={<PlusOutlined />}>
+          Añadir Productos
+        </Button>
+        {products.map((product, index) => (
+          <div key={index} style={{ marginTop: 10 }}>
+            <span>{product.name} - Unidades: {product.quantity}</span>
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              onClick={() => handleEditProduct(index)}
+            />
+            <Button
+              type="link"
+              danger
+              onClick={() => handleDeleteProduct(index)}
+            >
+              Delete
+            </Button>
+          </div>
+        ))}
+      </Form.Item>
 
         <Form.Item
           label="Asignar a Usuario"
@@ -85,7 +133,7 @@ export default function OrdersForm() {
             <Option value="userId1">Usuario 1</Option>
             <Option value="userId2">Usuario 2</Option>
             <Option value="userId3">Usuario 3</Option>
-            {/* You can map the actual users here */}
+            {/* Obtener usuarios reales*/}
           </Select>
         </Form.Item>
 
@@ -94,6 +142,31 @@ export default function OrdersForm() {
             Crear Orden
           </Button>
         </Form.Item>
+
+
+        <Modal
+        title="Añadir productos"
+        open={productModalVisible}
+        onOk={handleSaveProduct}
+        onCancel={() => setProductModalVisible(false)}
+      >
+        <Form layout="vertical">
+          <Form.Item label="Producto">
+            <Input
+              value={editingProduct?.name}
+              onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+            />
+          </Form.Item>
+          <Form.Item label="Unidades">
+            <Input
+              type="number"
+              min={1}
+              value={editingProduct?.quantity}
+              onChange={(e) => setEditingProduct({ ...editingProduct, quantity: e.target.value })}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
       </Form>
     </div>
   );
