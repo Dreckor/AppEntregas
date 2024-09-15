@@ -44,7 +44,6 @@ export const createOrder = async (req, res) => {
             assignedTo: asignedUserId,
             history:[{
                 stateLabel: state,
-                stateDesc: "",
                 startedDate: new Date(),
             }]
 

@@ -28,12 +28,13 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
+    //console.log("authc")
     if (isAuthenticated && user && user.success) {
       localStorage.setItem("token", user.token); 
       message.success(user.message); 
       navigate("/createorder");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate, user]);
   useEffect(() => {
     if (errors && errors.length > 0) {
       errors.forEach((error) => {

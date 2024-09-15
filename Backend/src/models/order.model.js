@@ -36,7 +36,6 @@ const orderSchema = new mongoose.Schema(
     history: [
       {
         stateLabel: { type: String, required: true },
-        stateDesc: { type: String, required: true },
         startedDate: { type: Date, required: true },
       },
     ],
