@@ -2,7 +2,7 @@ import { createContext, useState, useContext, useEffect } from "react";
 
 import Cookies from "js-cookie";
 
-import {loginRequets, verifyTokenRequest} from '../api/auth.js';
+import {fetchUsersRequets, loginRequets, verifyTokenRequest} from '../api/auth.js';
 
 export const AuthContext =  createContext();
 
@@ -33,6 +33,15 @@ export const AuthProvider = ({ children }) => {
         }
       };
 
+      const getUsers = async () =>{
+        try {
+          const res = await fetchUsersRequets();
+          return res.data;
+        } catch (error) {
+          setErrors([error.response]);
+        }
+      }
+
       useEffect(() => {
         const checkLogin = async () => {
           const cookies = Cookies.get();
@@ -59,7 +68,7 @@ export const AuthProvider = ({ children }) => {
         checkLogin();
       }, []);
     return (
-      <AuthContext.Provider value={{ signIn, user,isAuthenticated,errors, loading }}>
+      <AuthContext.Provider value={{ signIn, user,isAuthenticated,errors, loading, getUsers }}>
         {children}
       </AuthContext.Provider>
     );

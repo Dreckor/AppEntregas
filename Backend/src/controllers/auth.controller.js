@@ -117,3 +117,29 @@ export const verifytoken = async (req, res) =>{
       
     }
 } 
+
+export const getUsersByRole = async (req, res) => {
+  if (req.user.role !== "admin") {
+    return res
+      .status(403)
+      .json({ message: "Solo un usuario administrador puede listar usuarios" });
+  }
+  try {
+   
+    const users = await User.find({ role: { $in: ["user", "repartidor"] } });
+
+    const usersData = {
+      users: users
+        .filter((user) => user.role === "user")
+        .map((user) => ({ username: user.username, id: user._id })),
+
+      repartidores: users
+        .filter((user) => user.role === "repartidor")
+        .map((user) => ({ username: user.username, id: user._id })),
+    };
+
+    return res.json(usersData);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

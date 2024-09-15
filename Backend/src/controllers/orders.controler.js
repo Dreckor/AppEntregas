@@ -7,10 +7,14 @@ export const getOrders = async (req, res) => {
         let orders;
 
         if (req.user.role === 'admin') {
-            orders = await Order.find().populate('user');
+            orders = await Order.find()
+            .populate('user')
+            .populate('assignedTo');;
         } else {
             
-            orders = await Order.find({ user: req.user._id }).populate('user');
+            orders = await Order.find({ user: req.user._id })
+            .populate('user')
+            .populate('assignedTo');;
         }
 
         res.status(200).json(orders);
@@ -37,7 +41,12 @@ export const createOrder = async (req, res) => {
             initialPoint,
             destinyPoint,
             products,
-            assignedTo: asignedUserId
+            assignedTo: asignedUserId,
+            history:[{
+                stateLabel: state,
+                stateDesc: "",
+                startedDate: new Date(),
+            }]
 
         });
 
@@ -54,12 +63,13 @@ export const createOrder = async (req, res) => {
 
 
 export const getOrder = async (req, res) => {
-    const { trackingNumber } = req.params;
-
+    const { trakingNumber } = req.params;
+    
     try {
-        const order = await Order.findOne({ trackingNumber });
+        const order = await Order.findOne({ trakingNumber });
 
         if (!order) {
+            
             return res.status(404).json({ message: 'Order not found' });
         }
 
@@ -74,13 +84,29 @@ export const updateOrder = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const updatedOrder = await Order.findByIdAndUpdate(id, req.body, {
-            new: true, 
-        });
+        // Encontrar la orden actual
+        const order = await Order.findById(id);
 
-        if (!updatedOrder) {
+        if (!order) {
             return res.status(404).json({ message: 'Order not found' });
         }
+
+        // Agregar el nuevo estado al historial
+        const updatedHistory = [
+            ...order.history,
+            {
+                stateLabel: req.body.state,
+                startedDate: new Date(),
+            }
+        ];
+
+        // Actualizar la orden con el nuevo estado y el historial actualizado
+        const updatedOrderData = {
+            ...req.body, 
+            history: updatedHistory,
+        };
+
+        const updatedOrder = await Order.findByIdAndUpdate(id, updatedOrderData, { new: true });
 
         res.status(200).json(updatedOrder);
     } catch (error) {

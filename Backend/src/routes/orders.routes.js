@@ -11,10 +11,10 @@ import {
 
 const router = Router();
 
-router.get("/order", authRequired,getOrders)
-router.get("/order:trakingNumber", getOrder)
+router.get("/orders", authRequired,getOrders)
+router.get("/order/:trakingNumber", getOrder)
 router.post("/order", authRequired,createOrder)
-router.put("/order", authRequired,updateOrder)
-router.delete("/order:id", authRequired,deleteOrder)
+router.put("/order/:id", authRequired,updateOrder)
+router.delete("/order/:id", authRequired,deleteOrder)
 
 export default router
