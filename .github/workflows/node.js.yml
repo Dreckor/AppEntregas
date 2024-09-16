@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
@@ -25,14 +25,14 @@ jobs:
         cache: 'npm'
 
     - name: Install Backend Dependencies
+      working-directory: Backend
       run: |
-        cd Backend
-        npm ci
+        if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
 
     - name: Install Frontend Dependencies
+      working-directory: Frontend/AppEntregas
       run: |
-        cd Frontend/AppEntregas
-        npm ci
+        if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
 
     - name: Set Up Environment Variables
       run: |
