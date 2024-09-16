@@ -24,6 +24,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
+    - name: List Backend Directory Contents
+      run: ls -al Backend
+
+    - name: List Frontend Directory Contents
+      run: ls -al Frontend/AppEntregas
+
     - name: Install Backend Dependencies
       working-directory: Backend
       run: |
@@ -33,6 +39,9 @@ jobs:
       working-directory: Frontend/AppEntregas
       run: |
         if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
+
+    - name: Clean NPM Cache
+      run: npm cache clean --force
 
     - name: Set Up Environment Variables
       run: |
