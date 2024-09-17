@@ -23,7 +23,7 @@ jobs:
 
       uses: actions/setup-node@v4
       with:
-        cache-dependency-path: Backend/package-lock.json
+        cache-dependency-path: ./Backend/package-lock.json
         node-version: 18
         cache: 'npm'
     - run: npm ci
@@ -34,12 +34,12 @@ jobs:
       run: ls -al Frontend/AppEntregas
 
     - name: Install Backend Dependencies
-      working-directory: Backend
+      working-directory: ./Backend
       run: |
         if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
 
     - name: Install Frontend Dependencies
-      working-directory: Frontend/AppEntregas
+      working-directory: ,/Frontend/AppEntregas
       run: |
         if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
 
