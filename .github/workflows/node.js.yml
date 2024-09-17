@@ -39,7 +39,7 @@ jobs:
         if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
 
     - name: Install Frontend Dependencies
-      working-directory: ,/Frontend/AppEntregas
+      working-directory: ./Frontend/AppEntregas
       run: |
         if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
 
