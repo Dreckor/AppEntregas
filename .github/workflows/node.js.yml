@@ -26,7 +26,7 @@ jobs:
         cache-dependency-path: ./Backend/package-lock.json
         node-version: 18
         cache: 'npm'
-    - run: npm ci
+    - run: npm i
     - name: List Backend Directory Contents
       run: ls -al Backend
 
