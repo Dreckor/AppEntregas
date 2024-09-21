@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser'
 import cors from 'cors';
+import path from 'path';
 
 import authRoutes from './routes/auth.routes.js'
 import ordersRoutes from './routes/orders.routes.js'
@@ -21,7 +22,7 @@ app.use('/api',authRoutes);
 app.use('/api', ordersRoutes)
 
 if (process.env.NODE_ENV === "production") {
-    const path = require("path");  
+  console.log("prod env")
     app.use(express.static("Frontend/AppEntregas/dist"));
 
     app.get("*", (req, res) => {

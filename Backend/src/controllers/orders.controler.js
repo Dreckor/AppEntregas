@@ -4,21 +4,27 @@ import User from '../models/user.model.js';
 
 export const getOrders = async (req, res) => {
     try {
+        if (!req.user) {
+            return res.status(403).json({ message: 'User not authenticated' });
+        }
+
         let orders;
 
         if (req.user.role === 'admin') {
+            // Si el usuario es un admin, obtenemos todas las órdenes
             orders = await Order.find()
-            .populate('user')
-            .populate('assignedTo');;
+                .populate('user')
+                .populate('assignedTo');
         } else {
-            
+            // Si el usuario no es un admin, solo obtiene sus propias órdenes
             orders = await Order.find({ user: req.user._id })
-            .populate('user')
-            .populate('assignedTo');;
+                .populate('user')
+                .populate('assignedTo');
         }
 
         res.status(200).json(orders);
     } catch (error) {
+        console.error('Error retrieving orders:', error);
         res.status(500).json({ message: 'Error retrieving orders', error });
     }
 };
