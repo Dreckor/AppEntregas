@@ -1,6 +1,7 @@
 import app from "./server.js"
 import { connectdb } from "./db.js"
-const PORT = 3000
+import { PORT } from "./config.js";
+
 async function main() {
     try {
       await connectdb();

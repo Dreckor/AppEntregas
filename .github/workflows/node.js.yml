@@ -1,0 +1,44 @@
+name: Node.js CI/CD
+
+on:
+  push:
+    branches: [ "production" ]
+  pull_request:
+    branches: [ "production" ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install Backend Dependencies
+      working-directory: Backend
+      run: |
+        if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
+
+    - name: Install Frontend Dependencies
+      working-directory: Frontend/AppEntregas
+      run: |
+        if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
+
+    - name: Set Up Environment Variables
+      run: |
+        cd Backend
+        touch .env
+        echo "${{ secrets.ENV_PROD }}" > .env
+        cd ../Frontend/AppEntregas
+        touch .env
+        echo "${{ secrets.ENV_PROD_FRONT }}" > .env
