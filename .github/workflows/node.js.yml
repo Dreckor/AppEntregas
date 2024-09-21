@@ -17,22 +17,36 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
+
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
+        cache-dependency-path: ./Backend/package-lock.json
+        node-version: 18
         cache: 'npm'
+    - run: |
+            cd Backend
+            npm i
+    - name: List Backend Directory Contents
+      run: ls -al Backend
+
+    - name: List Frontend Directory Contents
+      run: ls -al Frontend/AppEntregas
 
     - name: Install Backend Dependencies
-      working-directory: Backend
+      working-directory: ./Backend
       run: |
         if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
 
     - name: Install Frontend Dependencies
-      working-directory: Frontend/AppEntregas
+      working-directory: ./Frontend/AppEntregas
       run: |
         if [ -f package-lock.json ]; then npm ci; else echo "package-lock.json not found"; exit 1; fi
+
+    - name: Clean NPM Cache
+      run: npm cache clean --force
 
     - name: Set Up Environment Variables
       run: |
