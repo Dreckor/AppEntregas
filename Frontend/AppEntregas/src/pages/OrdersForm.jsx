@@ -4,6 +4,7 @@ import { useOrders } from "../context/OrderContext";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { PlusOutlined, EditOutlined } from "@ant-design/icons";
+import './OrdersForm.css'
 
 const { Option } = Select;
 
@@ -113,7 +114,7 @@ export default function OrdersForm() {
 
   return (
     <div>
-      <h1>Crear Nueva Orden</h1>
+      <h1 className="Orderclass">Crear Nueva Orden</h1>
       <Form layout="vertical" onFinish={onFinish}>
         <Form.Item
           label="Título de la Orden"

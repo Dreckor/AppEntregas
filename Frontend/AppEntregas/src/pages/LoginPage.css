@@ -1,0 +1,91 @@
+
+body {
+    font-family: "Work Sans", "Noto Sans", sans-serif;
+    background-color: rgb(235, 235, 235);
+  }
+
+  :root{
+    display: grid;
+    place-items: center; 
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  
+  .ant-form {
+    padding: 2vw;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    height:auto;
+    background-color: white;
+    border-radius: 1vw;
+    font-size: 2em;
+    width: auto;
+    min-width: 25vw;
+    max-width: 80vw;
+  }
+
+  .ant-form-item {
+    width: 100%;
+    margin-bottom: 1vw;
+  }
+  .ant-form-item-required::before{
+    content: none !important;
+  }
+  .ant-form-item-label > label {
+    font-weight:500;
+    border: none!important;
+    border-radius: 8px!important;
+    background-color: #f5f2f0!important;
+    height: 40px!important; 
+    font-size: 1.8em !important; 
+    padding: 8px!important; 
+    color: #333332f8!important;
+  }
+  
+ 
+  .ant-input,
+  .ant-input-password {
+    border-radius: 8px;
+    background-color: #f5f2f0;
+    height: 40px; 
+    font-size: 1.5em; 
+    color: #333332f8;
+    max-width: 50vw;
+    padding-left: 0.5vw;
+    padding-top: 0;
+  }
+  
+  .ant-input::placeholder,
+  .ant-input-password::placeholder {
+    color: #3333328f;
+  }
+  
+
+  .ant-btn {
+    width: 90%;
+    height: 40px; 
+    border-radius: 8px;
+    font-size: 1vw;
+    font-weight: 400;
+  }
+  
+  .ant-btn-primary {
+    background-color: #1b93d8;
+    border-color: #1b93d8;
+    color: white;
+    height: auto;
+    min-height: 1.5vw;
+  }
+  
+  .ant-btn-primary:hover {
+    background-color: #1b93d8; 
+  }
+  
+ 
+  .ant-form-item:last-child {
+    margin-top: 16px; 
+  }
+  .Orderclass{
+    font-size: 3em;
+  }
+  
