@@ -73,7 +73,7 @@ const OrdersList = ({ orders }) => {
       dataSource={orders}
       columns={columns}
       rowKey="_id"
-      pagination={{ pageSize: 10 }}
+      pagination={{ pageSize: 7 }}
     />
   );
 };
