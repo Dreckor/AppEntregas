@@ -27,7 +27,7 @@ export default function LoginPage() {
     if (isAuthenticated && user && user.success) {
       localStorage.setItem("token", user.token); 
       message.success(user.message); 
-      navigate("/createorder");
+      navigate("/orders");
     }
   }, [isAuthenticated, navigate, user]);
 
