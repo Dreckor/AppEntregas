@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
+import Header from '../src/pages/Header.jsx'
 import './index.css'
 import {disableReactDevTools} from '@fvilers/disable-react-devtools'
 

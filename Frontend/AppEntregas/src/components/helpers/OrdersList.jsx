@@ -1,28 +1,28 @@
 import { Table, Tag, Button } from "antd";
 import { useNavigate } from 'react-router-dom';
+import './OrdersList.css'
 
 const OrdersList = ({ orders }) => {
   const navigate = useNavigate();
   const columns = [
-    {
-      title: "Título de la Orden",
-      dataIndex: "orderTitle",
-      key: "orderTitle",
-    },
-    {
-      title: "Estado",
-      dataIndex: "state",
-      key: "state",
-      render: (state) => {
+    { 
+      title: "Número de Seguimiento",
+      key: "trakingAndState",
+      render: (record) => {
         let color = "blue";
-        if (state === "Entregado") {
+        if (record.state === "Entregado") {
           color = "green";
-        } else if (state === "Pendiente") {
+        } else if (record.state === "Pendiente") {
           color = "orange";
-        } else if (state === "En camino") {
+        } else if (record.state === "En camino") {
           color = "geekblue";
         }
-        return <Tag color={color}>{state.toUpperCase()}</Tag>;
+        return (
+          <div className="infoped">
+            <div>{record.trakingNumber}</div> {}
+            <Tag color={color} style={{ marginTop: '8px' }}>{record.state.toUpperCase()}</Tag> {}
+          </div>
+        );
       },
     },
     {
@@ -34,11 +34,6 @@ const OrdersList = ({ orders }) => {
       title: "Punto de Destino",
       dataIndex: "destinyPoint",
       key: "destinyPoint",
-    },
-    {
-      title: "Número de Seguimiento",
-      dataIndex: "trakingNumber",
-      key: "trakingNumber",
     },
     {
       title: "Productos",
@@ -67,7 +62,7 @@ const OrdersList = ({ orders }) => {
     {
       title: "Acciones",
       key: "actions",
-      render: (_, record) => <Button type="primary" onClick={() => navigate(`/orders/${record._id}`, { state: { order: record } })}>
+      render: (_, record) => <Button className="viewdetails" type="primary" onClick={() => navigate(`/orders/${record._id}`, { state: { order: record } })}>
       Ver Detalles
     </Button>,
     },
@@ -78,7 +73,7 @@ const OrdersList = ({ orders }) => {
       dataSource={orders}
       columns={columns}
       rowKey="_id"
-      pagination={{ pageSize: 5 }}
+      pagination={{ pageSize: 10 }}
     />
   );
 };
