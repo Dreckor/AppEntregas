@@ -1,0 +1,20 @@
+.detallesord{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3vw;
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+
+}
+.ant-descriptions{
+    width: 55%;
+}
+.Botondetails{
+    width: auto;
+}
+.detailsbt{
+    margin-top: 3vw;   
+}

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Descriptions, Button, Input, Select, notification } from 'antd';
 import { useOrders } from '../context/OrderContext';
 import Seguimiento from '../components/helpers/Seguimiento';
-
+import './OrderDetail.css';
 const { Option } = Select;
 
 const OrderDetails = () => {
@@ -58,8 +58,8 @@ const OrderDetails = () => {
   };
 
   return (
-    <div>
-      
+    <><div className='detallesord'>
+
       <Descriptions title="Detalles de la Orden" bordered>
         <Descriptions.Item label="Título">
           <Input value={orderTitle} onChange={(e) => setOrderTitle(e.target.value)} />
@@ -78,7 +78,7 @@ const OrderDetails = () => {
           <Input value={destinyPoint} onChange={(e) => setDestinyPoint(e.target.value)} />
         </Descriptions.Item>
         <Descriptions.Item label="Número de Seguimiento">
-          {trakingNumber} 
+          {trakingNumber}
         </Descriptions.Item>
         <Descriptions.Item label="Productos">
           {order.products.length > 0 ? (
@@ -97,19 +97,19 @@ const OrderDetails = () => {
         <Descriptions.Item label="Repartidor">Repartidor: {order.assignedTo.username}, Direccion: {order.assignedTo.address}</Descriptions.Item>
       </Descriptions>
 
-      <Seguimiento history={order.history}/>
-      <div style={{ marginTop: 20 }}>
-        
-        <Button type="primary" onClick={handleUpdate} style={{ marginRight: 10 }}>
+      <Seguimiento history={order.history} />
+    </div>
+      <div className='detailsbt'>
+
+        <Button className="Botondetails" type="primary" onClick={handleUpdate} style={{ marginRight: 10 }}>
           Actualizar
         </Button>
-        <Button danger onClick={handleDelete} style={{ marginRight: 10 }}>
+        <Button className="Botondetails" danger onClick={handleDelete} style={{ marginRight: 10 }}>
           Eliminar
         </Button>
-        <Button onClick={copyToClipboard} style={{ marginRight: 10 }}>Copiar enlace de seguimiento</Button>
-        <Button onClick={() => navigate(-1)}>Regresar</Button>
-      </div>
-    </div>
+        <Button className="Botondetails" onClick={copyToClipboard} style={{ marginRight: 10 }}>Copiar enlace de seguimiento</Button>
+        <Button className="Botondetails" onClick={() => navigate(-1)}>Regresar</Button>
+      </div></>
   );
 };
 
