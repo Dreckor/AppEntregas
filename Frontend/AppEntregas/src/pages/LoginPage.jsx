@@ -57,6 +57,7 @@ export default function LoginPage() {
 
   return (
     <Form layout="vertical" onFinish={onFinish}>
+      <div className="bienvenidos"><h1>Bienvenidos a comerza</h1></div>
       <Form.Item 
         label="Correo Electrónico"
         name="email"

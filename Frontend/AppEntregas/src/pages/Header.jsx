@@ -9,9 +9,9 @@ import {
 function Header({ pagename }) {
     return (
         <header className="header">
-           <div className='header_icon'><HomeOutlined style={{ fontSize:'45px' }}/></div>
-           <div className='header_icon'><CarOutlined style={{ fontSize:'45px' }}/></div>
-           <div className='header_icon'><UserOutlined style={{ fontSize:'45px' }}/></div>
+           <a href='/login'><div className='header_icon'><HomeOutlined style={{ fontSize:'45px' }}/></div></a>
+           <a href='/orders'><div className='header_icon'><CarOutlined style={{ fontSize:'45px' }}/></div></a>
+           <a href="/login"><div className='header_icon'><UserOutlined style={{ fontSize:'45px' }}/></div></a>
         </header>
     )
 }
