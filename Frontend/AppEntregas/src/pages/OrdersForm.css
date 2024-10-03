@@ -34,4 +34,20 @@
 .ant-modal-footer{
     text-align: center !important;
 }
+.ant-select-single, .ant-select-selector{
+    height: 3vw;
+    font-size: 0.8vw!important;
+}
+.ant-select-selection-search-input{
+    height: 3vw !important;
+    font-size: 0.8vw;
+}
+.ant-select-selection-placeholder{
+    flex: none !important;
+    color: #333332d2!important;
+}
+.ant-select-arrow{
+    font-size: 0.8vw !important ;
+}
+
 

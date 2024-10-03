@@ -81,7 +81,7 @@ export default function LoginPage() {
         <Input.Password placeholder="Introduce tu contraseña" />
       </Form.Item>
 
-      <Form.Item>
+      <Form.Item className="btnform">
         <Button type="primary" htmlType="submit" loading={loading}>
           Iniciar Sesión
         </Button>

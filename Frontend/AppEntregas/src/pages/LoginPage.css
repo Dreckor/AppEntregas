@@ -31,6 +31,21 @@ body {
     width: 100%;
     margin-bottom: 1vw;
   }
+  .ant-col.ant-form-item-label{
+    display: flex;
+    align-items: center;
+    height: auto;
+    min-height: 1vw;
+    max-height: 3vw;
+  }
+  .ant-form-item-control-input, .ant-form-item-control-input-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    min-height: 1vw !important;
+    max-height: 3vw;
+  }
   .ant-form-item-required::before{
     content: none !important;
   }
@@ -65,7 +80,9 @@ body {
     color: #3333328f;
   }
   
-
+  .btnform{
+    justify-content: center;
+  }
   .ant-btn {
     width: 90%;
     height: 2.083vw; 
@@ -78,7 +95,6 @@ body {
     background-color: #1b93d8;
     border-color: #1b93d8;
     color: white;
-    height: auto;
     min-height: 1.5vw;
   }
   
