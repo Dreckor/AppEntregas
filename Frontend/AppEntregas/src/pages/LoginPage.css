@@ -1,9 +1,7 @@
 
 body {
     font-family: "Work Sans", "Noto Sans", sans-serif;
-    background-color: rgb(235, 235, 235);
   }
-
   :root{
     display: grid;
     place-items: center; 
@@ -29,7 +27,7 @@ body {
 
   .ant-form-item {
     width: 100%;
-    margin-bottom: 1vw;
+    margin-bottom: 0.5vw;
   }
   .ant-col.ant-form-item-label{
     display: flex;
@@ -67,7 +65,7 @@ body {
   .ant-input-password {
     border-radius: 8px;
     background-color: #f5f2f0;
-    height: 2.083vw; 
+    height: 2vw; 
     font-size: 0.8vw; 
     color: #333332f8;
     max-width: 50vw;
@@ -85,7 +83,7 @@ body {
   }
   .ant-btn {
     width: 90%;
-    height: 2.083vw; 
+    height: 2vw; 
     border-radius: 8px;
     font-size: 1vw;
     font-weight: 400;

@@ -35,11 +35,11 @@
     text-align: center !important;
 }
 .ant-select-single, .ant-select-selector{
-    height: 3vw;
+    height: 2vw;
     font-size: 0.8vw!important;
 }
 .ant-select-selection-search-input{
-    height: 3vw !important;
+    height: 2vw !important;
     font-size: 0.8vw;
 }
 .ant-select-selection-placeholder{
