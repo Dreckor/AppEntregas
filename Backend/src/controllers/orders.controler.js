@@ -1,4 +1,5 @@
 import Order from '../models/order.model.js';
+import {DeliveryPoint, DeparturePoint} from '../models/config.model.js';
 import User from '../models/user.model.js';
 
 
@@ -14,7 +15,8 @@ export const getOrders = async (req, res) => {
             // Si el usuario es un admin, obtenemos todas las órdenes
             orders = await Order.find()
                 .populate('user')
-                .populate('assignedTo');
+                .populate('assignedTo')
+                
         } else {
             // Si el usuario no es un admin, solo obtiene sus propias órdenes
             orders = await Order.find({ user: req.user._id })
@@ -38,7 +40,15 @@ export const createOrder = async (req, res) => {
     }
 
     try {
-        const trakingNumberString = initialPoint.slice(0,3) +Math.floor((Math.random(  ) * 1000000000 ))+ destinyPoint.slice(0,3) 
+        const departure = await DeparturePoint.findById(initialPoint);
+        const delivery = await DeliveryPoint.findById(destinyPoint);
+
+        if (!departure || !delivery) {
+            return res.status(400).json({ message: 'Puntos de entrega o salida no válidos' });
+        }
+
+        const trakingNumberString = `${departure.name.slice(0, 3).toUpperCase()}${Math.floor(Math.random() * 1000000000)}${delivery.name.slice(0, 3).toUpperCase()}`;
+        
         const newOrder = new Order({
             orderTitle,
             state,

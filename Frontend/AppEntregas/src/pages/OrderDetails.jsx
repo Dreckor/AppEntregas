@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Descriptions, Button, Input, Select, notification } from 'antd';
 import { useOrders } from '../context/OrderContext';
 import Seguimiento from '../components/helpers/Seguimiento';
-import './OrderDetail.css';
+import '../css/OrderDetail.css';
 const { Option } = Select;
 
 const OrderDetails = () => {

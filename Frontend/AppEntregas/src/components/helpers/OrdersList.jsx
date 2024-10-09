@@ -29,11 +29,13 @@ const OrdersList = ({ orders }) => {
       title: "Punto Inicial",
       dataIndex: "initialPoint",
       key: "initialPoint",
+      render: (initialPoint) => initialPoint.name,
     },
     {
       title: "Punto de Destino",
       dataIndex: "destinyPoint",
       key: "destinyPoint",
+      render: (destinyPoint) => destinyPoint.name,
     },
     {
       title: "Productos",
