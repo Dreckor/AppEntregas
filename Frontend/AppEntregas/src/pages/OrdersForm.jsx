@@ -27,9 +27,10 @@ export default function OrdersForm() {
   const [productModalVisible, setProductModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [productPrice, setProductPrice] = useState(0);
 
   const { createOrder } = useOrders();
-  const { getUsers, errors } = useAuth();
+  const { getUsers } = useAuth();
   const { config, fetchConfig } = useConfig();
   const navigate = useNavigate();
 
@@ -60,8 +61,8 @@ export default function OrdersForm() {
         ...values,
         products,
       });
-      console.log(values)
-      console.log(products)
+      console.log(values);
+      console.log(products);
       message.success("Orden creada exitosamente");
       navigate("/orders");
     } catch (error) {
@@ -76,6 +77,7 @@ export default function OrdersForm() {
       productUnits: 1,
       productCategory: "",
       kilos: 1,
+      cost: 0,
     });
     setProductModalVisible(true);
   };
@@ -87,7 +89,7 @@ export default function OrdersForm() {
 
   const handleSaveProduct = () => {
     let updatedProducts;
-  
+
     // Si estamos editando un producto existente
     if (editingProduct.index !== undefined) {
       updatedProducts = [...products];
@@ -96,30 +98,22 @@ export default function OrdersForm() {
       // Si estamos agregando un nuevo producto
       updatedProducts = [...products, editingProduct];
     }
-  
+
     // Actualiza los productos
     setProducts(updatedProducts);
-  
+
     // Calcular el precio total basado en las categorías y kilos
     const total = updatedProducts.reduce((sum, product) => {
-      console.log(product)
       const category = config.productCategories.find(
-        (cat) => cat._id === product.productCategory // Asegúrate de que la comparación sea correcta
+        (cat) => cat._id === product.productCategory
       );
-  
-      
-  
-      return sum + (category ? category.pricePerKilo * product.kilos : 0); // Asegúrate de que `kilos` está definido
+      return sum + (category ? category.pricePerKilo * product.kilos : 0);
     }, 0);
-  
+
     setTotalPrice(total);
-    console.log(total); // Debug: Verificar el total calculado
-  
-    // Cierra el modal y reinicia el estado de editingProduct
     setProductModalVisible(false);
     setEditingProduct(null);
   };
-  
 
   const handleDeleteProduct = (index) => {
     const updatedProducts = products.filter((_, i) => i !== index);
@@ -133,6 +127,28 @@ export default function OrdersForm() {
     }, 0);
 
     setTotalPrice(total);
+  };
+
+  const handleCategoryChange = (categoryId) => {
+    const category = config.productCategories.find((cat) => cat._id === categoryId);
+    const cost = category ? category.pricePerKilo * editingProduct.kilos : 0;
+    setProductPrice(cost); // Update product price based on category and kilos
+    setEditingProduct({
+      ...editingProduct,
+      productCategory: categoryId,
+      cost, // Update the product's cost
+    });
+  };
+
+  const handleKilosChange = (kilos) => {
+    const category = config.productCategories.find((cat) => cat._id === editingProduct.productCategory);
+    const cost = category ? category.pricePerKilo * kilos : 0;
+    setProductPrice(cost); // Update product price when kilos change
+    setEditingProduct({
+      ...editingProduct,
+      kilos,
+      cost, // Update the product's cost
+    });
   };
 
   return (
@@ -179,6 +195,7 @@ export default function OrdersForm() {
           </Select>
         </Form.Item>
 
+        
         <Form.Item
           label="Estado"
           name="state"
@@ -187,9 +204,17 @@ export default function OrdersForm() {
           ]}
         >
           <Select placeholder="Selecciona un estado">
-            <Option value="Pendiente">Pendiente</Option>
-            <Option value="En camino">En Camino</Option>
-            <Option value="Entregado">Entregado</Option>
+            {config &&
+            config.states &&
+            config.states.length > 0 ? (
+              config.states.map((state) => (
+                <Option key={state._id} value={state._id}>
+                  {state.name}
+                </Option>
+              ))
+            ) : (
+              <Option disabled>No hay estados disponibles, revise la configuración del panel</Option>
+            )}
           </Select>
         </Form.Item>
 
@@ -314,7 +339,7 @@ export default function OrdersForm() {
           onOk={handleSaveProduct}
           onCancel={() => {
             setProductModalVisible(false);
-            setEditingProduct(null); 
+            setEditingProduct(null);
           }}
         >
           <Form layout="vertical">
@@ -330,50 +355,44 @@ export default function OrdersForm() {
                 }
               />
             </Form.Item>
-            <Form.Item
-      label="Categoría del Producto"
-      //name="productCategory"
-      rules={[
-        {
-          required: true,
-          message: "Por favor selecciona una categoría de producto",
-        },
-      ]}
-      
-    >
-      <Select
-        placeholder="Selecciona una categoría"
-        value={editingProduct?.productCategory || ""}
-        selected={editingProduct?.productCategory != null || 0}
-        onChange={(value) =>
-          setEditingProduct({ ...editingProduct, productCategory: value })
-        }
-        
-      >
-
-        {config &&
-        config.productCategories &&
-        config.productCategories.length > 0 ? (
-          config.productCategories.map((category) => (
-            <Option key={category._id} value={category._id}>
-              {category.categoryName}
-            </Option>
-          ))
-        ) : (
-          <Option disabled>No hay categorías disponibles</Option>
-        )}
-      </Select>
-    </Form.Item>
+            <Form.Item label="Categoría del Producto">
+              <Select
+                placeholder="Selecciona una categoría"
+                value={editingProduct?.productCategory || ""}
+                onChange={handleCategoryChange}
+              >
+                {config &&
+                config.productCategories &&
+                config.productCategories.length > 0 ? (
+                  config.productCategories.map((category) => (
+                    <Option key={category._id} value={category._id}>
+                      {category.categoryName}
+                    </Option>
+                  ))
+                ) : (
+                  <Option disabled>No hay categorías disponibles</Option>
+                )}
+              </Select>
+            </Form.Item>
+            <Form.Item label="Unidades">
+              <InputNumber
+                name="productUnits"
+                min={1}
+                value={editingProduct?.productUnits}
+                onChange={(value) =>
+                  setEditingProduct({ ...editingProduct, productUnits: value })
+                }
+              />
+            </Form.Item>
             <Form.Item label="Kilos">
               <InputNumber
                 name="kilos"
                 min={1}
                 value={editingProduct?.kilos}
-                onChange={(value) =>
-                  setEditingProduct({ ...editingProduct, kilos: value })
-                }
+                onChange={handleKilosChange}
               />
             </Form.Item>
+            <h3>Precio: ${productPrice.toFixed(2)}</h3> {/* Display the product price */}
           </Form>
         </Modal>
       </Form>

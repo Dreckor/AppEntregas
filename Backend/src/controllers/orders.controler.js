@@ -16,6 +16,13 @@ export const getOrders = async (req, res) => {
             orders = await Order.find()
                 .populate('user')
                 .populate('assignedTo')
+                .populate('initialPoint')
+                .populate('destinyPoint')
+                .populate('state')
+                .populate({
+                    path: 'history.stateLabel',
+                    model: 'State'
+                });
                 
         } else {
             // Si el usuario no es un admin, solo obtiene sus propias órdenes
@@ -81,7 +88,16 @@ export const getOrder = async (req, res) => {
     const { trakingNumber } = req.params;
     
     try {
-        const order = await Order.findOne({ trakingNumber });
+        const order = await Order.findOne({ trakingNumber })
+        .populate('user')
+        .populate('assignedTo')
+        .populate('initialPoint')
+        .populate('destinyPoint')
+        .populate('state')
+        .populate({
+            path: 'history.stateLabel',
+            model: 'State'
+        });;
 
         if (!order) {
             

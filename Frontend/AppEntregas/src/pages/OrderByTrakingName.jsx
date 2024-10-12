@@ -10,16 +10,16 @@ const DetallesOrden = ({ order }) => {
   return (
     <Descriptions title="Detalles de la Orden" bordered>
       <Descriptions.Item label="Título">{order.orderTitle}</Descriptions.Item>
-      <Descriptions.Item label="Estado">{order.state}</Descriptions.Item>
-      <Descriptions.Item label="Punto Inicial">{order.initialPoint}</Descriptions.Item>
-      <Descriptions.Item label="Destino">{order.destinyPoint}</Descriptions.Item>
+      <Descriptions.Item label="Estado">{order.state.name}</Descriptions.Item>
+      <Descriptions.Item label="Punto Inicial">{order.initialPoint.name}</Descriptions.Item>
+      <Descriptions.Item label="Destino">{order.destinyPoint.name}</Descriptions.Item>
       <Descriptions.Item label="Número de Seguimiento">{order.trakingNumber}</Descriptions.Item>
       <Descriptions.Item label="Productos">
         {order.products && order.products.length > 0 ? (
           <ul>
             {order.products.map((product, index) => (
               <li key={index}>
-                {product.productLabel} - Unidades: {product.productUnits}
+                {product.productLabel} - Unidades: {product.productUnits} - Peso: ${product.kilos} Kg- Coste: ${product.cost}
               </li>
             ))}
           </ul>

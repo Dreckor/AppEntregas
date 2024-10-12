@@ -3,7 +3,6 @@ import { useConfig } from '../../context/ConfigContext';
 import { Tabs, Table, Button, Modal, Form, Input } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const { TabPane } = Tabs;
 
 const Puntos = () => {
   const { config, fetchConfig, updateConfig, deleteConfigOption } = useConfig();
@@ -18,17 +17,17 @@ const Puntos = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: 'Nombre',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Address',
+      title: 'Direccion',
       dataIndex: 'address',
       key: 'address',
     },
     {
-      title: 'Actions',
+      title: 'Acciones',
       key: 'actions',
       render: (_, record) => (
         <>
@@ -37,10 +36,10 @@ const Puntos = () => {
             onClick={() => handleEdit(record)}
             style={{ marginRight: 8 }}
           >
-            Edit
+            Editar
           </Button>
           <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record)} danger>
-            Delete
+            Eliminar
           </Button>
         </>
       ),
@@ -101,10 +100,12 @@ const Puntos = () => {
     fetchConfig(); // Refresca la configuración después de agregar/editar
   };
 
-  return (
-    <div>
-      <Tabs defaultActiveKey="delivery" onChange={(key) => setActiveTab(key)}>
-        <TabPane tab="Delivery Points" key="delivery">
+  const items = [
+    {
+      key: 'delivery',
+      label: 'Puntos de entrega',
+      children: (
+        <>
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -118,26 +119,38 @@ const Puntos = () => {
             dataSource={config?.deliveryPoints || []}
             rowKey={(record) => record._id}
           />
-        </TabPane>
-        <TabPane tab="Departure Points" key="departure">
+        </>
+      ),
+    },
+    {
+      key: 'departure',
+      label: 'Puntos de partida',
+      children: (
+        <>
           <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={handleAdd}
             style={{ marginBottom: 16 }}
           >
-            Agregar punto de salida
+            Agregar punto de partida
           </Button>
           <Table
             columns={columns}
             dataSource={config?.departurePoints || []}
             rowKey={(record) => record._id}
           />
-        </TabPane>
-      </Tabs>
+        </>
+      ),
+    },
+  ];
+
+  return (
+    <div>
+      <Tabs defaultActiveKey="delivery" items={items} onChange={setActiveTab} />
       <Modal
         title={editingPoint ? 'Edit Point' : `Add New ${activeTab === 'delivery' ? 'Delivery' : 'Departure'} Point`}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
       >

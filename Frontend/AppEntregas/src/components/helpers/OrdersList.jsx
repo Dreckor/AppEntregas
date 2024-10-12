@@ -10,17 +10,13 @@ const OrdersList = ({ orders }) => {
       key: "trakingAndState",
       render: (record) => {
         let color = "blue";
-        if (record.state === "Entregado") {
-          color = "green";
-        } else if (record.state === "Pendiente") {
-          color = "orange";
-        } else if (record.state === "En camino") {
-          color = "geekblue";
+        if (record.state["color"] ) {
+          color = record.state["color"];
         }
         return (
           <div className="infoped">
             <div>{record.trakingNumber}</div> {}
-            <Tag color={color} style={{ marginTop: '8px' }}>{record.state.toUpperCase()}</Tag> {}
+            <Tag color={color} style={{ marginTop: '8px' }}>{record.state["name"].toUpperCase()}</Tag> {}
           </div>
         );
       },
@@ -46,7 +42,7 @@ const OrdersList = ({ orders }) => {
           {products.length > 0 ? (
             products.map((product, index) => (
               <Tag color="purple" key={index}>
-                {product.productLabel} - Unidades: {product.productUnits}
+                {product.productLabel} - Unidades: {product.productUnits} - Peso: ${product.kilos} Kg- Coste: ${product.cost}
               </Tag>
             ))
           ) : (

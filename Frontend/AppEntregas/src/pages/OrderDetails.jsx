@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Descriptions, Button, Input, Select, notification } from 'antd';
 import { useOrders } from '../context/OrderContext';
+import { useConfig } from "../context/ConfigContext";
 import Seguimiento from '../components/helpers/Seguimiento';
 import '../css/OrderDetail.css';
 const { Option } = Select;
@@ -17,7 +18,12 @@ const OrderDetails = () => {
   const [state, setState] = useState(order.state);
   const [initialPoint, setInitialPoint] = useState(order.initialPoint);
   const [destinyPoint, setDestinyPoint] = useState(order.destinyPoint);
+  const { config, fetchConfig } = useConfig();
   const trakingNumber = order.trakingNumber;
+
+  useEffect(() => {
+    fetchConfig();
+  }, [])
 
   const copyToClipboard = () => {
     const url = `${window.location.origin}/order/${trakingNumber}`;
@@ -65,17 +71,28 @@ const OrderDetails = () => {
           <Input value={orderTitle} onChange={(e) => setOrderTitle(e.target.value)} />
         </Descriptions.Item>
         <Descriptions.Item label="Estado">
-          <Select value={state} onChange={(value) => setState(value)}>
-            <Option value="Pendiente">Pendiente</Option>
-            <Option value="Entregado">Entregado</Option>
-            <Option value="En camino">En camino</Option>
+        <Select value={state._id} onChange={(value) => setState(value)}>
+            {config &&
+            config.states &&
+            config.states.length > 0 ? (
+              config.states.map((state) => (
+                <Option key={state._id} value={state._id}>
+                  {state.name}
+                </Option>
+              ))
+            ) : (
+              <Option disabled>No hay estados disponibles, revise la configuración del panel</Option>
+            )}
           </Select>
+         
         </Descriptions.Item>
         <Descriptions.Item label="Punto Inicial">
-          <Input value={initialPoint} onChange={(e) => setInitialPoint(e.target.value)} />
+          {initialPoint.name}  <br/>
+          {initialPoint.address}  
         </Descriptions.Item>
         <Descriptions.Item label="Destino">
-          <Input value={destinyPoint} onChange={(e) => setDestinyPoint(e.target.value)} />
+          {destinyPoint.name} <br/>
+          {destinyPoint.address} 
         </Descriptions.Item>
         <Descriptions.Item label="Número de Seguimiento">
           {trakingNumber}
@@ -85,7 +102,7 @@ const OrderDetails = () => {
             <ul>
               {order.products.map((product, index) => (
                 <li key={index}>
-                  {product.productLabel} - Unidades: {product.productUnits}
+                  {product.productLabel} - Unidades: {product.productUnits} - Peso: ${product.kilos} Kg- Coste: ${product.cost}
                 </li>
               ))}
             </ul>

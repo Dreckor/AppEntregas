@@ -15,7 +15,7 @@ const Users = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: 'Nombre',
       dataIndex: 'name',
       key: 'name',
     },
@@ -25,12 +25,12 @@ const Users = () => {
       key: 'email',
     },
     {
-      title: 'Role',
+      title: 'Rol',
       dataIndex: 'role',
       key: 'role',
     },
     {
-      title: 'Action',
+      title: 'Acciones',
       key: 'action',
       render: (_, record) => (
         <Button icon={<EditOutlined />} onClick={() => handleEdit(record)}>
@@ -79,11 +79,11 @@ const Users = () => {
         onClick={handleAdd}
         style={{ marginBottom: 16, backgroundColor: '#52c41a' }}
       >
-        Add New User
+        Agregar usuario
       </Button>
       <Table columns={columns} dataSource={users} rowKey="id" />
       <Modal
-        title={editingUser ? 'Edit User' : 'Add New User'}
+        title={editingUser ? 'Editar usuario' : 'Agregar usuario'}
         open={isModalVisible}
         onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
@@ -92,7 +92,7 @@ const Users = () => {
           <Form.Item
             name="name"
             label="Name"
-            rules={[{ required: true, message: 'Please input the name!' }]}
+            rules={[{ required: true, message: 'Ingrese un nombre!' }]}
           >
             <Input />
           </Form.Item>
@@ -100,8 +100,8 @@ const Users = () => {
             name="email"
             label="Email"
             rules={[
-              { required: true, message: 'Please input the email!' },
-              { type: 'email', message: 'Please enter a valid email!' },
+              { required: true, message: 'Ingrese un correo' },
+              { type: 'email', message: 'El correo no es valido' },
             ]}
           >
             <Input />
@@ -109,7 +109,7 @@ const Users = () => {
           <Form.Item
             name="role"
             label="Role"
-            rules={[{ required: true, message: 'Please select the role!' }]}
+            rules={[{ required: true, message: 'Seleccione un ro' }]}
           >
             <Select>
               <Option value="user">User</Option>

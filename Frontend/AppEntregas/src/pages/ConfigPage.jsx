@@ -1,48 +1,47 @@
-import { useState } from 'react';
-import { Layout, Menu } from 'antd';
-import { UserOutlined, EnvironmentOutlined, AppstoreOutlined } from '@ant-design/icons';
-import Users from '../components/ConfigComponents/Users.jsx';
-import Puntos from '../components/ConfigComponents/Puntos.jsx';
-import Categorias from '../components/ConfigComponents/Categorias.jsx';
+import { Layout, Tabs } from "antd";
+import {
+  UserOutlined,
+  EnvironmentOutlined,
+  AppstoreOutlined,
+  ScheduleOutlined
+} from "@ant-design/icons";
+import Users from "../components/ConfigComponents/Users.jsx";
+import Puntos from "../components/ConfigComponents/Puntos.jsx";
+import Categorias from "../components/ConfigComponents/Categorias.jsx";
+import Estados from "../components/ConfigComponents/Estados.jsx";
 
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 const App = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState('users');
-
-  const renderContent = () => {
-    switch (selectedMenuItem) {
-      case 'Usuarios':
-        return <Users />;
-      case 'Puntos':
-        return <Puntos />;
-      case 'categorias':
-        return <Categorias />;
-      default:
-        return <Users />;
-    }
-  };
+  const items = [
+    {
+      key: "1",
+      label: `Usuarios`,
+      children: <Users />,
+      icon: <UserOutlined />, // Aquí el contenido de la pestaña
+    },
+    {
+      key: "2",
+      label: `Puntos`,
+      children: <Puntos />,
+      icon: <EnvironmentOutlined />, // Aquí el contenido de la pestaña
+    },
+    {
+      key: "3",
+      label: `Categorias`,
+      children: <Categorias />,
+      icon: <AppstoreOutlined />, // Aquí el contenido de la pestaña
+    },
+    {
+      key: "4",
+      label: `Estados`,
+      children: <Estados />,
+      icon: <ScheduleOutlined />, // Aquí el contenido de la pestaña
+    },
+  ];
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider width={200} className="site-layout-background">
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={['Usuarios']}
-          style={{ height: '100%', borderRight: 0 }}
-          onClick={(e) => setSelectedMenuItem(e.key)}
-        >
-          <Menu.Item key="Usuarios" icon={<UserOutlined />}>
-            Users
-          </Menu.Item>
-          <Menu.Item key="Puntos" icon={<EnvironmentOutlined />}>
-            Points
-          </Menu.Item>
-          <Menu.Item key="categorias" icon={<AppstoreOutlined />}>
-            Categories
-          </Menu.Item>
-        </Menu>
-      </Sider>
+    <Layout style={{ minHeight: "100vh" }}>
       <Layout className="site-layout">
         <Content
           className="site-layout-background"
@@ -52,7 +51,7 @@ const App = () => {
             minHeight: 280,
           }}
         >
-          {renderContent()}
+          <Tabs tabPosition="left" items={items} />
         </Content>
       </Layout>
     </Layout>

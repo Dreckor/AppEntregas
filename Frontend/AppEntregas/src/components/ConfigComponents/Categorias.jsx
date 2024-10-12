@@ -15,18 +15,18 @@ const Categorias = () => {
 
   const columns = [
     {
-      title: 'Category Name',
+      title: 'Nombre de la categoria',
       dataIndex: 'categoryName',
       key: 'categoryName',
     },
     {
-      title: 'Price per Kilo',
+      title: 'Precio por kilo',
       dataIndex: 'pricePerKilo',
       key: 'pricePerKilo',
       render: (price) => `$${price.toFixed(2)}`,
     },
     {
-      title: 'Actions',
+      title: 'Acciones',
       key: 'actions',
       render: (_, record) => (
         <>
@@ -35,10 +35,10 @@ const Categorias = () => {
             onClick={() => handleEdit(record)}
             style={{ marginRight: 8 }}
           >
-            Edit
+            Editar
           </Button>
           <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record)} danger>
-            Delete
+            Eliminar
           </Button>
         </>
       ),
@@ -120,7 +120,7 @@ const handleOk = async () => {
         rowKey={(record) => record.categoryName} // Use a unique key
       />
       <Modal
-        title={editingCategory ? 'Edit Category' : 'Add New Category'}
+        title={editingCategory ? 'Editar categoria' : 'Agregar categoria'}
         open={isModalVisible}
         onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
@@ -128,14 +128,14 @@ const handleOk = async () => {
         <Form form={form} layout="vertical">
           <Form.Item
             name="categoryName"
-            label="Category Name"
+            label="Nombre de la categoria"
             rules={[{ required: true, message: 'Ingrese el nombre de la categoria!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="pricePerKilo"
-            label="Price per Kilo"
+            label="Precio por kilo"
             rules={[{ required: true, message: 'Ingrese el valor por kilo!' }]}
           >
             <InputNumber

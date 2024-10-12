@@ -3,6 +3,7 @@ import { Steps } from 'antd';
 const formatOrderHistory = (orderHistory) => {
   return orderHistory.map(item => {
     // Convertir la fecha a un formato legible
+    
     const date = new Date(item.startedDate);
     const formattedDate = date.toLocaleString('es-ES', { 
       day: '2-digit', 
@@ -13,8 +14,8 @@ const formatOrderHistory = (orderHistory) => {
     });
 
     return {
-      title: item.stateLabel,
-      description: `${formatDescription(item.stateLabel)} - ${formattedDate}`
+      title: item.stateLabel["name"],
+      description: `${formatDescription(item.stateLabel["description"])} - ${formattedDate}`
     };
   });
 };

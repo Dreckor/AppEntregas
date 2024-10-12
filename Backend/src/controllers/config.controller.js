@@ -1,4 +1,4 @@
-import {Config, DeliveryPoint, DeparturePoint,ProductCategory} from '../models/config.model.js';
+import {Config, DeliveryPoint, DeparturePoint,ProductCategory, State} from '../models/config.model.js';
 
 const initializeConfig = async () => {
   try {
@@ -8,6 +8,7 @@ const initializeConfig = async () => {
         deliveryPoints: [],
         departurePoints: [],
         productCategories: [],
+        state: []
       });
       await config.save();
     }
@@ -45,30 +46,31 @@ export const updateConfig = async (req, res) => {
             for (const point of req.body.deliveryPoints) {
                 if (!point._id) {
                     // Si el punto no tiene un ID, es nuevo
-                    const newDeliveryPoint = new DeliveryPoint(point);
-                    await newDeliveryPoint.save();
-
-                    // Evitar duplicados: verificar si ya existe un punto con el mismo nombre y dirección
-                    const exists = config.deliveryPoints.some(p => 
-                        p.name === newDeliveryPoint.name && p.address === newDeliveryPoint.address
-                    );
-
-                    if (!exists) {
-                        config.deliveryPoints.push(newDeliveryPoint); // Agregar solo si no existe
-                    }
+                    const newPoint = new DeliveryPoint(point);
+                    await newPoint.save();
+                    config.deliveryPoints.push(newPoint);
+                    
                 } else {
                     // Si ya tiene un ID, buscarlo y agregarlo solo si no está ya en la configuración
-                    let existingDeliveryPoint = await DeliveryPoint.findById(point._id);
+                    let existingDeliveryPoint= await DeliveryPoint.findById(point._id);
                     if (!existingDeliveryPoint) {
-                        return res.status(404).json({ message: 'Delivery point not found' });
+                        return res.status(404).json({ message: 'Estado no encontrado' });
                     }
-
+                    await DeliveryPoint.findByIdAndUpdate(point._id, point)
                     const exists = config.deliveryPoints.some(p => 
                         p._id.toString() === point._id
                     );
-
+  
                     if (!exists) {
                         config.deliveryPoints.push(existingDeliveryPoint); // Agregar solo si no existe
+                    }else{
+                      console.log("actualizando la conf ")
+                        let index = config.deliveryPoints.findIndex(c => c._id.toString() == point._id )
+                        console.log(index)
+                        if(index != null){
+                          config.deliveryPoints[index] = point
+                          console.log("uptated")
+                        }
                     }
                 }
             }
@@ -78,29 +80,32 @@ export const updateConfig = async (req, res) => {
         if (req.body.departurePoints && Array.isArray(req.body.departurePoints)) {
             for (const point of req.body.departurePoints) {
                 if (!point._id) {
-                    const newDeparturePoint = new DeparturePoint(point);
-                    await newDeparturePoint.save();
-
-                    // Evitar duplicados: verificar si ya existe un punto con el mismo nombre y dirección
-                    const exists = config.departurePoints.some(p => 
-                        p.name === newDeparturePoint.name && p.address === newDeparturePoint.address
-                    );
-
-                    if (!exists) {
-                        config.departurePoints.push(newDeparturePoint); // Agregar solo si no existe
-                    }
+                    // Si el punto no tiene un ID, es nuevo
+                    const newPoint = new DeparturePoint(point);
+                    await newPoint.save();
+                    config.departurePoints.push(newPoint);
+                    
                 } else {
-                    let existingDeparturePoint = await DeparturePoint.findById(point._id);
+                    // Si ya tiene un ID, buscarlo y agregarlo solo si no está ya en la configuración
+                    let existingDeparturePoint= await DeparturePoint.findById(point._id);
                     if (!existingDeparturePoint) {
-                        return res.status(404).json({ message: 'Departure point not found' });
+                        return res.status(404).json({ message: 'Estado no encontrado' });
                     }
-
+                    await DeparturePoint.findByIdAndUpdate(point._id, point)
                     const exists = config.departurePoints.some(p => 
                         p._id.toString() === point._id
                     );
-
+  
                     if (!exists) {
                         config.departurePoints.push(existingDeparturePoint); // Agregar solo si no existe
+                    }else{
+                      console.log("actualizando la conf ")
+                        let index = config.departurePoints.findIndex(c => c._id.toString() == point._id )
+                        console.log(index)
+                        if(index != null){
+                          config.departurePoints[index] = point
+                          console.log("uptated")
+                        }
                     }
                 }
             }
@@ -109,28 +114,73 @@ export const updateConfig = async (req, res) => {
         // Verificación para productCategories
         if (req.body.productCategories && Array.isArray(req.body.productCategories)) {
             for (const category of req.body.productCategories) {
-                // Verificar si la categoría ya existe en la configuración
-                const exists = config.productCategories.some(c => 
-                    c.categoryName === category.categoryName && c.pricePerKilo === category.pricePerKilo
-                );
-        
-                if (!exists) {
-                    if (!category._id) {
-                        // Si la categoría no tiene ID, crear una nueva
-                        const newProductCategory = new ProductCategory(category);
-                        await newProductCategory.save(); // Guardar en la colección de MongoDB
-                        config.productCategories.push(newProductCategory); // Agregar la nueva categoría a la configuración
-                    } else {
-                        // Si la categoría tiene ID, buscarla y agregarla
-                        const existingProductCategory = await ProductCategory.findById(category._id);
-                        if (!existingProductCategory) {
-                            return res.status(404).json({ message: 'Product category not found' });
+                if (!category._id) {
+                    // Si el punto no tiene un ID, es nuevo
+                    const newCategory = new ProductCategory(category);
+                    await newCategory.save();
+                    config.productCategories.push(newCategory);
+                    
+                } else {
+                    // Si ya tiene un ID, buscarlo y agregarlo solo si no está ya en la configuración
+                    let existingProductCategory= await ProductCategory.findById(category._id);
+                    if (!existingProductCategory) {
+                        return res.status(404).json({ message: 'Estado no encontrado' });
+                    }
+                    await ProductCategory.findByIdAndUpdate(category._id, category)
+                    const exists = config.productCategories.some(p => 
+                        p._id.toString() === category._id
+                    );
+  
+                    if (!exists) {
+                        config.productCategories.push(existingProductCategory); // Agregar solo si no existe
+                    }else{
+                      console.log("actualizando la conf ")
+                        let index = config.productCategories.findIndex(c => c._id.toString() == category._id )
+                        console.log(index)
+                        if(index != null){
+                          config.productCategories[index] = category
+                          console.log("uptated")
                         }
-                        config.productCategories.push(existingProductCategory); // Agregar la categoría existente
                     }
                 }
             }
         }
+
+        // Verificar si se pasó un array de states
+        if (req.body.states && Array.isArray(req.body.states)) {
+          for (const state of req.body.states) {
+              if (!state._id) {
+                  // Si el punto no tiene un ID, es nuevo
+                  const newState = new State(state);
+                  await newState.save();
+                  config.states.push(newState);
+                  
+              } else {
+                  // Si ya tiene un ID, buscarlo y agregarlo solo si no está ya en la configuración
+                  let existingState = await State.findById(state._id);
+                  if (!existingState) {
+                      return res.status(404).json({ message: 'Estado no encontrado' });
+                  }
+                  await State.findByIdAndUpdate(state._id, state)
+                  const exists = config.states.some(p => 
+                      p._id.toString() === state._id
+                  );
+
+                  if (!exists) {
+                      config.states.push(existingState); // Agregar solo si no existe
+                  }else{
+                    console.log("actualizando la conf ")
+                      let index = config.states.findIndex(s => s._id.toString() == state._id )
+                      console.log(index)
+                      if(index != null){
+                        config.states[index] = state
+                        console.log("uptated")
+                      }
+                  }
+              }
+          }
+      }
+
 
         const updatedConfig = await config.save(); // Guardar la configuración actualizada
         res.status(200).json(updatedConfig);
@@ -168,7 +218,14 @@ export const deleteConfigOption = async (req, res) => {
         
         // También eliminar la categoría de la colección ProductCategory en MongoDB
         await ProductCategory.findByIdAndDelete(optionValue);
-      } else {
+      }else if (optionType === 'states') {
+        // Filtrar y eliminar de la configuración
+        config.states = config.states.filter(category => category._id.toString() !== optionValue);
+        
+        // También eliminar la categoría de la colección ProductCategory en MongoDB
+        await State.findByIdAndDelete(optionValue);
+      }
+       else {
         return res.status(400).json({ message: 'Invalid option type' });
       }
   

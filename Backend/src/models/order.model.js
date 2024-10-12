@@ -8,12 +8,9 @@ const orderSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    state: {
-      type: String,
-      required: true,
-    },
-    initialPoint: { type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPoint", required: true },
-    destinyPoint:{ type: mongoose.Schema.Types.ObjectId, ref: "DeparturePoint", required: true },
+    state: { type: mongoose.Schema.Types.ObjectId, ref: "State", required: true },
+    initialPoint: { type: mongoose.Schema.Types.ObjectId, ref: "DeparturePoint", required: true },
+    destinyPoint:{ type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPoint", required: true },
     trakingNumber: {
       type: String,
       required: true,
@@ -24,6 +21,7 @@ const orderSchema = new mongoose.Schema(
         productLabel: { type: String, required: true },
         productUnits: { type: Number, required: true },
         productCategory: { type: mongoose.Schema.Types.ObjectId, ref: "ProductCategory", required: true },
+        cost: { type: Number, required: true },
         kilos: { type: Number, required: true },
       },
     ],
@@ -31,7 +29,7 @@ const orderSchema = new mongoose.Schema(
     assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User" , required: true},
     history: [
       {
-        stateLabel: { type: String, required: true },
+        stateLabel: { type: mongoose.Schema.Types.ObjectId, ref: "State", required: true },
         startedDate: { type: Date, required: true }
       },
     ],
