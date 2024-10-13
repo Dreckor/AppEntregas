@@ -1,4 +1,5 @@
 import Order from '../models/order.model.js';
+import {DeliveryPoint, DeparturePoint} from '../models/config.model.js';
 import User from '../models/user.model.js';
 
 
@@ -14,7 +15,15 @@ export const getOrders = async (req, res) => {
             // Si el usuario es un admin, obtenemos todas las órdenes
             orders = await Order.find()
                 .populate('user')
-                .populate('assignedTo');
+                .populate('assignedTo')
+                .populate('initialPoint')
+                .populate('destinyPoint')
+                .populate('state')
+                .populate({
+                    path: 'history.stateLabel',
+                    model: 'State'
+                });
+                
         } else {
             // Si el usuario no es un admin, solo obtiene sus propias órdenes
             orders = await Order.find({ user: req.user._id })
@@ -31,14 +40,22 @@ export const getOrders = async (req, res) => {
 
 
 export const createOrder = async (req, res) => {
-    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId } = req.body;
+    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId, netCost, totalCost, packaging, hasIva, invoice } = req.body;
     console.log(req.user)
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Solo un usuario administrador puede crear ordenes' });
     }
 
     try {
-        const trakingNumberString = initialPoint.slice(0,3) +Math.floor((Math.random(  ) * 1000000000 ))+ destinyPoint.slice(0,3) 
+        const departure = await DeparturePoint.findById(initialPoint);
+        const delivery = await DeliveryPoint.findById(destinyPoint);
+
+        if (!departure || !delivery) {
+            return res.status(400).json({ message: 'Puntos de entrega o salida no válidos' });
+        }
+
+        const trakingNumberString = `${departure.name.slice(0, 3).toUpperCase()}${Math.floor(Math.random() * 1000000000)}${delivery.name.slice(0, 3).toUpperCase()}`;
+        
         const newOrder = new Order({
             orderTitle,
             state,
@@ -51,7 +68,12 @@ export const createOrder = async (req, res) => {
             history:[{
                 stateLabel: state,
                 startedDate: new Date(),
-            }]
+            }],
+            netCost,
+            totalCost,
+            packaging,
+            hasIva,
+            invoice
 
         });
 
@@ -71,7 +93,16 @@ export const getOrder = async (req, res) => {
     const { trakingNumber } = req.params;
     
     try {
-        const order = await Order.findOne({ trakingNumber });
+        const order = await Order.findOne({ trakingNumber })
+        .populate('user')
+        .populate('assignedTo')
+        .populate('initialPoint')
+        .populate('destinyPoint')
+        .populate('state')
+        .populate({
+            path: 'history.stateLabel',
+            model: 'State'
+        });;
 
         if (!order) {
             

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import './LoginPage.css'; // Asegúrate de que la ruta sea correcta
+import '../css/LoginPage.css'; // Asegúrate de que la ruta sea correcta
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);

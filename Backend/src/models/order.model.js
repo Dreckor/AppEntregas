@@ -8,18 +8,9 @@ const orderSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    state: {
-      type: String,
-      required: true,
-    },
-    initialPoint: {
-        type: String,
-        required: true,
-    },
-    destinyPoint: {
-        type: String,
-        required: true,
-    },
+    state: { type: mongoose.Schema.Types.ObjectId, ref: "State", required: true },
+    initialPoint: { type: mongoose.Schema.Types.ObjectId, ref: "DeparturePoint", required: true },
+    destinyPoint:{ type: mongoose.Schema.Types.ObjectId, ref: "DeliveryPoint", required: true },
     trakingNumber: {
       type: String,
       required: true,
@@ -29,17 +20,26 @@ const orderSchema = new mongoose.Schema(
       {
         productLabel: { type: String, required: true },
         productUnits: { type: Number, required: true },
+        productCategory: { type: mongoose.Schema.Types.ObjectId, ref: "ProductCategory", required: true },
+        cost: { type: Number, required: true },
+        kilos: { type: Number, required: true },
       },
     ],
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User" , required: true},
     history: [
       {
-        stateLabel: { type: String, required: true },
-        startedDate: { type: Date, required: true },
+        stateLabel: { type: mongoose.Schema.Types.ObjectId, ref: "State", required: true },
+        startedDate: { type: Date, required: true }
       },
     ],
+    netCost: { type: Number, required: true },
+    totalCost: { type: Number, required: true },
+    packaging:  { type: Boolean, required: true },
+    hasIva: { type: Boolean, required: true },
+    invoice: { type: mongoose.Schema.Types.ObjectId, ref: "Invoice", required: true }
   },
+
   { timestamps: true }
 );
 
