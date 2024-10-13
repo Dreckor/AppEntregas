@@ -40,7 +40,7 @@ export const getOrders = async (req, res) => {
 
 
 export const createOrder = async (req, res) => {
-    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId } = req.body;
+    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId, netCost, totalCost, packaging, hasIva, invoice } = req.body;
     console.log(req.user)
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Solo un usuario administrador puede crear ordenes' });
@@ -68,7 +68,12 @@ export const createOrder = async (req, res) => {
             history:[{
                 stateLabel: state,
                 startedDate: new Date(),
-            }]
+            }],
+            netCost,
+            totalCost,
+            packaging,
+            hasIva,
+            invoice
 
         });
 

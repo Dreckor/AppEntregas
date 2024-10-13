@@ -26,7 +26,9 @@ const configSchema = new mongoose.Schema(
     deliveryPoints: [deliveryPointSchema],
     departurePoints: [departurePointSchema],
     productCategories: [productCategorySchema],
-    states: [stateSchema]
+    states: [stateSchema],
+    iva: { type: Number, required: true },
+    packagingCost: { type: Number, required: true } 
   },
   { timestamps: true }
 );

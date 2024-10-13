@@ -7,6 +7,7 @@ import path from 'path';
 import authRoutes from './routes/auth.routes.js'
 import ordersRoutes from './routes/orders.routes.js'
 import configRoutes from './routes/config.routes.js'
+import invoiceRoutes from './routes/invoice.routes.js'
 
 import { FRONTEND_URL } from './config.js';
 
@@ -22,6 +23,7 @@ app.use(cookieParser())
 app.use('/api',authRoutes);
 app.use('/api', ordersRoutes);
 app.use('/api', configRoutes);
+app.use('/api', invoiceRoutes);
 
 if (process.env.NODE_ENV === "production") {
   console.log("prod env")

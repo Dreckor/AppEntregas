@@ -8,7 +8,9 @@ const initializeConfig = async () => {
         deliveryPoints: [],
         departurePoints: [],
         productCategories: [],
-        state: []
+        state: [],
+        packagingCost: 10,
+        iva: 0 
       });
       await config.save();
     }
@@ -180,6 +182,12 @@ export const updateConfig = async (req, res) => {
               }
           }
       }
+        if(req.body.iva ){
+          config.iva = req.body.iva
+        }
+        if(req.body.packagingCost ){
+          config.packagingCost = req.body.packagingCost
+        }
 
 
         const updatedConfig = await config.save(); // Guardar la configuración actualizada

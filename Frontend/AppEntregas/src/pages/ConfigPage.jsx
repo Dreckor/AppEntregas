@@ -3,12 +3,14 @@ import {
   UserOutlined,
   EnvironmentOutlined,
   AppstoreOutlined,
-  ScheduleOutlined
+  ScheduleOutlined,
+  DollarOutlined
 } from "@ant-design/icons";
 import Users from "../components/ConfigComponents/Users.jsx";
 import Puntos from "../components/ConfigComponents/Puntos.jsx";
 import Categorias from "../components/ConfigComponents/Categorias.jsx";
 import Estados from "../components/ConfigComponents/Estados.jsx";
+import IvaAndPackagingUpdate from "../components/ConfigComponents/IvaAndPackagingUpdate.jsx";
 
 const { Content } = Layout;
 
@@ -37,6 +39,12 @@ const App = () => {
       label: `Estados`,
       children: <Estados />,
       icon: <ScheduleOutlined />, // Aquí el contenido de la pestaña
+    },
+    {
+      key: "5",
+      label: `Costes`,
+      children: <IvaAndPackagingUpdate />,
+      icon: <DollarOutlined />, // Aquí el contenido de la pestaña
     },
   ];
 
