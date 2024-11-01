@@ -15,6 +15,7 @@ const Users = () => {
 
   const columns = [
     {
+      className:"NameConf",
       title: 'Nombre',
       dataIndex: 'name',
       key: 'name',
@@ -33,7 +34,7 @@ const Users = () => {
       title: 'Acciones',
       key: 'action',
       render: (_, record) => (
-        <Button icon={<EditOutlined />} onClick={() => handleEdit(record)}>
+        <Button className='EditUser' icon={<EditOutlined />} onClick={() => handleEdit(record)}>
           Edit
         </Button>
       ),
@@ -109,7 +110,7 @@ const Users = () => {
           <Form.Item
             name="role"
             label="Role"
-            rules={[{ required: true, message: 'Seleccione un ro' }]}
+            rules={[{ required: true, message: 'Seleccione un rol' }]}
           >
             <Select>
               <Option value="user">User</Option>

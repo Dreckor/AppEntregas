@@ -11,6 +11,7 @@ import Puntos from "../components/ConfigComponents/Puntos.jsx";
 import Categorias from "../components/ConfigComponents/Categorias.jsx";
 import Estados from "../components/ConfigComponents/Estados.jsx";
 import IvaAndPackagingUpdate from "../components/ConfigComponents/IvaAndPackagingUpdate.jsx";
+import "../css/ConfigPage.css"
 
 const { Content } = Layout;
 
@@ -49,7 +50,7 @@ const App = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout className="configcont" style={{ minHeight: "100vh" }}>
       <Layout className="site-layout">
         <Content
           className="site-layout-background"

@@ -26,19 +26,20 @@ const Puntos = () => {
       dataIndex: 'address',
       key: 'address',
     },
-    {
+    { 
+      className:"Acciones",
       title: 'Acciones',
       key: 'actions',
       render: (_, record) => (
         <>
-          <Button
+          <Button className='EditPuntos'
             icon={<EditOutlined />}
             onClick={() => handleEdit(record)}
             style={{ marginRight: 8 }}
           >
             Editar
           </Button>
-          <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record)} danger>
+          <Button className='EditPuntos' icon={<DeleteOutlined />} onClick={() => handleDelete(record)} danger>
             Eliminar
           </Button>
         </>

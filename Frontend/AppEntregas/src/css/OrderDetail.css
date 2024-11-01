@@ -1,45 +1,159 @@
-/*.detallesord{
+.detallesord{
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 3vw;
     padding-top: 2vw;
     padding-bottom: 2vw;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
+    background: var(--gradient);
+    --gradient: linear-gradient(#4eaa7f70, #9bddba2c, white);
 
 }
-.ant-descriptions{
+.detallesord .ant-descriptions-title{
+    margin-top: 1vw;
+    font-size: 2vw;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    color: #19bf66;
+
+}
+.detallesord .ant-descriptions{
     width: 55%;
+    background-color: rgb(247, 247, 247);
+    border-radius: 1vw;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 .Botondetails{
-    width: auto;
+    border: 0;
     font-size: 0.8vw;
-    margin-left: 0.5vw;
+    font-family: "Rubik", sans-serif;
+    height: 1.8vw;
+    margin-top: 2vw;
 }
 .detailsbt{
     margin-top: 3vw;   
 }
-.ant-descriptions-item-label{
+.detallesord .ant-descriptions-item-label{
     font-size: 0.8vw!important;
+    padding: 0.5vw 1vw!important;
+}
+.detallesord .ant-descriptions-item-label span{
+    font-size: 0.8vw;
+    color: rgb(34, 34, 34);
+    font-weight: 600;
+    font-family: "Rubik", sans-serif;
+}
+.detallesord .ant-descriptions-item-content span{
+    font-size: 0.8vw;
+    color: rgb(34, 34, 34);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+}
+.detallesord .ant-descriptions-item-content{
+    padding: 0 0!important;
 }
 :where(.css-dev-only-do-not-override-qnu6hi).ant-descriptions.ant-descriptions-bordered >.ant-descriptions-view .ant-descriptions-row >.ant-descriptions-item-label, :where(.css-dev-only-do-not-override-qnu6hi).ant-descriptions.ant-descriptions-bordered >.ant-descriptions-view .ant-descriptions-row >.ant-descriptions-item-content{
     padding: 0.5vw !important;
     font-size: 0.8vw;
 }
-.ant-select-selection-item{
+.detallesord .ant-select-selection-item{
     font-size: 0.8vw;
 }
-.ant-steps-item-title{
+.detallesord.ant-steps-item-title{
     font-size: 0.9vw !important;
 }
-.ant-steps-item-description{
+.detallesord .ant-steps-item-description{
     font-size: 0.8vw !important;
 
 }
-.ant-steps-item-icon{
+.detallesord .ant-steps-item-icon{
     height: 1.667vw !important;
     width: 1.667vw !important;
     line-height: 1.667vw!important;
     font-size: 1vw !important;
-}*/
+}
+.detallesord .ant-descriptions-view{
+    width: auto!important;
+}
+@media only screen and (max-width:800px){
+    .detallesord{
+        flex-direction: column;
+    }
+    .detallesord .ant-descriptions-title{
+        font-size: 4vw;   
+    }
+    .detallesord .ant-descriptions{
+        width: 90%;
+        border-radius: 2vw;
+    }
+    .Botondetails{
+        font-size: 1.8vw;
+        height: 4vw;
+    }
+    .detailsbt{
+        margin-top: 3vw;   
+    }
+    .detallesord .ant-descriptions-item-label span{
+        font-size: 1.8vw;
+        font-weight: 400;
+    }
+    .detallesord .ant-descriptions-item-content span{
+        font-size: 1.8vw;
+        color: rgb(87, 87, 87);
+    }
+    .detallesord .ant-select-selection-item{
+        font-size: 1.8vw;
+    }
+    .detallesord .ant-steps-item-description{
+        font-size: 1.8vw !important;   
+    }
+    .detallesord .ant-steps-item-icon{
+        height: 4vw !important;
+        width: 4vw !important;
+        line-height: 3.77vw!important;
+        font-size: 3vw !important;
+    }
+    .detallesord .ant-descriptions-view{
+        width: auto!important;
+    }
+}
+@media only screen and (max-width:450px){
+    .detallesord .ant-descriptions-title{
+        font-size: 8vw;   
+    }
+    .detallesord .ant-descriptions{
+        margin-top: 5vw;
+        width: 85%;
+        border-radius: 5vw;
+    }
+    .Botondetails{
+        font-size: 4vw;
+        height: 8vw;
+    }
+    .detailsbt{
+        margin-top: 3vw;   
+    }
+    .detallesord .ant-descriptions-item-label span{
+        font-size: 4vw;
+        font-weight: 400;
+    }
+    .detallesord .ant-descriptions-item-content span{
+        font-size: 4vw;
+        color: rgb(87, 87, 87);
+    }
+    .detallesord .ant-select-selection-item{
+        font-size: 4vw;
+    }
+    .detallesord .ant-steps-item-description{
+        font-size: 3vw !important;   
+    }
+    .detallesord .ant-steps-item-icon{
+        height: 7vw !important;
+        width: 7vw !important;
+        line-height: 6.77vw!important;
+        font-size: 5vw !important;
+    }
+    .detallesord .ant-descriptions-view{
+        width: auto!important;
+    }
+}

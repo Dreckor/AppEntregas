@@ -1,0 +1,33 @@
+.invoice-container{
+    width: 40vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    left: 15vw;
+}
+.Print{
+    width: 10vw;
+}
+@media only screen and (max-width:800px){
+    .ProductosLista2{
+        display: none;
+    }
+}
+@media only screen and (max-width:450px){
+    .Totalfac{
+        display: none;
+    }
+    .Clientfac{
+        display: none;
+    }
+
+    .invoice-container{
+        width: 70vw;
+        left: 4.3vw;
+    }
+    .Print{
+        width: 50vw;
+    }
+}

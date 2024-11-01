@@ -1,61 +1,107 @@
-/*.ant-table-wrapper {
-    margin-top: 1vw;
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    border-radius: 1vw;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); 
-     height: auto;
-}
-.orderslist{
-    margin-top: -20vw;
-}
 
-.viewdetails{
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    color: rgba(0, 0, 0, 0.88);
-    font-size: 12px;
-    line-height: 20px;
-    list-style: none;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    display: inline-block;
-    height: auto;
-    margin-inline-end: 8px;
-    padding-inline: 7px;
-    white-space: nowrap;
-    background: #fafafa;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    opacity: 1;
-    transition: all 0.2s;
-    text-align: start;
-    position: relative;
-}
-.infoped{
+.listadorde {
+    height: 49.3vw;
     display: flex;
     flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
-}
-.ant-table-thead h1{
-    font-weight: 600;
-     
-}
-.ant-table-tbody{
-    margin-top: 20vw;
-    padding-top: 20vw;
-}
-.ant-table-cell{
-    border-radius: 1vw;
- 
-    justify-content: center; 
-    align-items: center; 
+    align-items: center;
+    padding: 3vw 3vw;
+    text-align: center;
+    background-color: white;
+    font-size: 2vw;
+    min-width: 25vw;
+    font-size: 1vw;
+    margin: 0;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    color: rgb(60, 60, 60);
+    background: var(--gradient);
+    --gradient: linear-gradient(#4eaa7f70, #9bddba2c,white);
 }
 
+.listadorde h1 {
+    margin: 0;
+    padding: 1vw;
+}
+.ListOrders .ant-table-cell{
+    font-family: "Rubik", sans-serif;
+    padding: 0.8vw 0.8vw!important;
+    height: 1vw!important;
+}
+.viewdetails{
+    border: 0;
+    font-size: 0.8vw;
+    font-family: "Rubik", sans-serif;
+    background: linear-gradient(to right, #387c74, #19bf66 )!important; 
+    transition: .5s ease-in-out!important;
+    height: 1.8vw ;
+}
+.viewdetails :hover{
+    background: linear-gradient(to right, #387c74, #19bf66  )!important; 
+    background-size: 120% !important;
+}
+.viewdetails :active{
+    background: linear-gradient(to right, #387c74, #19bf66  )!important; 
+    background-size: 120% !important;
+}
 
+.Viewfac{
+    font-family: "Rubik", sans-serif;
+    color: #000000!important;
+    border-color: #ffffff!important;
+}
+.Viewfac :hover{
+    color: #19bf66!important;
+}
+.ant-pagination-item-active{
+    border-color: #19bf66!important;
+}
+.ant-pagination-item-active a{
+    color: #000000!important;
+}
 
-
-
-*/
+@media only screen and (max-width: 800px){
+    .PuntoInicial{
+        display: none!important;
+    }
+    .PuntoDestino{
+        display: none;
+    }
+    .viewdetails{
+        font-size: 1.8vw;
+        height: 3vw ;
+        margin-left: 1.5vw;
+    }
+    .listadorde h1 {
+        font-size: 3.5vw;
+    }
+}
+@media only screen and (max-width: 450px){
+    .ListOrders{
+        margin: 4vw;
+    }
+    .ProductosLista{
+        display: none!important;
+    }
+    .ant-table-thead{
+        font-family: "Rubik", sans-serif;
+        font-size: 4vw;
+    }
+    .ant-table-tbody{
+        font-family: "Rubik", sans-serif;
+        font-size: 3vw;
+    }
+    .Estadosbtn{
+        font-size: 3vw;
+    }
+    .viewdetails{
+        font-size: 3vw;
+        height: 5vw;
+    }
+    .Viewfac{
+        font-size: 3vw;
+    }
+    .listadorde h1{
+        font-size: 6vw;
+    }
+} 
+  

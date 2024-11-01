@@ -22,6 +22,7 @@ const OrdersList = ({ orders }) => {
       key: "trakingNumber",
       sorter: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
       render: (trakingNumber) => trakingNumber || "N/A",
+      className: 'listseg',
     },
     {
       title: "Estado",
@@ -35,25 +36,28 @@ const OrdersList = ({ orders }) => {
       render: (state) => {
         let color = state?.color || "blue";
         return (
-          <Tag color={color} style={{ marginTop: '8px' }}>
+          <Tag className="Estadosbtn" color={color} style={{ marginTop: '8px' }}>
             {state?.name ? state.name.toUpperCase() : "SIN ESTADO"}
           </Tag>
         );
       },
     },
     {
+      className:"PuntoInicial",
       title: "Punto Inicial",
       dataIndex: "initialPoint",
       key: "initialPoint",
       render: (initialPoint) => initialPoint?.name || "No disponible",
     },
     {
+      className:"PuntoDestino",
       title: "Punto de Destino",
       dataIndex: "destinyPoint",
       key: "destinyPoint",
       render: (destinyPoint) => destinyPoint?.name || "No disponible",
     },
     {
+      className:"ProductosLista",
       title: "Productos",
       dataIndex: "products",
       key: "products",
@@ -62,7 +66,7 @@ const OrdersList = ({ orders }) => {
           {products?.length > 0 ? (
             products.map((product, index) => (
               <Tag color="purple" key={index}>
-                {product.productLabel || "Sin etiqueta"} - Unidades: {product.productUnits || 0} - Peso: {product.kilos || 0} Kg - Coste: ${product.cost || 0}
+                   {product.productUnits || 0}  { product.productLabel || "Sin etiqueta"} - Coste: ${product.cost || 0}
               </Tag>
             ))
           ) : (
@@ -91,6 +95,7 @@ const OrdersList = ({ orders }) => {
             Ver Detalles
           </Button>
           <Button
+          className="Viewfac"
             icon={<FileTextOutlined />}
             onClick={() => navigate(`/invoice/${record.invoice}`, { state: { order: record } })}
           >
@@ -102,7 +107,7 @@ const OrdersList = ({ orders }) => {
   ];
 
   return (
-    <Table
+    <Table className="ListOrders"
       dataSource={orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))}
       columns={columns}
       rowKey="_id"

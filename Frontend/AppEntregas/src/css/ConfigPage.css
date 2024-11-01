@@ -1,0 +1,50 @@
+@media only screen and (max-width: 450px) {
+    .configcont .ant-tabs {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .configcont .ant-tabs-nav-list {
+      width: 85vw;
+      display: flex !important; 
+      flex-direction: row!important;
+      flex-wrap: wrap !important;
+      justify-content: center;
+      align-items: center;
+      gap: 1vw; 
+    }
+    
+    .configcont .ant-tabs-tab {
+        justify-content: center;
+        width: 40vw;
+        height: 12vw;
+        padding: 1vw 2vw!important;
+        margin: 0 0 0 0!important;
+    }
+  .NameConf{
+    display: none;
+  }
+  .site-layout .ant-table-cell{
+    font-size: 3.5vw;
+    font-family: "Rubik", sans-serif;
+    padding: 1vw!important;
+  }
+  .EditUser{
+    font-size: 3.5vw;
+    padding: 0;
+    width: 16vw;
+    height: 8vw;
+  }
+  .Acciones{
+    width: 30vw;
+  }
+  .EditPuntos{
+    font-size: 3.5vw;
+    padding: 0;
+    width: 20vw;
+    height: 8vw;
+    margin-right: 0;
+    margin-bottom: 2vw;
+  }
+}
+  

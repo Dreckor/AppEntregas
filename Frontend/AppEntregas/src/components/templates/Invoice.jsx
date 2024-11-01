@@ -2,7 +2,7 @@ const Invoice = ({ invoice }) => {
   const { invoiceNumber, customer, products, packaging, totalAmount, taxAmount, netAmount, status, issueDate } = invoice;
 
   return (
-    <div className="invoice-container" style={{ width: '600px', margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+    <div className="invoice-container" style={{ margin: '0 auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h2 style={{ textAlign: 'center' }}>Factura #{invoiceNumber}</h2>
       <div>
         <p><strong>Cliente ID:</strong> {customer.username}</p>
@@ -31,14 +31,14 @@ const Invoice = ({ invoice }) => {
         </tbody>
       </table>
 
-      <div style={{ marginTop: '20px', textAlign: 'right' }}>
+      <div style={{ marginTop: '20px', textAlign: 'left' }}>
         <p><strong>Subtotal:</strong> ${netAmount.toFixed(2)}</p>
         <p><strong>Impuestos:</strong> ${taxAmount.toFixed(2)}</p>
         <p><strong>Empaque:</strong> ${packaging.toFixed(2)}</p>
         <p><strong>Total:</strong> ${totalAmount.toFixed(2)}</p>
       </div>
 
-      <button 
+      <button  className="Print"
         onClick={() => window.print()} 
         style={{
           marginTop: '20px',

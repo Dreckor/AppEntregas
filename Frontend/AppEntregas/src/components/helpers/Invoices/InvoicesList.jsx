@@ -1,7 +1,7 @@
 import { Table, Tag, Button } from "antd";
 import { FileTextOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-
+import "./InvoicesList.css"
 
 const InvoicesList = ({ invoices }) => {
   const navigate = useNavigate();
@@ -42,6 +42,7 @@ const InvoicesList = ({ invoices }) => {
       },
     },
     {
+      className:"Datefac",
       title: "Fecha de Emisión",
       dataIndex: "issueDate",
       key: "issueDate",
@@ -49,12 +50,14 @@ const InvoicesList = ({ invoices }) => {
       render: (issueDate) => new Date(issueDate).toLocaleDateString(),
     },
     {
+      className:"Clientfac",
       title: "Cliente",
       dataIndex: "customer",
       key: "customer",
       render: (customer) => customer || "No disponible",
     },
     {
+      className:"ProductosLista2",
       title: "Productos",
       dataIndex: "products",
       key: "products",
@@ -63,7 +66,7 @@ const InvoicesList = ({ invoices }) => {
           {products?.length > 0 ? (
             products.map((product, index) => (
               <Tag color="purple" key={index}>
-                {product.productLabel || "Sin etiqueta"} - Unidades: {product.productUnits || 0} - Peso: {product.kilos || 0} Kg - Coste: ${product.cost || 0}
+                 {product.productUnits || 0}{product.productLabel || "Sin etiqueta"}- Coste: ${product.cost || 0}
               </Tag>
             ))
           ) : (
@@ -73,6 +76,7 @@ const InvoicesList = ({ invoices }) => {
       ),
     },
     {
+      className:"Totalfac",
       title: "Total",
       dataIndex: "totalAmount",
       key: "totalAmount",
@@ -92,10 +96,11 @@ const InvoicesList = ({ invoices }) => {
             Ver Detalles
           </Button>
           <Button
+          className="Viewfac"
             icon={<FileTextOutlined />}
             onClick={() => navigate(`/invoice/${record._id}/print`, { state: { invoice: record } })}
           >
-            Ver Factura Imprimible
+            Ver Factura
           </Button>
         </>
       ),
@@ -103,7 +108,7 @@ const InvoicesList = ({ invoices }) => {
   ];
 
   return (
-    <Table
+    <Table className="ListOrders"
       dataSource={invoices.sort((a, b) => new Date(b.issueDate) - new Date(a.issueDate))}
       columns={columns}
       rowKey="_id"

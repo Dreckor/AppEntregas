@@ -1,121 +1,234 @@
-
-/*body {
-    font-family: "Work Sans", "Noto Sans", sans-serif;
-  }
-  :root{
-    display: grid;
-    place-items: center; 
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
-  
-  .ant-form {
-    padding: 2vw;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    height:auto;
-    background-color: white;
-    border-radius: 1vw;
-    font-size: 2vw;
-    width: auto;
-    min-width: 25vw;
-    max-width: 80vw;
-  }
-  .ant-col{
-    padding: 0!important;
-  }
-
-  .ant-form-item {
-    width: 100%;
-    margin-bottom: 0.5vw;
-  }
-  .ant-col.ant-form-item-label{
-    display: flex;
-    align-items: center;
-    height: auto;
-    min-height: 1vw;
-    max-height: 3vw;
-  }
-  .ant-form-item-control-input, .ant-form-item-control-input-content{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    min-height: 1vw !important;
-    max-height: 3vw;
-  }
-  .ant-form-item-required::before{
-    content: none !important;
-  }
- 
-  .ant-form-item-label > label {
-    font-weight:500;
-    border: none!important;
-    border-radius: 8px!important;
-    background-color: #f5f2f0!important;
-    height: 2.083vw!important; 
-    font-size: 1.1vw !important; 
-    padding: 0.417vw!important; 
-    color: #333332f8!important;
-    padding: 0!important;
-  }
-  
- 
-  .ant-input,
-  .ant-input-password {
-    border-radius: 8px;
-    background-color: #f5f2f0;
-    height: 2vw; 
-    font-size: 0.8vw; 
-    color: #333332f8;
-    max-width: 50vw;
-    padding-left: 0.5vw;
-    padding-top: 0;
-  }
-  
-  .ant-input::placeholder,
-  .ant-input-password::placeholder {
-    color: #3333328f;
-  }
-  
-  .btnform{
-    justify-content: center;
-  }
-  .ant-btn {
-    width: 90%;
-    height: 2vw; 
-    border-radius: 8px;
-    font-size: 1vw;
-    font-weight: 400;
-  }
-  
-  .ant-btn-primary {
-    background-color: #1b93d8;
-    border-color: #1b93d8;
-    color: white;
-    min-height: 1.5vw;
-  }
-  
-  .ant-btn-primary:hover {
-    background-color: #1b93d8; 
-  }
-  
- 
-  .ant-form-item:last-child {
-    margin-top: 0.833vw; 
-  }
-  .Orderclass{
-    font-size: 2vw;
-  }
-  .bienvenidos{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2vw;
-    
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+body{
+  margin: 0;
 }
-.bienvenidos h1{
-    font-size: 1.5vw;
+.LoginContent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5vw;
+  height: 96vh;
+  max-width: 100%;
+  background: var(--gradient);
+  --gradient: linear-gradient(#387c74, #9bddbab0,white);
+
+  padding: 1vw;
+}
+
+.LoginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3vw 3vw;
+  text-align: center;
+  height: auto;
+  background-color: white;
+  border-radius: 1vw;
+  font-size: 2vw;
+  width: auto;
+  min-width: 25vw;
+  max-width: 30vw;
+}
+
+.Bienvenidos {
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  margin-bottom: 2vw;
+}
+
+.Bienvenidos h1 {
+  font-size: 3vw;
+  margin: 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  color: #19bf66;
+}
+.Bienvenidos h2{
+  font-size: 1.3vw;
+  margin: 0;
+  font-family: "Rubik", sans-serif;
+  font-weight: 450;
+  color: rgb(60,60, 60);
+}
+.BienvenidosImg {
+  position: absolute;
+  top: 65%;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  width: 60vw;
+  color: white; 
+  transition: opacity 1s ease-in-out; 
+  z-index: 300;
+}
+.BienvenidosImg h1 {
+  font-size: 2.5vw;
+  color: rgb(182, 182, 182);
+  font-weight: 200;
+  font-family: "Bebas Neue", sans-serif;
+  opacity: 0; 
+  animation: fadeIn 0.5s forwards; 
+}
+.EmailContent{
+  height: 4vw;
+  width: 12vw;
+  margin: 0;
+}
+.EmailInput{
+  font-size: 0.8vw;
+  color: rgb(88, 88, 88);
+  font-weight: 400;
+  font-family: "Rubik", sans-serif;
+  border-color: #19bf66;
+  border-radius: 1vw;
+
+}
+.EmailInput::placeholder{
+  font-size: 0.8vw;
+  color: rgb(120, 120, 120);
+  font-weight: 400;
+  font-family: "Rubik", sans-serif;
+}
+.EmailInput input::placeholder{
+  font-size: 0.8vw;
+  color: rgb(120, 120, 120);
+  font-weight: 400;
+  font-family: "Rubik", sans-serif;
+  
+}
+.EmailContent .ant-form-item-explain-error{
+  font-size: 0.8vw;
+  font-weight: 400;
+  font-family: "Rubik", sans-serif;
+}
+.EmailInput:hover{
+  border-color: #19bf66;
+}
+
+.ComerzaLogo{
+  width: 6vw;
+}
+.ComerzaLogoImg{
+  position: absolute;
+  top: 2%;
+  left: 92%;
+  width: 7vw;  
+  z-index: 300;
+}
+.ImgLogin {
+
+}
+
+.ViajeImg {
+  height: 96vh;
+  width: 60vw;
+  border-radius: 1vw;
+  object-fit: cover;
+  object-position: 60% 40%;
+  filter:brightness(0.4);
+  background-color: rgba(0,0,0,0.8);
+  opacity: 0.9;
+}
+.BtnLogin {
+  border: 0;
+  font-size: 0.8vw;
+  font-family: "Rubik", sans-serif;
+  background: linear-gradient(to right, #387c74, #19bf66 ); 
+  transition: .5s ease-in-out;
+  height: 1.8vw ;
+}
+
+.BtnLogin:hover {
+  background: linear-gradient(to right, #387c74, #19bf66  )!important; 
+  background-size: 120% !important;
+  
+}
+@media only screen and (max-width: 800px){
+  .ImgLogin{
+    display: none;
+  }
+  .LoginContent{
+    justify-content: center;
+  }
+  .LoginForm{
+    width:40vw;
+    max-width: 50vw;
+  }
+  .Bienvenidos h1{
+    font-size: 5vw;
+  }
+  .Bienvenidos h2{
+    font-size: 2.5vw;
+  }
+  .ComerzaLogo{
+    width: 9vw;
+  }
+  .EmailContent{
+    height: 8vw;
+    width: 27vw;
     margin: 0;
-    width: 60%;
-}*/
+  }
+  .EmailInput{
+    border-radius: 10vw;
+    font-size: 2vw;
+    height: 4vw;
+  }
+  .EmailInput::placeholder{
+    font-size: 1.8vw;
+  }
+  .EmailInput input::placeholder{
+    font-size: 1.8vw;
+  }
+  .EmailContent .ant-form-item-explain-error{
+    font-size: 1.8vw;
+  }
+  .BtnLogin{
+    height: 4vw;
+    font-size: 1.8vw;
+  } 
+}
+@media only screen and (max-width:450px){
+  .LoginForm{
+    border-radius: 5vw;
+    width:70vw;
+    max-width: 70vw;
+  }
+  .Bienvenidos h1{
+    font-size: 10vw;
+  }
+  .Bienvenidos h2{
+    font-size: 5vw;
+  }
+  .ComerzaLogo{
+    width: 16vw;
+  }
+  .EmailContent{
+    height: 12vw;
+    width: 57vw;
+    margin: 0;
+  }
+  .EmailInput{
+    border-radius: 10vw;
+    font-size: 4vw;
+    height: 8vw;
+  }
+  .EmailInput::placeholder{
+    font-size: 4vw;
+  }
+  .EmailInput input::placeholder{
+    font-size: 4vw;
+  }
+  .EmailContent .ant-form-item-explain-error{
+    font-size: 4vw;
+  }
+  .BtnLogin{
+    margin-top: 3vw;
+    width: 28vw;
+    height: 9vw;
+    font-size: 4vw;
+  }
+}

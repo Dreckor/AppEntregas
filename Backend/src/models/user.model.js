@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },address: { type: String, required: true },
     orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
     asignedOrders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
-    invoices: { type: mongoose.Schema.Types.ObjectId, ref: "Invoice", required: true }
+    invoices: { type: mongoose.Schema.Types.ObjectId, ref: "Invoice", required: false }
 }, {timestamps:true})
 
 export default mongoose.model('User', userSchema);

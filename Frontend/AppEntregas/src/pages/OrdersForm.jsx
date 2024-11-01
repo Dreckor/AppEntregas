@@ -194,11 +194,11 @@ export default function OrdersForm() {
   };
 
   return (
-    <div>
+    <div className="OrderForm">
+      <Form className="OrderFormContent" layout="vertical" onFinish={onFinish}>
       <h1 className="Orderclass">Crear Nueva Orden</h1>
-      <Form layout="vertical" onFinish={onFinish}>
-        <Form.Item
-          label="Título de la Orden"
+        <Form.Item className="FormItem"
+          label=""
           name="orderTitle"
           rules={[
             {
@@ -210,8 +210,9 @@ export default function OrdersForm() {
           <Input placeholder="Introduce el título de la orden" />
         </Form.Item>
 
-        <Form.Item
-          label="Asignar a cliente"
+        <Form.Item 
+          className="FormItem"
+          label=""
           name="userId"
           rules={[
             {
@@ -220,7 +221,7 @@ export default function OrdersForm() {
             },
           ]}
         >
-          <Select
+          <Select className="FormItem"
             placeholder={
               dataloading
                 ? "Cargando usuarios..."
@@ -239,13 +240,14 @@ export default function OrdersForm() {
 
         
         <Form.Item
-          label="Estado"
+          className="FormItem"
+          label=""
           name="state"
           rules={[
             { required: true, message: "Por favor selecciona un estado" },
           ]}
         >
-          <Select placeholder="Selecciona un estado">
+          <Select placeholder="Selecciona un estado" className="FormItem">
             {config &&
             config.states &&
             config.states.length > 0 ? (
@@ -261,7 +263,8 @@ export default function OrdersForm() {
         </Form.Item>
 
         <Form.Item
-          label="Punto Inicial"
+          className="FormItem"
+          label=""
           name="initialPoint"
           rules={[
             {
@@ -270,7 +273,7 @@ export default function OrdersForm() {
             },
           ]}
         >
-          <Select placeholder="Selecciona un punto de partida">
+          <Select placeholder="Selecciona un punto de partida"className="FormItem">
             {config &&
             config.departurePoints &&
             config.departurePoints.length > 0 ? (
@@ -286,7 +289,8 @@ export default function OrdersForm() {
         </Form.Item>
 
         <Form.Item
-          label="Punto de Destino"
+          className="FormItem"
+          label=""
           name="destinyPoint"
           rules={[
             {
@@ -295,7 +299,7 @@ export default function OrdersForm() {
             },
           ]}
         >
-          <Select placeholder="Selecciona un punto de destino">
+          <Select placeholder="Selecciona un punto de destino"className="FormItem">
             {config &&
             config.deliveryPoints &&
             config.deliveryPoints.length > 0 ? (
@@ -309,9 +313,36 @@ export default function OrdersForm() {
             )}
           </Select>
         </Form.Item>
+        <Form.Item
+          className="FormItem"
+          label="" 
+          name="asignedUserId"
+          rules={[
+            {
+              required: true,
+              message: "Por favor selecciona un repartidor asignado",
+            },
+          ]}
+        >
+          <Select className="FormItem"
+            placeholder={
+              dataloading
+                ? "Cargando repartidores..."
+                : "Selecciona un repartidor asignado"
+            }
+            disabled={dataloading}
+            notFoundContent={dataloading ? <Spin size="small" /> : null}
+          >
+            {repartidores.map((repartidor) => (
+              <Option key={repartidor.id} value={repartidor.id}>
+                {repartidor.username}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
 
-        <Form.Item label="Productos">
-          <Button
+        <Form.Item label="" className="ContentProducts">
+          <Button className="ContentProducts"
             type="dashed"
             onClick={handleAddProduct}
             icon={<PlusOutlined />}
@@ -319,7 +350,7 @@ export default function OrdersForm() {
             Añadir Productos
           </Button>
           {products.map((product, index) => (
-            <div key={index} style={{ marginTop: 10 }}>
+            <div key={index} style={{ marginTop: 10 }} className="ListProducts">
               <span>
                 {product.productLabel} - Unidades: {product.productUnits} -
                 Kilos: {product.kilos}
@@ -338,72 +369,51 @@ export default function OrdersForm() {
               </Button>
             </div>
           ))}
-        </Form.Item>
-        <h4>Embalaje: ${packaging? config.packagingCost : 0 }</h4>
-        <h4>Subtotal: ${subTotalPrice.toFixed(2)}</h4>
-        <h4>IVA: ${ivaPrice.toFixed(2)}</h4>
-        <h2>Total: ${totalPrice.toFixed(2)}</h2>
+        </Form.Item >
         
         <Form.Item
+          className="Ivacheck"
           label="Cobrar embalaje"
           name="packaging"
           rules={[
             { required: false },
           ]}
         >
-        <Checkbox onChange={(e) =>
+          <Checkbox onChange={(e) =>
                   handlePackagingChange(
                      e.target.checked,
                   )
                 }/>
         </Form.Item>
         <Form.Item
+        className="Ivacheck"
           label="Cobrar IVA"
           name="hasIva"
           rules={[
             { required: false },
           ]}
         >
-        <Checkbox onChange={(e) =>
+          <Checkbox onChange={(e) =>
                   handleIVAChange(
                      e.target.checked,
                   )
                 }/>
         </Form.Item>
-        <Form.Item
-          label="Asignar a repartidor"
-          name="asignedUserId"
-          rules={[
-            {
-              required: true,
-              message: "Por favor selecciona un repartidor asignado",
-            },
-          ]}
-        >
-          <Select
-            placeholder={
-              dataloading
-                ? "Cargando repartidores..."
-                : "Selecciona un repartidor asignado"
-            }
-            disabled={dataloading}
-            notFoundContent={dataloading ? <Spin size="small" /> : null}
-          >
-            {repartidores.map((repartidor) => (
-              <Option key={repartidor.id} value={repartidor.id}>
-                {repartidor.username}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+        <div className="TotalIva">
+        <h4>Embalaje: ${packaging? config.packagingCost : 0 }</h4>
+        <h4>Subtotal: ${subTotalPrice.toFixed(2)}</h4>
+        <h4>IVA: ${ivaPrice.toFixed(2)}</h4>
+        <h4>Total: ${totalPrice.toFixed(2)}</h4>
+        </div>
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
+        <Form.Item className="FormItem">
+          <Button className="BtnProduct" type="primary" htmlType="submit" loading={loading}>
             Crear Orden
           </Button>
         </Form.Item>
 
         <Modal
+          className="ProductsForm"
           title="Añadir productos"
           open={productModalVisible}
           onOk={handleSaveProduct}
@@ -412,9 +422,9 @@ export default function OrdersForm() {
             setEditingProduct(null);
           }}
         >
-          <Form layout="vertical">
-            <Form.Item label="Producto">
-              <Input
+          <Form layout="vertical" className="ProductAdd">
+            <Form.Item  label="Producto" className="ProductInput">
+              <Input 
                 name="productLabel"
                 value={editingProduct?.productLabel}
                 onChange={(e) =>
@@ -425,7 +435,7 @@ export default function OrdersForm() {
                 }
               />
             </Form.Item>
-            <Form.Item label="Categoría del Producto">
+            <Form.Item label="Categoría del Producto"  className="ProductInput">
               <Select
                 placeholder="Selecciona una categoría"
                 value={editingProduct?.productCategory || ""}
@@ -444,7 +454,7 @@ export default function OrdersForm() {
                 )}
               </Select>
             </Form.Item>
-            <Form.Item label="Unidades">
+            <Form.Item  label="Unidades"  className="ProductInput" >
               <InputNumber
                 name="productUnits"
                 min={1}
@@ -454,8 +464,8 @@ export default function OrdersForm() {
                 }
               />
             </Form.Item>
-            <Form.Item label="Kilos">
-              <InputNumber
+            <Form.Item label="Kilos"  className="ProductInput">
+              <InputNumber 
                 name="kilos"
                 min={1}
                 value={editingProduct?.kilos}

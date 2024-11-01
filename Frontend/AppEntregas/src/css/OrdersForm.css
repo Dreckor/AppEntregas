@@ -1,54 +1,528 @@
-/*.ant-modal-title{
-    font-weight:500;
-    border: none!important;
-    border-radius: 8px!important;
-    background-color: #f5f2f0!important;
-    height: 2.083vw!important; 
-    font-size: 1.2vw !important; 
-    padding: 0.417vw!important; 
-    color: #333332f8!important;
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+body{
+    margin: 0;
 }
-.ant-modal-content{
-    padding: 2vw!important;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2)!important;
-    text-align: center!important;
-    height:auto!important;
-    background-color: white!important;
-    margin-left: 0.5vw!important;
-    margin-right: 0.5vw!important;
-    border-radius: 1vw !important;
-    font-size: 2vw !important;
-    width: auto!important;
-    min-width: 25vw!important;
-    max-width: 80vw!important;
-    box-sizing: inherit !important;
-    
+.OrderForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--gradient);
+    --gradient: linear-gradient(#4eaa7f70, #9bddba2c, white);
 }
-.ant-modal{
-    width: 30vw !important;
-    margin: auto;
+
+.OrderFormContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2vw;
+    padding: 3vw 3vw;
+    text-align: center;
+    height: auto;
+    background-color: white;
+    border-radius: 1vw;
+    font-size: 2vw;
+    width: auto;
+    min-width: 25vw;
+    max-width: 30vw;
 }
-.ant-input{
-    box-shadow: #333332f8 !important;
+
+.Orderclass {
+    font-size: 2vw;
+    margin-bottom: 1vw;
+    margin-top: 0;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    color: #19bf66;
 }
-.ant-modal-footer{
+.Ivacheck{
+    margin-bottom: 1vw;
+}
+.Ivacheck .ant-row {
+    flex-direction: row !important;
+    flex-flow: row;
+}
+
+.Ivacheck .ant-form-item-label {
+    width: 17vw;
+    height: 2vw;
+    padding-bottom: 0!important;
+}
+
+.Ivacheck .ant-form-item-label>label {
+    font-size: 0.8vw;
+    color: rgb(34, 34, 34);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+}
+
+.Ivacheck .ant-form-item {
+    margin-bottom: 0 !important;
+}
+
+.ant-checkbox-inner {
+    border-color: #19bf66 !important;
+}
+
+.TotalIva {
+    display: flex;
+    font-size: 0.8vw;
+    gap: 1.3vw;
+}
+.FormItem {
+    width: 20vw;
+    height: 2vw;
+    margin-bottom: 1vw;
+}
+
+.FormItem input {
+    text-align: center;
+    font-size: 0.8vw;
+    color: rgb(88, 88, 88);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+    border-radius: 1vw;
+    border-color: #19bf66;
+}
+
+.FormItem::placeholder {
+    font-size: 0.8vw;
+    color: rgb(120, 120, 120);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+}
+
+.FormItem input::placeholder {
+    font-size: 0.8vw;
+    color: rgb(120, 120, 120);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+
+}
+
+.FormItem .ant-form-item-explain-error {
+    font-size: 0.8vw;
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+}
+
+.FormItem .ant-select-selector {
+    font-size: 0.8vw;
+    color: rgb(88, 88, 88);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+    border-radius: 1vw;
+    border-color: #19bf66;
+}
+
+.FormItem .ant-select-selection-placeholder {
+    font-size: 0.8vw;
+    color: rgb(120, 120, 120);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+}
+
+.FormItem .ant-row {
+    flex-direction: row !important;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.FormItem .ant-form-item-label>label {
+    font-size: 0.8vw;
+    color: rgb(34, 34, 34);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+    width: 17vw;
+}
+
+.FormItem .ant-form-item-label {
+    padding: 0 !important;
+}
+
+.ContentProducts {
+    font-size: 0.8vw;
+    color: rgb(34, 34, 34);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
+}
+
+.ContentProducts .ant-form-item-label {
     text-align: center !important;
 }
-.ant-select-single, .ant-select-selector{
-    height: 2vw;
-    font-size: 0.8vw!important;
+
+.ContentProducts .ant-form-item-label>label {
+    font-size: 0.8vw;
+    color: rgb(34, 34, 34);
+    font-weight: 400;
+    font-family: "Rubik", sans-serif;
 }
-.ant-select-selection-search-input{
-    height: 2vw !important;
+
+.BtnProduct {
+    border: 0;
+    font-size: 0.8vw;
+    font-family: "Rubik", sans-serif;
+    background: linear-gradient(to right, #387c74, #19bf66);
+    transition: .5s ease-in-out;
+    height: 1.8vw;
+    margin-top: 2vw;
+}
+
+.BtnProduct:hover {
+    background: linear-gradient(to right, #387c74, #19bf66) !important;
+    background-size: 120% !important;
+}
+
+.ListProducts {
+    border: 0;
+    font-size: 0.8vw;
+    font-family: "Rubik", sans-serif;
+    color: rgb(34, 34, 34);
+    height: 1.8vw;
+    margin-top: 2vw;
+}
+
+.ListProducts span {
+    border: 0;
+    font-size: 0.8vw;
+    font-family: "Rubik", sans-serif;
+    height: 1.8vw;
+}
+
+.ListProducts .anticon {
+    font-size: 1vw !important;
+    color: #19bf66;
+}
+
+.ProductsForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5vw;
+    width: 20vw !important;
+}
+.ProductsForm .ant-modal-content{
+    border-radius: 1vw;
+}
+.ProductsForm .ant-modal-title{
+    text-align: center;
+    font-size: 1.5vw;
+  color: #19bf66;
+  font-weight: 400;
+  font-family: "Bebas Neue", sans-serif; 
+  border-color: #19bf66;
+  border-radius: 1vw;
+}
+
+.ProductAdd{
+    width: 20vw;
+    border-radius: 1vw;
+    border-color: #19bf66;
+    
+}
+.ProductInput{
+    margin: 1vw;
+}
+.ProductInput .ant-input-number{
+    font-size: 1vw;
+    border-color: #19bf66;
+}
+.ProductInput .ant-select-selector{
+    height: 2vw!important;
+    border-radius: 10vw;
+    border-color: #19bf66!important;
+}
+.ProductsForm h3{
     font-size: 0.8vw;
 }
-.ant-select-selection-placeholder{
-    flex: none !important;
-    color: #333332d2!important;
+.ProductInput input {
+font-size: 0.8vw;
+  color: rgb(88, 88, 88);
+  font-weight: 400;
+  font-family: "Rubik", sans-serif;
+  border-color: #19bf66;
+  border-radius: 1vw;
 }
-.ant-select-arrow{
-    font-size: 0.8vw !important ;
+.ProductInput .ant-form-item-label >label{
+font-size: 0.8vw;
+  color: rgb(32, 32, 32);
+  font-weight: 400;
+  font-family: "Rubik", sans-serif;
+  border-color: #19bf66;
+  border-radius: 1vw;
+}
+@media only screen and (max-width: 800px){
+.OrderFormContent{
+    margin-top: 5vw;
+    width: 45vw;
+    min-width: 25vw;
+    max-width: 50vw;
+}
+.Orderclass{
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-size: 5vw;
+}
+
+.Ivacheck .ant-form-item-label {
+    width: 27vw;
+    height: 4vw;
+}
+
+.Ivacheck .ant-form-item-label>label {
+    font-size: 1.6vw;
+}
+.TotalIva {
+    font-size: 1.6vw;
+}
+
+.FormItem {
+    width: 20vw;
+    height: 2vw;
+    margin-bottom: 1vw;
+}
+.FormItem {
+    width: 35vw;
+    height: 3.8vw;
+    margin-bottom: 1.5vw;
+}
+
+.FormItem input {
+    text-align: center;
+    font-size: 1.6vw;
+    border-radius: 10vw;
+}
+
+.FormItem::placeholder {
+    font-size: 1.6vw;
+}
+
+.FormItem input::placeholder {
+    font-size: 1.6vw;
+}
+.FormItem .ant-form-item-explain-error {
+    font-size: 1.6vw;
+}
+
+.FormItem .ant-select-selector {
+    font-size:  1.6vw;
+    border-radius: 10vw;
+}
+
+.FormItem .ant-select-selection-placeholder {
+    font-size:  1.6vw;
+}
+.FormItem .ant-form-item-label>label {
+    font-size: 1.6vw;
+    width: 30vw;
+}
+
+.ContentProducts {
+    font-size: 1.6vw;
+}
+
+.ContentProducts .ant-form-item-label>label {
+    font-size: 1.6vw;
+}
+.BtnProduct {
+    font-size: 1.6vw;
+    height: 4vw;
+    margin-top: 2vw;
 }
 
 
-*/
+.ListProducts span {
+    border: 0;
+    font-size: 1.6vw;
+    height: 1.6vw;
+}
+
+.ListProducts .anticon {
+    font-size: 2vw !important;
+}
+
+.ProductsForm {
+    gap: 5vw;
+    width: 40vw!important;
+}
+.ProductsForm .ant-modal-content{
+    border-radius: 1vw;
+    width: 40vw;
+}
+.ProductsForm .ant-modal-title{
+    font-size: 4vw;
+}
+
+.ProductAdd{
+    width: 30vw;
+    border-radius: 10vw; 
+}
+.ProductInput{
+    margin: 1vw;
+}
+.ProductInput .ant-input-number{
+    font-size: 1.6vw;
+}
+.ProductInput .ant-select-selector{
+    height: 3vw!important;
+    border-radius: 10vw;
+}
+.ProductsForm h3{
+    font-size: 1.6vw;
+}
+.ProductInput input {
+    height: 3vw;
+    font-size: 1.6vw;
+  border-radius: 10vw;
+}
+.ProductInput .ant-form-item-label >label{
+font-size: 1.6vw;
+  border-radius: 10vw;
+}
+.ProductInput .ant-select-arrow{
+    margin-top: -1.2vw;
+}
+
+}
+@media only screen and (max-width:450px){
+    .OrderFormContent{
+        width: 85vw;
+        min-width: 25vw;
+        max-width: 85vw;
+        border-radius: 5vw;
+    }
+    .Orderclass{
+        font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+        font-size: 10vw;
+    }
+    .Ivacheck{
+        width: 40vw;
+        margin-left: -22vw;
+    }
+    .Ivacheck .ant-form-item-label {
+        width: 60vw;
+        height: 8vw;
+    }
+    
+    .Ivacheck .ant-form-item-label>label {
+        font-size: 4vw;
+    }
+    .TotalIva {
+        font-size: 4vw;
+    }
+    
+    .FormItem {
+        width: 60vw;
+        height: 8vw;
+        margin-bottom: 2vw;
+    }
+    .FormItem {
+        width: 77vw;
+        height: 8vw;
+        margin-bottom: 3vw;
+    }
+    
+    .FormItem input {
+        text-align: center;
+        font-size: 4vw;
+        border-radius: 10vw;
+        padding: 0;
+        height: 8vw;
+    }
+    
+    .FormItem::placeholder {
+        font-size: 4vw;
+    }
+    
+    .FormItem input::placeholder {
+        font-size: 4vw;
+    }
+    .FormItem .ant-form-item-explain-error {
+        font-size: 4vw;
+    }
+    
+    .FormItem .ant-select-selector {
+        font-size:  4vw;
+        border-radius: 10vw;
+    }
+    
+    .FormItem .ant-select-selection-placeholder {
+        font-size:  4vw;
+    }
+    .FormItem .ant-form-item-label>label {
+        font-size: 4vw;
+    }
+    
+    .ContentProducts {
+        font-size: 4vw;
+    }
+    
+    .ContentProducts .ant-form-item-label>label {
+        font-size: 4vw;
+    }
+    .BtnProduct {
+        font-size: 4vw;
+        height: 9vw;
+        margin-top: 2vw;
+    }
+    
+    .ListProducts{
+        height: 6vw;
+        margin-top: 0!important;
+    }
+    .ListProducts span {
+        border: 0;
+        font-size: 4vw;
+    }
+    
+    .ListProducts .anticon {
+        font-size: 4vw !important;
+    }
+    
+    .ProductsForm {
+        gap: 5vw;
+        width: 70vw!important;
+    }
+    .ProductsForm .ant-modal-content{
+        border-radius: 1vw;
+        width: 70vw;
+    }
+    .ProductsForm .ant-modal-title{
+        font-size: 8vw;
+    }
+    
+    .ProductAdd{
+        width: 55vw;
+        border-radius: 10vw; 
+    }
+    .ProductInput{
+        margin: 1vw;
+    }
+    .ProductInput .ant-input-number{
+        font-size: 4vw;
+    }
+    .ProductInput .ant-select-selector{
+        height: 8vw!important;
+        border-radius: 10vw;
+    }
+    .ProductsForm h3{
+        font-size: 4vw;
+    }
+    .ProductInput input {
+        height: 8vw;
+        font-size: 4vw;
+      border-radius: 10vw;
+    }
+    .ProductInput .ant-form-item-label >label{
+    font-size: 4vw  ;
+      border-radius: 10vw;
+    }
+    .ProductInput .ant-select-arrow{
+        margin-top: -1.2vw;
+    }
+    
+}

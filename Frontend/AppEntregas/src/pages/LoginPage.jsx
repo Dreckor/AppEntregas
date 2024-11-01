@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import '../css/LoginPage.css'; // Asegúrate de que la ruta sea correcta
+import '../css/LoginPage.css';
+import TextCarrusel from '../pages/extras/Carrusel.jsx'
+import viaje from '../assets/viaje.jpg';
+import comerza from '../assets/comerza.png'
+import comerza2 from '../assets/comerza2.png'
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -56,36 +60,45 @@ export default function LoginPage() {
   };
 
   return (
-    <Form layout="vertical" onFinish={onFinish}>
-      <div className="bienvenidos"><h1>Bienvenidos a comerza</h1></div>
-      <Form.Item 
-        label="Correo Electrónico"
+    <div className="LoginContent">
+    <Form className="LoginForm" layout="vertical" onFinish={onFinish}>
+      <img className="ComerzaLogo" src={comerza} alt="ComerzaLogo" />
+      <div className="Bienvenidos"><h1>COMERZA</h1><h2>Comienza el camino</h2></div>
+      <Form.Item className="EmailContent"
+        label=""
         name="email"
         rules={[
           {
             required: true,
-            message: "Por favor ingresa tu correo electrónico!",
+            message: "Ingresa tu correo electrónico!",
           },
         ]}
       >
-        <Input placeholder="Introduce tu correo" />
+        <Input className="EmailInput" placeholder="Introduce tu correo" />
       </Form.Item>
 
-      <Form.Item
-        label="Contraseña"
+      <Form.Item className="EmailContent"
+        label=""
         name="password"
         rules={[
-          { required: true, message: "Por favor ingresa tu contraseña!" },
+          { required: true, message: "Ingresa tu contraseña!" },
         ]}
       >
-        <Input.Password placeholder="Introduce tu contraseña" />
+        <Input.Password  placeholder="Introduce tu contraseña" className="EmailInput"/>
       </Form.Item>
 
-      <Form.Item className="btnform">
-        <Button type="primary" htmlType="submit" loading={loading}>
-          Iniciar Sesión
+      <Form.Item >
+        <Button className="BtnLogin" type="primary" htmlType="submit" loading={loading}>
+          Inicia Sesión
         </Button>
       </Form.Item>
     </Form>
+    <div className="ImgLogin">
+    <img className="ComerzaLogoImg" src={comerza2} alt="ComerzaLogo" />
+    <div className="BienvenidosImg"><h1>CON COMERZAR PODRAS...</h1></div>
+     <img className="ViajeImg" src={viaje} alt="Viaje" />
+     <TextCarrusel /> {}
+    </div>
+    </div>
   );
 }
