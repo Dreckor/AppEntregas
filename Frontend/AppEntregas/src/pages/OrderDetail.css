@@ -14,32 +14,7 @@
 }
 .Botondetails{
     width: auto;
-    font-size: 0.8vw;
-    margin-left: 0.5vw;
 }
 .detailsbt{
     margin-top: 3vw;   
-}
-.ant-descriptions-item-label{
-    font-size: 0.8vw!important;
-}
-:where(.css-dev-only-do-not-override-qnu6hi).ant-descriptions.ant-descriptions-bordered >.ant-descriptions-view .ant-descriptions-row >.ant-descriptions-item-label, :where(.css-dev-only-do-not-override-qnu6hi).ant-descriptions.ant-descriptions-bordered >.ant-descriptions-view .ant-descriptions-row >.ant-descriptions-item-content{
-    padding: 0.5vw !important;
-    font-size: 0.8vw;
-}
-.ant-select-selection-item{
-    font-size: 0.8vw;
-}
-.ant-steps-item-title{
-    font-size: 0.9vw !important;
-}
-.ant-steps-item-description{
-    font-size: 0.8vw !important;
-
-}
-.ant-steps-item-icon{
-    height: 1.667vw !important;
-    width: 1.667vw !important;
-    line-height: 1.667vw!important;
-    font-size: 1vw !important;
 }

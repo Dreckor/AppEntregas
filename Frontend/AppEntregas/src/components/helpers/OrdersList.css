@@ -53,8 +53,12 @@
     justify-content: center; 
     align-items: center; 
 }
+.listadorde{
+    margin-top: -10vw;
+}
 
-
-
+:where(.css-dev-only-do-not-override-qnu6hi).ant-descriptions.ant-descriptions-bordered >.ant-descriptions-view .ant-descriptions-row >.ant-descriptions-item-label, :where(.css-dev-only-do-not-override-qnu6hi).ant-descriptions.ant-descriptions-bordered >.ant-descriptions-view .ant-descriptions-row >.ant-descriptions-item-content{
+    padding: 0.5vw !important;
+}
 
 
