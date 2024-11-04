@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { authRequired } from '../middlewares/validateToken.js'
+import { authRequired, checkAdmin } from '../middlewares/validateToken.js'
 import {
 
     getConfig,
@@ -11,7 +11,7 @@ import {
 const router = Router();
 
 router.get("/config", authRequired,getConfig)
-router.put("/config", authRequired,updateConfig)
-router.delete("/config", authRequired,deleteConfigOption)
+router.put("/config", authRequired,checkAdmin,updateConfig)
+router.delete("/config", authRequired,checkAdmin,deleteConfigOption)
 
 export default router

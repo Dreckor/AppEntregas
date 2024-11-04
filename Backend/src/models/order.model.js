@@ -37,7 +37,15 @@ const orderSchema = new mongoose.Schema(
     totalCost: { type: Number, required: true },
     packaging:  { type: Boolean, required: true },
     hasIva: { type: Boolean, required: true },
-    invoice: { type: mongoose.Schema.Types.ObjectId, ref: "Invoice", required: true }
+    invoice: { type: mongoose.Schema.Types.ObjectId, ref: "Invoice", required: true },
+    evidencePhoto: {
+      type: String,
+      required: false,
+    },
+    clientSignature: {
+      type: String, 
+      required: false,
+    },
   },
 
   { timestamps: true }

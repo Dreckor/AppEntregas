@@ -13,7 +13,7 @@ export const useAuth = () => {
     }
     return context;
   };
-
+ 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [errors, setErrors] = useState([]);
@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }) => {
       useEffect(() => {
         const checkLogin = async () => {
           const cookies = Cookies.get();
-          console.log(cookies)
           if (!cookies.token) {
             setIsAuthenticated(false);
             setLoading(false);
@@ -54,7 +53,6 @@ export const AuthProvider = ({ children }) => {
     
           try {
             const res = await verifyTokenRequest(cookies.token);
-            console.log(res);
             if (!res.data) return setIsAuthenticated(false);
             setIsAuthenticated(true);
             setUser(res.data);

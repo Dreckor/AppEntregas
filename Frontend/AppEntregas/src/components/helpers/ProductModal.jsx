@@ -52,7 +52,7 @@ export default function ProductModal({ product, onSave }) {
           onChange={value => setFormProduct({ ...formProduct, kilos: value })}
         />
       </Form.Item>
-      <h3>Precio: ${productPrice.toFixed(2)}</h3>
+      <h3>Precio: ${productPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h3>
       <Button onClick={handleSave}>Guardar</Button>
     </Form>
   );

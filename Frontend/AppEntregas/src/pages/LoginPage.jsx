@@ -30,8 +30,13 @@ export default function LoginPage() {
   useEffect(() => {
     if (isAuthenticated && user && user.success) {
       localStorage.setItem("token", user.token); 
-      message.success(user.message); 
-      navigate("/orders");
+      message.success(user.message);
+      if(user.user.role == 'admin'){
+        navigate("/orders");
+      }else{
+        navigate("/repartidor/orders");
+      }
+      
     }
   }, [isAuthenticated, navigate, user]);
 

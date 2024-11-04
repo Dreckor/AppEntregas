@@ -19,3 +19,15 @@ export const authRequired = async (req, res, next) => {
     
     
 }
+
+export const checkAdmin = async (req, res, next) => {
+    try {
+      const user = await User.findById(req.user.id);
+      if (user.role !== 'admin') {
+        return res.status(403).json({ message: 'Admin access required' });
+      }
+      next();
+    } catch (error) {
+      return res.status(500).json({ message: 'Server error' });
+    }
+  };

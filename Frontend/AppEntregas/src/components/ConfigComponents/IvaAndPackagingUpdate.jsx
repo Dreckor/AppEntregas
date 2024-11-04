@@ -46,20 +46,26 @@ const IvaAndPackagingUpdate = () => {
             min={0}
             max={100}
             onChange={(value) => setIva(value)}
-            precision={2}
             style={{ width: "100%" }}
+            formatter={(value) => 
+              `${value}%`
+            }
           />
         </Form.Item>
 
-        <Form.Item label="Coste de Embalaje ($)" required>
-          <InputNumber
-            value={packagingCost}
-            min={0}
-            precision={2}
-            onChange={(value) => setPackagingCost(value)}
-            style={{ width: "100%" }}
-          />
-        </Form.Item>
+        <Form.Item label="Coste de Embalaje (COP)" required>
+  <InputNumber
+    value={packagingCost}
+    min={0}
+    precision={2}
+    onChange={(value) => setPackagingCost(value)}
+    style={{ width: "100%" }}
+    formatter={(value) => 
+      `$ ${value.toLocaleString("es-CO", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+    }
+    parser={(value) => parseFloat(value.replace(/\$\s?|(?=\.\d*)/g, '').replace(',', ''))}
+  />
+</Form.Item>
 
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>

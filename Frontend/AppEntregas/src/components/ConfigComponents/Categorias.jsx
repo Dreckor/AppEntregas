@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useConfig } from '../../context/ConfigContext';
 import { Table, Button, Modal, Form, Input, InputNumber } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-
+ 
 const Categorias = () => {
   const { config, fetchConfig, updateConfig, deleteConfigOption } = useConfig();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,7 +23,7 @@ const Categorias = () => {
       title: 'Precio por kilo',
       dataIndex: 'pricePerKilo',
       key: 'pricePerKilo',
-      render: (price) => `$${price.toFixed(2)}`,
+      render: (price) => `${price.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`,
     },
     {
       title: 'Acciones',

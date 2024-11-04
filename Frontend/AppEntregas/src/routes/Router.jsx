@@ -2,10 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
 import OrdersForm from '../pages/OrdersForm';
 import OrdersPage from '../pages/OrdersPage';
+import RepartidorOrdersPage from '../pages/repartidor/RepartidorOrdersPage';
+import RepartidorOrderDetails from '../pages/repartidor/RepartidorOrderDetails';
 import OrderDetails from '../pages/OrderDetails';
 import Header from '../pages/Header';
 //import Home from '../pages/Home';
-import ProtectedRoute from '../ProtectedRoute';
+import {ProtectedRouteAdmin,ProtectedRouteRepartidor}from '../ProtectedRoute';
 import OrderByTrakingName from '../pages/OrderByTrakingName';
 import ConfigPage from '../pages/ConfigPage';
 import InvoicesPage from '../pages/invoices/InvoicesPage';
@@ -19,7 +21,7 @@ export const CustomRouter = ()=>{
                 <Route path="/" element={<LoginPage/>} />
                 <Route path='/login' element={<LoginPage/>} />
                 
-                <Route element={<ProtectedRoute/>}>
+                <Route element={<ProtectedRouteAdmin/>}>
                     
                     <Route path='/orders' element={<><Header /><OrdersPage /></>} />
                     <Route path='/createorder' element={<><Header /><OrdersForm/></>} />
@@ -28,6 +30,11 @@ export const CustomRouter = ()=>{
                     <Route path="/invoices" element={<><Header /><InvoicesPage /></>} />
                     <Route path="/invoice/:invoiceId" element={<><Header /><InvoicesDetail /></>} />
                     <Route path="/invoice/:invoiceId/print" element={<><Header /><InvoicePrintable /></>} />
+                </Route>
+
+                <Route element={<ProtectedRouteRepartidor/>}>
+                    <Route path='/repartidor/orders' element={<><RepartidorOrdersPage /></>} />
+                    <Route path="/repartidor/orders/:orderId" element={<><RepartidorOrderDetails /></>} />
                 </Route>
                 
                 <Route path='/order/:trakingnumber' element={<OrderByTrakingName/>} />
