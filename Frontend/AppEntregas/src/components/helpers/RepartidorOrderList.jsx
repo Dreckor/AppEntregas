@@ -1,7 +1,7 @@
 import { Table, Tag, Button } from "antd";
 
 import { useNavigate } from 'react-router-dom';
-import './OrdersList.css'
+import '../../css/OrdersList.css'
 
 const RepartidorOrdersList = ({ orders }) => {
   const navigate = useNavigate();
