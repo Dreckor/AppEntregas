@@ -29,7 +29,7 @@ export const CustomRouter = ()=>{
                     <Route path="/settings" element={<><Header /><ConfigPage /></>} />
                     <Route path="/invoices" element={<><Header /><InvoicesPage /></>} />
                     <Route path="/invoice/:invoiceId" element={<><Header /><InvoicesDetail /></>} />
-                    <Route path="/invoice/:invoiceId/print" element={<><Header /><InvoicePrintable /></>} />
+                    <Route path="/invoice/:invoiceId/print" element={<><InvoicePrintable /></>} />
                 </Route>
 
                 <Route element={<ProtectedRouteRepartidor/>}>

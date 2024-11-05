@@ -14,19 +14,27 @@ const InvoiceDetails = () => {
   const { invoice: locationInvoice } = location.state || {};
   const [invoice, setInvoice] = useState(locationInvoice || null); // Estado local de la factura
   const { getInvoice, loading, error } = useContext(InvoiceContext);
-  const [state, setState] = useState(invoice?.status || 'pending'); // Estado de la factura
+  const [state, setState] = useState('pending'); // Estado de la factura inicializado en 'pending'
 
   // Obtener la factura si no está disponible localmente
   useEffect(() => {
     const fetchInvoice = async () => {
       if (!invoice) {
         try {
+          console.log(invoiceId);
           const fetchedInvoice = await getInvoice(invoiceId);
-          setInvoice(fetchedInvoice);
-          setState(fetchedInvoice.status); // Actualizar el estado con el valor de la factura
+          if (fetchedInvoice) {
+            setInvoice(fetchedInvoice);
+            setState(fetchedInvoice.status || 'pending'); // Actualizar el estado solo si fetchedInvoice es válido
+          } else {
+            notification.error({ message: 'Factura no encontrada' });
+          }
         } catch (err) {
           console.log('Error fetching invoice:', err);
+          notification.error({ message: 'Error al obtener la factura' });
         }
+      } else {
+        setState(invoice.status); // Asegúrate de que invoice tenga un estado definido
       }
     };
 
@@ -96,16 +104,16 @@ const InvoiceDetails = () => {
               {new Date(invoice.issueDate).toLocaleDateString()} {/* Formato amigable de fecha */}
             </Descriptions.Item>
             <Descriptions.Item label="Valor neto">
-              {`$${invoice.netAmount?.toFixed(2)}`} {/* Chequeo de valor y formateo */}
+              {`$${invoice.netAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`} {/* Chequeo de valor y formateo */}
             </Descriptions.Item>
             <Descriptions.Item label="Valor IVA">
-              {`$${invoice.taxAmount?.toFixed(2)}`}
+              {`$${invoice.taxAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
             </Descriptions.Item>
             <Descriptions.Item label="Coste embalaje">
-              {`$${invoice.packaging?.toFixed(2)}`}
+              {`$${invoice.packaging?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
             </Descriptions.Item>
             <Descriptions.Item label="Valor total">
-              {`$${invoice.totalAmount?.toFixed(2)}`}
+              {`$${invoice.totalAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
             </Descriptions.Item>
           </Descriptions>
         </div>
