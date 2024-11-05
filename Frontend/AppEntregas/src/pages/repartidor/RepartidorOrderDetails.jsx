@@ -85,6 +85,7 @@ const RepartidorOrderDetails = () => {
       setIsDrawing(true);
     });
 
+    
     canvas.addEventListener('mouseup', () => {
       setIsDrawing(false);
       ctx.beginPath();
