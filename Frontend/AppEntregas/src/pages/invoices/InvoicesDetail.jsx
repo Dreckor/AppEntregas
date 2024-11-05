@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Descriptions, Button, Select, notification } from 'antd';
 import { InvoiceContext } from '../../context/InvoiceContext.jsx';
 import { useInvoices } from '../../context/InvoiceContext';
+import "../../css/OrderDetail.css"
 
 const { Option } = Select;
 

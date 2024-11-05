@@ -8,6 +8,7 @@ const { Content, Sider } = Layout;
 
 const DetallesOrden = ({ order }) => {
   return (
+    <div className='detallesord'>
     <Descriptions title="Detalles de la Orden" bordered>
       <Descriptions.Item label="Título">{order.orderTitle}</Descriptions.Item>
       <Descriptions.Item label="Estado">{order.state.name}</Descriptions.Item>
@@ -31,6 +32,8 @@ const DetallesOrden = ({ order }) => {
         Cliente: {order.user?.username}, Dirección: {order.user?.address}
       </Descriptions.Item>
     </Descriptions>
+    <Seguimiento history={order?.history || []} />
+    </div>
   );
 };
 
@@ -43,24 +46,11 @@ const OrderLayout = ({ children, order }) => {
   return (
     <Layout
       style={{
-        padding: "24px 0",
-        background: colorBgContainer,
-        borderRadius: borderRadiusLG,
+
       }}
     >
-      <Sider
-        style={{
-          background: colorBgContainer,
-        }}
-        width={200}
-      >
-        {order.history && <Seguimiento history={order.history} />}
-      </Sider>
+      
       <Content
-        style={{
-          padding: "0 24px",
-          minHeight: 280,
-        }}
       >
         {children}
       </Content>
