@@ -150,7 +150,7 @@ const Puntos = () => {
     <div>
       <Tabs defaultActiveKey="delivery" items={items} onChange={setActiveTab} />
       <Modal
-        title={editingPoint ? 'Edit Point' : `Add New ${activeTab === 'delivery' ? 'Delivery' : 'Departure'} Point`}
+        title={editingPoint ? 'Editar Punto' : `Agregar nuevo punto de ${activeTab === 'delivery' ? 'Entrega' : 'Salida'} `}
         open={isModalVisible}
         onOk={handleOk}
         onCancel={() => setIsModalVisible(false)}
@@ -158,15 +158,15 @@ const Puntos = () => {
         <Form form={form} layout="vertical">
           <Form.Item
             name="name"
-            label="Name"
-            rules={[{ required: true, message: 'Please input the point name!' }]}
+            label="Nombre"
+            rules={[{ required: true, message: 'Agrega un nombre del punto' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="address"
-            label="Address"
-            rules={[{ required: true, message: 'Please input the address!' }]}
+            label="Dirección"
+            rules={[{ required: true, message: 'Agrega una dirección' }]}
           >
             <Input />
           </Form.Item>

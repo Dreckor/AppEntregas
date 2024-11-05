@@ -4,6 +4,7 @@ import { OrderProvider } from './context/OrderContext.jsx';
 import { ConfigProvider } from "./context/ConfigContext.jsx";
 import './App.css'
 import {  InvoiceProvider } from './context/InvoiceContext.jsx';
+import { UserProvider } from './context/UserContext.jsx';
 
 function App() {
   
@@ -13,7 +14,9 @@ function App() {
       <ConfigProvider>
       <OrderProvider>
         <InvoiceProvider>
+        <UserProvider>
         <CustomRouter/>
+        </UserProvider>
         </InvoiceProvider> 
       </OrderProvider>
       </ConfigProvider>

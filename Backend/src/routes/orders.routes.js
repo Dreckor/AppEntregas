@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { authRequired } from '../middlewares/validateToken.js'
+import { authRequired,checkAdmin } from '../middlewares/validateToken.js'
 import {
     getOrder,
     createOrder,
@@ -7,14 +7,15 @@ import {
     updateOrder,
     deleteOrder
 } from '../controllers/orders.controler.js'
+import upload from '../middlewares/upload.js';
 
 
 const router = Router();
 
 router.get("/orders", authRequired,getOrders)
 router.get("/order/:trakingNumber", getOrder)
-router.post("/order", authRequired,createOrder)
-router.put("/order/:id", authRequired,updateOrder)
-router.delete("/order/:id", authRequired,deleteOrder)
+router.post("/order", authRequired, checkAdmin,createOrder)
+router.put("/order/:id", authRequired,upload, updateOrder)
+router.delete("/order/:id", authRequired,checkAdmin,deleteOrder)
 
 export default router

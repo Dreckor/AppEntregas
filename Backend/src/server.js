@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser'
 import cors from 'cors';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import authRoutes from './routes/auth.routes.js'
 import ordersRoutes from './routes/orders.routes.js'
@@ -13,12 +14,18 @@ import { FRONTEND_URL } from './config.js';
 
 const app = express()
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(cors(
     {origin: FRONTEND_URL, credentials:true}
 ))
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser())
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')), (req, res, next) => {
+  next();
+});
 
 app.use('/api',authRoutes);
 app.use('/api', ordersRoutes);

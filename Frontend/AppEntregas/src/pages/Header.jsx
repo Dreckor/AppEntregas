@@ -1,11 +1,8 @@
 import '../css/Header.css'
-import { Button, Flex, Space,Avatar, } from 'antd';
-import { CarOutlined,HomeOutlined,SettingOutlined, FileTextOutlined,FormOutlined, UserAddOutlined } from '@ant-design/icons';
+import { CarOutlined, FileTextOutlined,FormOutlined, UserAddOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import comerza from '../assets/comerza.png'
-import {
-    SearchOutlined   
-} from '@ant-design/icons';
+
 
 function Header({ pagename }) {
     return (

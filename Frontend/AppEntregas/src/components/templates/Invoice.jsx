@@ -25,17 +25,17 @@ const Invoice = ({ invoice }) => {
               <td style={{ padding: '8px' }}>{product.productLabel}</td>
               <td style={{ padding: '8px', textAlign: 'center' }}>{product.productUnits}</td>
               <td style={{ padding: '8px', textAlign: 'center' }}>{product.kilos}</td>
-              <td style={{ padding: '8px', textAlign: 'right' }}>${product.cost.toFixed(2)}</td>
+              <td style={{ padding: '8px', textAlign: 'right' }}>${product.cost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
       <div style={{ marginTop: '20px', textAlign: 'left' }}>
-        <p><strong>Subtotal:</strong> ${netAmount.toFixed(2)}</p>
-        <p><strong>Impuestos:</strong> ${taxAmount.toFixed(2)}</p>
-        <p><strong>Empaque:</strong> ${packaging.toFixed(2)}</p>
-        <p><strong>Total:</strong> ${totalAmount.toFixed(2)}</p>
+        <p><strong>Subtotal:</strong> {netAmount.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
+        <p><strong>Impuestos:</strong> {taxAmount.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
+        <p><strong>Empaque:</strong> {packaging.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
+        <p><strong>Total:</strong> {totalAmount.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</p>
       </div>
 
       <button  className="Print"

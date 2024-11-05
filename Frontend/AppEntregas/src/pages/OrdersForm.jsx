@@ -400,10 +400,10 @@ export default function OrdersForm() {
                 }/>
         </Form.Item>
         <div className="TotalIva">
-        <h4>Embalaje: ${packaging? config.packagingCost : 0 }</h4>
-        <h4>Subtotal: ${subTotalPrice.toFixed(2)}</h4>
-        <h4>IVA: ${ivaPrice.toFixed(2)}</h4>
-        <h4>Total: ${totalPrice.toFixed(2)}</h4>
+        <h4>Embalaje: {packaging? config.packagingCost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : 0 }</h4>
+        <h4>Subtotal: {subTotalPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
+        <h4>IVA: {ivaPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
+        <h4>Total: {totalPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
         </div>
 
         <Form.Item className="FormItem">

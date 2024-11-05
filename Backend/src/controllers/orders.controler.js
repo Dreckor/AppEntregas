@@ -26,9 +26,16 @@ export const getOrders = async (req, res) => {
                 
         } else {
             // Si el usuario no es un admin, solo obtiene sus propias órdenes
-            orders = await Order.find({ user: req.user._id })
-                .populate('user')
-                .populate('assignedTo');
+            orders = await Order.find({ assignedTo: req.user._id })
+            .populate('user')
+            .populate('assignedTo')
+            .populate('initialPoint')
+            .populate('destinyPoint')
+            .populate('state')
+            .populate({
+                path: 'history.stateLabel',
+                model: 'State'
+            });
         }
 
         res.status(200).json(orders);
@@ -40,7 +47,7 @@ export const getOrders = async (req, res) => {
 
 
 export const createOrder = async (req, res) => {
-    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId, netCost, totalCost, packaging, hasIva, invoice } = req.body;
+    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId, netCost, totalCost, packaging, hasIva, invoice,evidencePhoto = '', clientSignature = '' } = req.body;
     console.log(req.user)
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Solo un usuario administrador puede crear ordenes' });
@@ -73,7 +80,9 @@ export const createOrder = async (req, res) => {
             totalCost,
             packaging,
             hasIva,
-            invoice
+            invoice,
+            evidencePhoto, 
+            clientSignature
 
         });
 
@@ -119,6 +128,10 @@ export const getOrder = async (req, res) => {
 export const updateOrder = async (req, res) => {
     const { id } = req.params;
 
+    // Obtén la ruta de la foto de evidencia y la firma del cliente
+    const evidencePhoto = req.files?.evidencePhoto ? req.files.evidencePhoto[0].path.replace(/\\/g, '/') : null;
+    const clientSignature = req.files?.clientSignature ? req.files.clientSignature[0].path.replace(/\\/g, '/') : null;
+
     try {
         // Encontrar la orden actual
         const order = await Order.findById(id);
@@ -127,25 +140,39 @@ export const updateOrder = async (req, res) => {
             return res.status(404).json({ message: 'Order not found' });
         }
 
-        // Agregar el nuevo estado al historial
-        const updatedHistory = [
-            ...order.history,
-            {
-                stateLabel: req.body.state,
-                startedDate: new Date(),
-            }
-        ];
+         // Verificar el último estado en el historial
+         const lastState = order.history.length > 0 ? order.history[order.history.length - 1].stateLabel.toString() : null;
+         console.log("last state")
+         console.log(lastState)
 
-        // Actualizar la orden con el nuevo estado y el historial actualizado
+         // Solo agregar el nuevo estado si es diferente del último estado
+         const newState = req.body.state;
+         const newStateName = newState._id;
+         console.log("new state")
+         console.log(newStateName)
+         let updatedHistory = [...order.history];
+ 
+         if (newStateName !== lastState) {
+             updatedHistory.push({
+                 stateLabel: newState,
+                 startedDate: new Date(),
+             });
+         }
+
+        // Crear un objeto para actualizar
         const updatedOrderData = {
-            ...req.body, 
+            ...req.body,
             history: updatedHistory,
+            ...(evidencePhoto && { evidencePhoto }), // Solo agrega si no es null
+            ...(clientSignature && { clientSignature }) // Solo agrega si no es null
         };
 
+        // Actualiza la orden
         const updatedOrder = await Order.findByIdAndUpdate(id, updatedOrderData, { new: true });
 
         res.status(200).json(updatedOrder);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'Error updating order', error });
     }
 };

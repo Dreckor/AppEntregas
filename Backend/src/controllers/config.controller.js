@@ -21,9 +21,7 @@ const initializeConfig = async () => {
 };
 
 export const getConfig = async (req, res) => {
-  if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Solo un usuario administrador puede obtener la config' });
-  }
+  
   try {
     const config = await initializeConfig(); 
     res.status(200).json(config);

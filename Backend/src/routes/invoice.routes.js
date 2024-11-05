@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { authRequired } from '../middlewares/validateToken.js'
+import { authRequired,checkAdmin } from '../middlewares/validateToken.js'
 import {
   createInvoice,
   getInvoiceById,
@@ -11,10 +11,10 @@ import {
 
 const router = Router();
 
-router.get("/invoices", authRequired,getAllInvoices)
-router.get("/invoice/:id", getInvoiceById)
-router.post("/invoice", authRequired,createInvoice)
-router.put("/invoice/:id", authRequired,updateInvoiceStatus)
-router.put("/cancel/invoice/:id", authRequired,cancelInvoice)
+router.get("/invoices", authRequired,checkAdmin,getAllInvoices)
+router.get("/invoice/:id",checkAdmin, getInvoiceById)
+router.post("/invoice", authRequired,checkAdmin,createInvoice)
+router.put("/invoice/:id", authRequired,checkAdmin,updateInvoiceStatus)
+router.put("/cancel/invoice/:id", authRequired,checkAdmin,cancelInvoice)
 
 export default router

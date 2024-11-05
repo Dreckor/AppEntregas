@@ -30,6 +30,7 @@ export const OrderProvider = ({ children }) => {
     setLoading(true);
     try {
       const res = await getOrdersRequest();
+
       setOrders(res.data);
     } catch (err) {
       setError(err.response?.data?.message || "Error fetching orders");

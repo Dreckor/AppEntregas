@@ -3,7 +3,6 @@ import { Steps } from 'antd';
 const formatOrderHistory = (orderHistory) => {
   return orderHistory.map(item => {
     // Convertir la fecha a un formato legible
-    
     const date = new Date(item.startedDate);
     const formattedDate = date.toLocaleString('es-ES', { 
       day: '2-digit', 
@@ -13,9 +12,13 @@ const formatOrderHistory = (orderHistory) => {
       minute: '2-digit' 
     });
 
+    // Check if stateLabel exists and has a name property
+    const stateLabel = item.stateLabel || {};
+    const title = stateLabel.name || 'Estado desconocido'; // Provide a fallback title
+
     return {
-      title: item.stateLabel["name"],
-      description: `${formatDescription(item.stateLabel["description"])} - ${formattedDate}`
+      title,
+      description: `${formatDescription(stateLabel.name)} - ${formattedDate}`
     };
   });
 };
