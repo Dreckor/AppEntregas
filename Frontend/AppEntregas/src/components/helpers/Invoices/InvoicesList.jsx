@@ -1,7 +1,7 @@
 import { Table, Tag, Button } from "antd";
 import { FileTextOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import "./InvoicesList.css"
+import "../../../css/InvoicesList.css"
 
 const InvoicesList = ({ invoices }) => {
   const navigate = useNavigate();

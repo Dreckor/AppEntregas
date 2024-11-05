@@ -3,37 +3,43 @@ import { useParams } from "react-router-dom";
 import { Layout, theme, Descriptions, Skeleton } from "antd";
 import { useOrders } from "../context/OrderContext";
 import Seguimiento from "../components/helpers/Seguimiento";
+import { API_URL } from "../config";
 
 const { Content, Sider } = Layout;
 
 const DetallesOrden = ({ order }) => {
   return (
-    <div className='detallesord'>
-    <Descriptions title="Detalles de la Orden" bordered>
-      <Descriptions.Item label="Título">{order.orderTitle}</Descriptions.Item>
-      <Descriptions.Item label="Estado">{order.state.name}</Descriptions.Item>
-      <Descriptions.Item label="Punto Inicial">{order.initialPoint.name}</Descriptions.Item>
-      <Descriptions.Item label="Destino">{order.destinyPoint.name}</Descriptions.Item>
-      <Descriptions.Item label="Número de Seguimiento">{order.trakingNumber}</Descriptions.Item>
-      <Descriptions.Item label="Productos">
-        {order.products && order.products.length > 0 ? (
-          <ul>
-            {order.products.map((product, index) => (
-              <li key={index}>
-                {product.productLabel} - Unidades: {product.productUnits} - Peso: ${product.kilos} Kg- Coste: ${product.cost}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          "Sin productos"
-        )}
-      </Descriptions.Item>
-      <Descriptions.Item label="Cliente">
-        Cliente: {order.user?.username}, Dirección: {order.user?.address}
-      </Descriptions.Item>
-    </Descriptions>
-    <Seguimiento history={order?.history || []} />
-    </div>
+    <>
+      <div className='detallesord'>
+        <Descriptions title="Detalles de la Orden" bordered>
+          <Descriptions.Item label="Título">{order.orderTitle}</Descriptions.Item>
+          <Descriptions.Item label="Estado">{order.state.name}</Descriptions.Item>
+          <Descriptions.Item label="Punto Inicial">{order.initialPoint.name}</Descriptions.Item>
+          <Descriptions.Item label="Destino">{order.destinyPoint.name}</Descriptions.Item>
+          <Descriptions.Item label="Número de Seguimiento">{order.trakingNumber}</Descriptions.Item>
+          <Descriptions.Item label="Productos">
+            {order.products && order.products.length > 0 ? (
+              <ul>
+                {order.products.map((product, index) => (
+                  <li key={index}>
+                    {product.productLabel} - Unidades: {product.productUnits} - Peso: ${product.kilos} Kg- Coste: ${product.cost}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              "Sin productos"
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label="Cliente">
+            Cliente: {order.user?.username}, Dirección: {order.user?.address}
+          </Descriptions.Item>
+        </Descriptions>
+        <Seguimiento history={order?.history || []} />
+      </div>
+      <div style={{backgroundColor:'white'}}>
+      <button className="viewdetails"><a style={{textDecoration:'none!important', color:'white'}} href="http://localhost:3000/uploads/Contrato.pdf" target="_blank" rel="noopener noreferrer">Visualizar contrato</a></button> 
+      </div>
+    </>
   );
 };
 
@@ -49,7 +55,7 @@ const OrderLayout = ({ children, order }) => {
 
       }}
     >
-      
+
       <Content
       >
         {children}
@@ -85,7 +91,7 @@ function OrderByTrakingName() {
   return (
     <>
       {loading ? (
-        <Skeleton active /> 
+        <Skeleton active />
       ) : (
         <OrderLayout order={order}>
           <DetallesOrden order={order} />

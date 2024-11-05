@@ -34,6 +34,7 @@
     background: linear-gradient(to right, #387c74, #19bf66 )!important; 
     transition: .5s ease-in-out!important;
     height: 1.8vw ;
+    border-radius: 6px;
 }
 .viewdetails :hover{
     background: linear-gradient(to right, #387c74, #19bf66  )!important; 
