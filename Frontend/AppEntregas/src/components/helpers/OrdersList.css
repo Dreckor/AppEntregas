@@ -17,6 +17,7 @@
     background: var(--gradient);
     --gradient: linear-gradient(#4eaa7f70, #9bddba2c,white);
 }
+<<<<<<< HEAD
 
 .listadorde h1 {
     margin: 0;
@@ -105,3 +106,14 @@
     }
 } 
   
+=======
+.listadorde{
+    margin-top: -10vw;
+}
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-descriptions.ant-descriptions-bordered >.ant-descriptions-view .ant-descriptions-row >.ant-descriptions-item-label, :where(.css-dev-only-do-not-override-qnu6hi).ant-descriptions.ant-descriptions-bordered >.ant-descriptions-view .ant-descriptions-row >.ant-descriptions-item-content{
+    padding: 0.5vw !important;
+}
+
+
+>>>>>>> franklin
