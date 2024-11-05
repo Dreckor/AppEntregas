@@ -111,7 +111,7 @@ const OrdersList = ({ orders }) => {
       dataSource={orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))}
       columns={columns}
       rowKey="_id"
-      pagination={{ pageSize: 7 }}
+      pagination={{ pageSize: 10 }}
     />
   );
 };
