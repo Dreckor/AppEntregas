@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Descriptions, Button, Input, Select, notification } from 'antd';
+import { Descriptions, Button, Select, notification } from 'antd';
 import { useOrders } from '../../context/OrderContext';
 import { useConfig } from "../../context/ConfigContext";
 import Seguimiento from '../../components/helpers/Seguimiento';
@@ -172,7 +172,7 @@ const RepartidorOrderDetails = () => {
       </div>
 
       <div className='upload-section'>
-        <h3>Subir Evidence Photo</h3>
+        <h3>Subir Foto evidencia</h3>
         <input type="file" accept="image/*" onChange={handleEvidencePhotoChange} />
         {evidencePhoto && <img src={API_URL.replace('api', '') +evidencePhoto} alt="Evidence" style={{ width: '100px', marginTop: '10px' }} />}
       </div>

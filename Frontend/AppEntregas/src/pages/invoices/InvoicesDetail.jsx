@@ -105,16 +105,16 @@ const InvoiceDetails = () => {
               {new Date(invoice.issueDate).toLocaleDateString()} {/* Formato amigable de fecha */}
             </Descriptions.Item>
             <Descriptions.Item label="Valor neto">
-              {`$${invoice.netAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`} {/* Chequeo de valor y formateo */}
+              {`${invoice.netAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`} {/* Chequeo de valor y formateo */}
             </Descriptions.Item>
             <Descriptions.Item label="Valor IVA">
-              {`$${invoice.taxAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
+              {`${invoice.taxAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
             </Descriptions.Item>
             <Descriptions.Item label="Coste embalaje">
-              {`$${invoice.packaging?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
+              {`${invoice.packaging?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
             </Descriptions.Item>
             <Descriptions.Item label="Valor total">
-              {`$${invoice.totalAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
+              {`${invoice.totalAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
             </Descriptions.Item>
           </Descriptions>
         </div>

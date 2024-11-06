@@ -25,7 +25,7 @@ const Invoice = ({ invoice }) => {
               <td style={{ padding: '8px' }}>{product.productLabel}</td>
               <td style={{ padding: '8px', textAlign: 'center' }}>{product.productUnits}</td>
               <td style={{ padding: '8px', textAlign: 'center' }}>{product.kilos}</td>
-              <td style={{ padding: '8px', textAlign: 'right' }}>${product.cost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
+              <td style={{ padding: '8px', textAlign: 'right' }}>{product.cost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</td>
             </tr>
           ))}
         </tbody>

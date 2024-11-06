@@ -5,6 +5,7 @@ import { useOrders } from '../context/OrderContext';
 import { useConfig } from "../context/ConfigContext";
 import Seguimiento from '../components/helpers/Seguimiento';
 import '../css/OrderDetail.css';
+import { API_URL } from "../config";
 const { Option } = Select;
 
 const OrderDetails = () => {
@@ -17,6 +18,9 @@ const OrderDetails = () => {
   const [state, setState] = useState(order?.state || {});
   const [initialPoint, setInitialPoint] = useState(order?.initialPoint || {});
   const [destinyPoint, setDestinyPoint] = useState(order?.destinyPoint || {});
+  const [evidencePhoto, setEvidencePhoto] = useState(order?.evidencePhoto);
+  const [clientSignature, setClientSignature] = useState(order?.clientSignature);
+  
   const { config, fetchConfig } = useConfig();
   const trakingNumber = order?.trakingNumber || 'N/A';
 
@@ -115,7 +119,17 @@ const OrderDetails = () => {
 
         <Seguimiento history={order?.history || []} />
       </div>
+      <div className='upload-section'>
+        <h3> Foto evidencia</h3>
+ 
+        {evidencePhoto && <img src={API_URL.replace('api', '') +evidencePhoto} alt="Evidence" style={{ width: '100px', marginTop: '10px' }} />}
+      </div>
+      <div className='signature-section'>
+        <h3>Firma del Cliente</h3>
+       
 
+        {clientSignature && <img src={API_URL.replace('api', '') +clientSignature} alt="Client Signature" style={{ width: '100px', marginTop: '10px' }} />}
+      </div>
       <div className='detailsbt'>
         <Button className="Botondetails" type="primary" onClick={handleUpdate} style={{ marginRight: 10 }}>
           Actualizar
