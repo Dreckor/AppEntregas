@@ -12,7 +12,7 @@ import {
 const router = Router();
 
 router.get("/invoices", authRequired,checkAdmin,getAllInvoices)
-router.get("/invoice/:id",checkAdmin, getInvoiceById)
+router.get("/invoice/:id", authRequired,checkAdmin, getInvoiceById)
 router.post("/invoice", authRequired,checkAdmin,createInvoice)
 router.put("/invoice/:id", authRequired,checkAdmin,updateInvoiceStatus)
 router.put("/cancel/invoice/:id", authRequired,checkAdmin,cancelInvoice)

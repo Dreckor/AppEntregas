@@ -37,6 +37,8 @@ export const createInvoice = async (req, res) => {
 // Get invoice by ID
 export const getInvoiceById = async (req, res) => {
   try {
+    console.log("buscando por id ")
+    console.log(req.params.id)
     const invoice = await Invoice.findById(req.params.id)
                           .populate("customer")
                           .populate("products.productCategory");

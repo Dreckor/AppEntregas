@@ -94,6 +94,10 @@ server {
         proxy_cache_bypass \$http_upgrade;
     }
 
+    location /uploads/ {
+        alias /opt/AppEntregas/Backend/uploads/
+    }
+
     location / {
         root $APP_DIR/Frontend/AppEntregas/dist;
         index index.html;
