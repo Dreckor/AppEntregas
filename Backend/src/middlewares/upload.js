@@ -33,7 +33,7 @@ const compressImages = async (req, res, next) => {
                 // Comprime la imagen usando sharp
                 await sharp(file.path)
                     .resize(800) // Redimensiona si es necesario
-                    .jpeg({ quality: 70 }) // Ajusta el formato y calidad
+                    .png({ quality: 50 }) // Ajusta el formato y calidad
                     .toFile(compressedFilePath);
                 
                 // Elimina el archivo original sin comprimir
