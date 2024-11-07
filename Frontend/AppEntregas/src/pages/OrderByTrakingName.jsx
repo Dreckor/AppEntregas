@@ -37,7 +37,7 @@ const DetallesOrden = ({ order }) => {
         <Seguimiento history={order?.history || []} />
       </div>
       <div style={{backgroundColor:'white'}}>
-      <button className="viewdetails"><a style={{textDecoration:'none!important', color:'white'}} href="http://localhost:3000/uploads/Contrato.pdf" target="_blank" rel="noopener noreferrer">Visualizar contrato</a></button> 
+      <button className="viewdetails"><a style={{textDecoration:'none!important', color:'white'}} href={API_URL.replace("api","")+ "uploads/Contrato.pdf"} target="_blank" rel="noopener noreferrer">Visualizar contrato</a></button> 
       </div>
     </>
   );
@@ -86,7 +86,7 @@ function OrderByTrakingName() {
     if (trakingnumber) {
       fetchOrder();
     }
-  }, [trakingnumber, getOrder]);
+  }, []);
 
   return (
     <>

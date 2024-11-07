@@ -194,9 +194,7 @@ const RepartidorOrderDetails = () => {
         <Button className="Botondetails" type="primary" onClick={handleUpdate} style={{ marginRight: 10 }}>
           Actualizar
         </Button>
-        <Button className="Botondetails" danger onClick={handleDelete} style={{ marginRight: 10 }}>
-          Eliminar
-        </Button>
+      
         <Button className="Botondetails" onClick={copyToClipboard} style={{ marginRight: 10 }}>Copiar enlace de seguimiento</Button>
         <Button className="Botondetails" onClick={() => navigate(-1)}>Regresar</Button>
       </div>

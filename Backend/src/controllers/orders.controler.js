@@ -1,6 +1,8 @@
 import Order from '../models/order.model.js';
-import {DeliveryPoint, DeparturePoint} from '../models/config.model.js';
 import User from '../models/user.model.js';
+import {DeliveryPoint, DeparturePoint} from '../models/config.model.js';
+import {replaceFilesMiddleware, deleteFile} from '../middlewares/validateImages.js';
+import path from 'path';
 
 
 export const getOrders = async (req, res) => {
@@ -125,71 +127,76 @@ export const getOrder = async (req, res) => {
 };
 
 
-export const updateOrder = async (req, res) => {
-    const { id } = req.params;
+export const updateOrder = [
+    replaceFilesMiddleware,  
+    async (req, res) => {
+        const { id } = req.params;
 
-    // Obtén la ruta de la foto de evidencia y la firma del cliente
-    const evidencePhoto = req.files?.evidencePhoto ? req.files.evidencePhoto[0].path.replace(/\\/g, '/') : null;
-    const clientSignature = req.files?.clientSignature ? req.files.clientSignature[0].path.replace(/\\/g, '/') : null;
+        const evidencePhoto = req.files?.evidencePhoto ? req.files.evidencePhoto[0].path.replace(/\\/g, '/') : null;
+        const clientSignature = req.files?.clientSignature ? req.files.clientSignature[0].path.replace(/\\/g, '/') : null;
 
-    try {
-        // Encontrar la orden actual
-        const order = await Order.findById(id);
+        try {
+            const order = await Order.findById(id);
 
-        if (!order) {
-            return res.status(404).json({ message: 'Order not found' });
+            if (!order) {
+                return res.status(404).json({ message: 'Order not found' });
+            }
+
+            // Lógica para actualizar el estado de la orden
+            const lastState = order.history.length > 0 ? order.history[order.history.length - 1].stateLabel.toString() : null;
+            const newState = req.body.state;
+            const newStateName = newState._id;
+            let updatedHistory = [...order.history];
+
+            if (newStateName !== lastState) {
+                updatedHistory.push({
+                    stateLabel: newState,
+                    startedDate: new Date(),
+                });
+            }
+
+            // Crear un objeto para actualizar
+            const updatedOrderData = {
+                ...req.body,
+                history: updatedHistory,
+                ...(evidencePhoto && { evidencePhoto }),
+                ...(clientSignature && { clientSignature })
+            };
+
+            const updatedOrder = await Order.findByIdAndUpdate(id, updatedOrderData, { new: true });
+
+            res.status(200).json(updatedOrder);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: 'Error updating order', error });
         }
-
-         // Verificar el último estado en el historial
-         const lastState = order.history.length > 0 ? order.history[order.history.length - 1].stateLabel.toString() : null;
-         console.log("last state")
-         console.log(lastState)
-
-         // Solo agregar el nuevo estado si es diferente del último estado
-         const newState = req.body.state;
-         const newStateName = newState._id;
-         console.log("new state")
-         console.log(newStateName)
-         let updatedHistory = [...order.history];
- 
-         if (newStateName !== lastState) {
-             updatedHistory.push({
-                 stateLabel: newState,
-                 startedDate: new Date(),
-             });
-         }
-
-        // Crear un objeto para actualizar
-        const updatedOrderData = {
-            ...req.body,
-            history: updatedHistory,
-            ...(evidencePhoto && { evidencePhoto }), // Solo agrega si no es null
-            ...(clientSignature && { clientSignature }) // Solo agrega si no es null
-        };
-
-        // Actualiza la orden
-        const updatedOrder = await Order.findByIdAndUpdate(id, updatedOrderData, { new: true });
-
-        res.status(200).json(updatedOrder);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Error updating order', error });
     }
-};
+];
 
 
 export const deleteOrder = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const deletedOrder = await Order.findByIdAndDelete(id);
-
-        if (!deletedOrder) {
+        const order = await Order.findById(id);
+        if (!order) {
             return res.status(404).json({ message: 'Order not found' });
         }
 
-        res.status(200).json({ message: 'Order deleted successfully' });
+        // Eliminar archivos asociados si existen
+        if (order.evidencePhoto) {
+            await deleteFile(path.resolve(order.evidencePhoto));
+        }
+        if (order.clientSignature) {
+            await deleteFile(path.resolve(order.clientSignature));
+        }
+
+        // Eliminar la orden de la base de datos
+        await Order.findByIdAndDelete(id);
+
+        res.status(200).json({ message: 'Order and associated files deleted successfully' });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'Error deleting order', error });
     }
 };
