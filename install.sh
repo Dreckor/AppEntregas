@@ -44,8 +44,10 @@ echo -e $BACKEND_ENV_VARS | sudo tee $APP_DIR/Backend/.env
 # Paso 5: Desplegar el Backend (Express)
 echo "Desplegando Backend..."
 cd $APP_DIR/Backend
+sudo chmod -R 777 $APP_DIR/Backend/uploads/
 npm install
 sudo rm -rf node_modules
+npm install
 npm install pm2 -g
 sudo tee ./ecosystem.config.cjs <<EOL
 module.exports = {
@@ -63,7 +65,7 @@ module.exports = {
   ]
 };
 EOL
-pm2 start ecosystem.config.js --env production
+pm2 start ecosystem.config.cjs --env production
 pm2 save
 pm2 startup
 

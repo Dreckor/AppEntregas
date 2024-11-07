@@ -21,7 +21,9 @@ const RepartidorOrderDetails = () => {
   const [destinyPoint, setDestinyPoint] = useState(order?.destinyPoint || {});
   const { config, fetchConfig } = useConfig();
   const trakingNumber = order?.trakingNumber || 'N/A';
+  const [evidencePhotoPreview, setEvidencePhotoPreview] = useState(null); // Preview local
   const [evidencePhoto, setEvidencePhoto] = useState(order?.evidencePhoto);
+  const [clientSignaturePreview, setClientSignaturePreview] = useState(null);
   const [clientSignature, setClientSignature] = useState(order?.clientSignature);
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -71,35 +73,38 @@ const RepartidorOrderDetails = () => {
 
   const handleEvidencePhotoChange = async (event) => {
     const file = event.target.files[0];
+    
     setEvidencePhoto(file)
+    setEvidencePhotoPreview(URL.createObjectURL(file));
 };
 
-  const startDrawing = () => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.strokeStyle = '#000';
+const startDrawing = (e) => {
+  setIsDrawing(true);
+  const ctx = canvasRef.current.getContext('2d');
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = '#000';
+  const { offsetX, offsetY } = e.nativeEvent.touches ? e.nativeEvent.touches[0] : e.nativeEvent;
+  ctx.moveTo(offsetX, offsetY);
+};
 
-    canvas.addEventListener('mousedown', () => {
-      setIsDrawing(true);
-    });
+// Función para realizar el trazo en el canvas
+const draw = (e) => {
+  if (!isDrawing) return;
+  const ctx = canvasRef.current.getContext('2d');
+  const { offsetX, offsetY } = e.nativeEvent.touches ? e.nativeEvent.touches[0] : e.nativeEvent;
+  ctx.lineTo(offsetX, offsetY);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(offsetX, offsetY);
+};
 
-    
-    canvas.addEventListener('mouseup', () => {
-      setIsDrawing(false);
-      ctx.beginPath();
-    });
-
-    canvas.addEventListener('mousemove', (e) => {
-      if (isDrawing) {
-        ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-      }
-    });
-  };
+// Finalizar el dibujo
+const endDrawing = () => {
+  setIsDrawing(false);
+  const ctx = canvasRef.current.getContext('2d');
+  ctx.beginPath(); // Resetea el path
+};
 
   const saveSignature = async () => {
     const canvas = canvasRef.current;
@@ -114,6 +119,7 @@ const RepartidorOrderDetails = () => {
 
     // Guardar el archivo en el estado
     setClientSignature(file); // Guardar el archivo de firma
+    setClientSignaturePreview(URL.createObjectURL(file));
 };
 
   return (
@@ -174,20 +180,39 @@ const RepartidorOrderDetails = () => {
       <div className='upload-section'>
         <h3>Subir Foto evidencia</h3>
         <input type="file" accept="image/*" onChange={handleEvidencePhotoChange} />
-        {evidencePhoto && <img src={API_URL.replace('api', '') +evidencePhoto} alt="Evidence" style={{ width: '100px', marginTop: '10px' }} />}
+        {evidencePhotoPreview ? (
+        <img src={evidencePhotoPreview} alt="Client Signature Preview" style={{ width: '100px', marginTop: '10px' }} />
+    ) : evidencePhoto ? (
+      <img src={`${API_URL.replace('api', '') + evidencePhoto}`} alt="Saved Client Signature" style={{ width: '100px', marginTop: '10px' }} />
+    ) : (
+      <p>No hay foto disponible</p>
+    )}
+       
       </div>
 
       <div className='signature-section'>
         <h3>Firma del Cliente</h3>
         <canvas
-          ref={canvasRef}
-          width={400}
-          height={200}
-          style={{ border: '1px solid black' }}
-          onMouseDown={startDrawing}
-        />
+      ref={canvasRef}
+      width={400}
+      height={200}
+      style={{ border: '1px solid black' }}
+      onMouseDown={startDrawing}
+      onMouseMove={draw}
+      onMouseUp={endDrawing}
+      onMouseLeave={endDrawing} // Para detener si el mouse sale del canvas
+      onTouchStart={startDrawing}
+      onTouchMove={draw}
+      onTouchEnd={endDrawing}
+    />
         <Button onClick={saveSignature} style={{ marginTop: '10px' }}>Guardar Firma</Button>
-        {clientSignature && <img src={API_URL.replace('api', '') +clientSignature} alt="Client Signature" style={{ width: '100px', marginTop: '10px' }} />}
+        {clientSignaturePreview ? (
+      <img src={clientSignaturePreview} alt="Client Signature Preview" style={{ width: '100px', marginTop: '10px' }} />
+    ) : clientSignature ? (
+      <img src={`${API_URL.replace('api', '') + clientSignature}`} alt="Saved Client Signature" style={{ width: '100px', marginTop: '10px' }} />
+    ) : (
+      <p>No hay firma disponible</p>
+    )}
       </div>
 
       <div className='detailsbt'>
