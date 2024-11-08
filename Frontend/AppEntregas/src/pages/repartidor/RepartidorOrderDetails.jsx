@@ -10,7 +10,7 @@ import { API_URL } from "../../config";
 const { Option } = Select;
 
 const RepartidorOrderDetails = () => {
-  const { updateOrder, deleteOrder } = useOrders();
+  const { updateOrder } = useOrders();
   const location = useLocation();
   const navigate = useNavigate();
   const { order } = location.state || {};
@@ -61,15 +61,7 @@ const RepartidorOrderDetails = () => {
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      await deleteOrder(order._id);
-      notification.success({ message: 'Orden eliminada correctamente' });
-      navigate('/repartidor/orders');
-    } catch (error) {
-      notification.error({ message: 'Error al eliminar la orden' });
-    }
-  };
+
 
   const handleEvidencePhotoChange = async (event) => {
     const file = event.target.files[0];
@@ -79,6 +71,7 @@ const RepartidorOrderDetails = () => {
 };
 
 const startDrawing = (e) => {
+
   setIsDrawing(true);
   const ctx = canvasRef.current.getContext('2d');
   ctx.lineWidth = 2;
@@ -92,15 +85,30 @@ const startDrawing = (e) => {
 const draw = (e) => {
   if (!isDrawing) return;
   const ctx = canvasRef.current.getContext('2d');
-  const { offsetX, offsetY } = e.nativeEvent.touches ? e.nativeEvent.touches[0] : e.nativeEvent;
-  ctx.lineTo(offsetX, offsetY);
+
+  let clientX, clientY;
+
+  // Detectar si es un evento táctil o de mouse
+  if (e.touches && e.touches.length > 0) {
+    // Evento táctil (móvil)
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  } else {
+    // Evento de mouse (desktop)
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+
+  const { left, top } = canvasRef.current.getBoundingClientRect();
+  ctx.lineTo(clientX - left, clientY - top);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(offsetX, offsetY);
+  ctx.moveTo(clientX - left, clientY - top);
 };
 
 // Finalizar el dibujo
 const endDrawing = () => {
+  
   setIsDrawing(false);
   const ctx = canvasRef.current.getContext('2d');
   ctx.beginPath(); // Resetea el path
@@ -196,12 +204,12 @@ const endDrawing = () => {
       ref={canvasRef}
       width={400}
       height={200}
-      style={{ border: '1px solid black' }}
+      style={{ border: '1px solid black', touchAction: 'none' }}
+      onTouchStart={startDrawing}
       onMouseDown={startDrawing}
       onMouseMove={draw}
       onMouseUp={endDrawing}
       onMouseLeave={endDrawing} // Para detener si el mouse sale del canvas
-      onTouchStart={startDrawing}
       onTouchMove={draw}
       onTouchEnd={endDrawing}
     />
