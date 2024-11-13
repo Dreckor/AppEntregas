@@ -12,6 +12,7 @@ import Categorias from "../components/ConfigComponents/Categorias.jsx";
 import Estados from "../components/ConfigComponents/Estados.jsx";
 import IvaAndPackagingUpdate from "../components/ConfigComponents/IvaAndPackagingUpdate.jsx";
 import "../css/ConfigPage.css"
+import Metodos from "../components/ConfigComponents/MetodosDePago.jsx";
 
 const { Content } = Layout;
 
@@ -45,6 +46,12 @@ const App = () => {
       key: "5",
       label: `Costes`,
       children: <IvaAndPackagingUpdate />,
+      icon: <DollarOutlined />, // Aquí el contenido de la pestaña
+    },
+    {
+      key: "6",
+      label: `Metodos de pago`,
+      children: <Metodos/>,
       icon: <DollarOutlined />, // Aquí el contenido de la pestaña
     },
   ];

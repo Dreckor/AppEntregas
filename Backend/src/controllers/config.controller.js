@@ -1,4 +1,4 @@
-import {Config, DeliveryPoint, DeparturePoint,ProductCategory, State} from '../models/config.model.js';
+import {Config, DeliveryPoint, DeparturePoint,PaymentMethod,ProductCategory, State} from '../models/config.model.js';
 
 const initializeConfig = async () => {
   try {
@@ -8,6 +8,7 @@ const initializeConfig = async () => {
         deliveryPoints: [],
         departurePoints: [],
         productCategories: [],
+        paymentMethods:[],
         state: [],
         packagingCost: 10,
         iva: 0 
@@ -145,7 +146,38 @@ export const updateConfig = async (req, res) => {
                 }
             }
         }
+        if (req.body.paymentMethods && Array.isArray(req.body.paymentMethods)) {
+          for (const method of req.body.paymentMethods) {
+              if (!method._id) {
+                  // Si el punto no tiene un ID, es nuevo
+                  const newMethod = new PaymentMethod(method);
+                  await newMethod.save();
+                  config.paymentMethods.push(newMethod);
+                  
+              } else {
+                  // Si ya tiene un ID, buscarlo y agregarlo solo si no está ya en la configuración
+                  let existingMethod= await PaymentMethod.findById(method._id);
+                  if (!existingMethod) {
+                      return res.status(404).json({ message: 'Metodo no encontrado' });
+                  }
+                  await PaymentMethod.findByIdAndUpdate(method._id, method)
+                  const exists = config.paymentMethods.some(p => 
+                      p._id.toString() === method._id
+                  );
 
+                  if (!exists) {
+                      config.paymentMethods.push(existingMethod); // Agregar solo si no existe
+                  }else{
+                    console.log("actualizando la conf ")
+                      let index = config.paymentMethods.findIndex(c => c._id.toString() == method._id )
+                      if(index != null){
+                        config.paymentMethods[index] = method
+                        console.log("uptated")
+                      }
+                  }
+              }
+          }
+      }
         // Verificar si se pasó un array de states
         if (req.body.states && Array.isArray(req.body.states)) {
           for (const state of req.body.states) {
