@@ -263,6 +263,14 @@ export const deleteConfigOption = async (req, res) => {
         // También eliminar la categoría de la colección ProductCategory en MongoDB
         await State.findByIdAndDelete(optionValue);
       }
+      
+      else if (optionType === 'paymentMethod') {
+        // Filtrar y eliminar de la configuración
+        config.paymentMethods = config.paymentMethods.filter(method => method._id.toString() !== optionValue);
+        
+        // También eliminar la categoría de la colección ProductCategory en MongoDB
+        await State.findByIdAndDelete(optionValue);
+      }
        else {
         return res.status(400).json({ message: 'Invalid option type' });
       }
