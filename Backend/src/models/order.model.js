@@ -33,6 +33,10 @@ const orderSchema = new mongoose.Schema(
         startedDate: { type: Date, required: true }
       },
     ],
+    paymentMethod: {
+      type: mongoose.Schema.Types.ObjectId, ref: "PaymentMethod",
+      required: true,
+    },
     netCost: { type: Number, required: true },
     totalCost: { type: Number, required: true },
     packaging:  { type: Boolean, required: true },

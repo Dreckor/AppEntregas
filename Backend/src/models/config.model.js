@@ -20,17 +20,20 @@ const stateSchema = new mongoose.Schema({
   description: { type: String, requiered: true, trim: true},
   color: { type: String, requiered: true, trim: true},
 })
-
+const paymentMethodSchema= mongoose.Schema({
+  name: { type: String, required: true, trim: true},
+})
 const configSchema = new mongoose.Schema(
   {
     deliveryPoints: [deliveryPointSchema],
     departurePoints: [departurePointSchema],
     productCategories: [productCategorySchema],
+    paymentMethods:[paymentMethodSchema],
     states: [stateSchema],
     iva: { type: Number, required: true },
     packagingCost: { type: Number, required: true } 
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 
@@ -39,6 +42,7 @@ const DeparturePoint = mongoose.model("DeparturePoint", departurePointSchema);
 const ProductCategory = mongoose.model("ProductCategory", productCategorySchema);
 const State = mongoose.model("State", stateSchema);
 const Config = mongoose.model("Config", configSchema);
+const PaymentMethod = mongoose.model("PaymentMethod",paymentMethodSchema);
 
 // Exportación de todos los modelos
-export { DeliveryPoint, DeparturePoint, ProductCategory, State, Config };
+export { DeliveryPoint, DeparturePoint, ProductCategory, State, Config, PaymentMethod};

@@ -399,6 +399,18 @@ export default function OrdersForm() {
                   )
                 }/>
         </Form.Item>
+        <Form.Item className="FormItem"
+          label=""
+          name="orderMetod"
+          rules={[
+            {
+              required: true,
+              message: "Por favor ingresa el metodo de pago",
+            },
+          ]}
+        >
+          <Input placeholder="Por favor ingresa el metodo de pago" />
+        </Form.Item>
         <div className="TotalIva">
         <h4>Embalaje: {packaging? config.packagingCost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : 0 }</h4>
         <h4>Subtotal: {subTotalPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
