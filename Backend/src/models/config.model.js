@@ -12,7 +12,7 @@ const departurePointSchema = new mongoose.Schema({
 
 const productCategorySchema = new mongoose.Schema({
   categoryName: { type: String, required: true, trim: true },
-  pricePerKilo: { type: Number, required: true },
+  pricePerKilo: { type: Number, required: true }, 
 });
 
 const stateSchema = new mongoose.Schema({
@@ -20,17 +20,20 @@ const stateSchema = new mongoose.Schema({
   description: { type: String, requiered: true, trim: true},
   color: { type: String, requiered: true, trim: true},
 })
-
+const paymentMethodSchema= mongoose.Schema({
+  name: { type: String, required: true, trim: true},
+})
 const configSchema = new mongoose.Schema(
   {
     deliveryPoints: [deliveryPointSchema],
     departurePoints: [departurePointSchema],
     productCategories: [productCategorySchema],
+    paymentMethods:[paymentMethodSchema],
     states: [stateSchema],
     iva: { type: Number, required: true },
     packagingCost: { type: Number, required: true } 
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 
@@ -38,7 +41,9 @@ const DeliveryPoint = mongoose.model("DeliveryPoint", deliveryPointSchema);
 const DeparturePoint = mongoose.model("DeparturePoint", departurePointSchema);
 const ProductCategory = mongoose.model("ProductCategory", productCategorySchema);
 const State = mongoose.model("State", stateSchema);
+const PaymentMethod = mongoose.model("PaymentMethod",paymentMethodSchema);
 const Config = mongoose.model("Config", configSchema);
 
+
 // Exportación de todos los modelos
-export { DeliveryPoint, DeparturePoint, ProductCategory, State, Config };
+export { DeliveryPoint, DeparturePoint, ProductCategory, State, PaymentMethod, Config};

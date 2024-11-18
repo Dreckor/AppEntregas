@@ -95,7 +95,7 @@ export default function OrdersForm() {
         hasIva: checkIva,
         userId: values.userId
       });
-      console.log(invoice)
+     
       await createOrder({
         ...values,
         products,
@@ -106,7 +106,15 @@ export default function OrdersForm() {
         invoice: invoice._id
       });
       
-      //console.log(values);
+      console.log({
+        ...values,
+        products,
+        totalCost: totalPrice,
+        netCost: subTotalPrice,
+        packaging: packaging,
+        hasIva: checkIva,
+        invoice: invoice._id
+      });
       //console.log(products);
       navigate("/orders");
       message.success("Orden creada exitosamente");
@@ -398,6 +406,33 @@ export default function OrdersForm() {
                      e.target.checked,
                   )
                 }/>
+        </Form.Item>
+        <Form.Item
+          className="paymentItem"
+          label="" 
+          name="paymentMethod"
+          rules={[
+            {
+              required: true,
+              message: "Por favor selecciona un método de pago",
+            },
+          ]}
+        >
+          <Select className="FormItem"
+            placeholder={
+              dataloading
+                ? "Cargando métodos de pago..."
+                : "Selecciona un método de pago"
+            }
+            disabled={dataloading}
+            notFoundContent={dataloading ? <Spin size="small" /> : null}
+          >
+            {config?.paymentMethods.map((paymentMethod) => (
+              <Option key={paymentMethod._id} value={paymentMethod._id}>
+                {paymentMethod.name}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <div className="TotalIva">
         <h4>Embalaje: {packaging? config.packagingCost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : 0 }</h4>

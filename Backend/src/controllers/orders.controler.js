@@ -2,6 +2,7 @@ import Order from '../models/order.model.js';
 import User from '../models/user.model.js';
 import {DeliveryPoint, DeparturePoint} from '../models/config.model.js';
 import {replaceFilesMiddleware, deleteFile} from '../middlewares/validateImages.js';
+import { sendOrderEmail } from '../services/email.service.js';
 import path from 'path';
 
 
@@ -49,7 +50,7 @@ export const getOrders = async (req, res) => {
 
 
 export const createOrder = async (req, res) => {
-    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId, netCost, totalCost, packaging, hasIva, invoice,evidencePhoto = '', clientSignature = '' } = req.body;
+    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId, netCost, totalCost, packaging, hasIva, invoice,evidencePhoto = '', clientSignature = '', paymentMethod } = req.body;
     console.log(req.user)
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Solo un usuario administrador puede crear ordenes' });
@@ -84,13 +85,26 @@ export const createOrder = async (req, res) => {
             hasIva,
             invoice,
             evidencePhoto, 
-            clientSignature
+            clientSignature,
+            paymentMethod
 
         });
 
         const savedOrder = await newOrder.save();
-        await User.findByIdAndUpdate(userId, { $push: { orders: savedOrder._id } });
-        await User.findByIdAndUpdate(asignedUserId, { $push: { asignedOrders: savedOrder._id } });
+        const client = await User.findByIdAndUpdate(userId, { $push: { orders: savedOrder._id } });
+        const repartidor = await User.findByIdAndUpdate(asignedUserId, { $push: { asignedOrders: savedOrder._id } });
+
+        // Enviar correo con los detalles de la orden
+        await sendOrderEmail({
+            orderTitle,
+            trakingNumber: trakingNumberString,
+            user: client,
+            assignedTo: repartidor,
+            initialPoint: departure,
+            destinyPoint: delivery,
+            products,
+            totalCost
+        });
 
         res.status(201).json(savedOrder);
     } catch (error) {

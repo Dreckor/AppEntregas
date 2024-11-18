@@ -1,0 +1,2 @@
+OrderID,Titulo de la orden,Punto de partida,Punto de destino,Cliente,Repartidor,Estado,Metodo de Pago,Costo Total,Factura,Costo de Empaque,Monto Total,Impuesto,Monto Neto,Fecha de Emisión,Estado de Factura,Fecha de Creación,Fecha de Actualización,Productos
+672d49b66db383dca06105e8,mi orden,Punto de partida (Kra 234),Punto de entrega (Cll 123),Usuario,Repartidor,En camino,Método no definido,30940,13,0,30940,4940,26000,2024-11-07T23:13:58.229Z,pending,2024-11-07T23:13:58.430Z,2024-11-07T23:13:58.430Z,"Nombre: Insumos 2, Unidades: 1, Kilos: 1, Costo: 20000"

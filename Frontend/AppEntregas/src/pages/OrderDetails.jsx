@@ -20,6 +20,7 @@ const OrderDetails = () => {
   const [destinyPoint, setDestinyPoint] = useState(order?.destinyPoint || {});
   const [evidencePhoto, setEvidencePhoto] = useState(order?.evidencePhoto);
   const [clientSignature, setClientSignature] = useState(order?.clientSignature);
+  const [orderMetod, setOrderMetod] = useState(order?.orderMetod || '');
   
   const { config, fetchConfig } = useConfig();
   const trakingNumber = order?.trakingNumber || 'N/A';
@@ -46,6 +47,7 @@ const OrderDetails = () => {
         initialPoint,
         destinyPoint,
         trakingNumber,
+        orderMetod,
       };
       await updateOrder(order._id, updatedOrder);
       notification.success({ message: 'Orden actualizada correctamente' });
@@ -114,6 +116,9 @@ const OrderDetails = () => {
           </Descriptions.Item>
           <Descriptions.Item label="Repartidor">
             Repartidor: {order?.assignedTo?.username || "No asignado"}, Dirección: {order?.assignedTo?.address || "No disponible"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Metodo de pago">
+            <Input value={orderMetod} onChange={(e) => setOrderMetod(e.target.value)} />
           </Descriptions.Item>
         </Descriptions>
 
