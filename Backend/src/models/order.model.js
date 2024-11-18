@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-    },
+    }, 
     products: [
       {
         productLabel: { type: String, required: true },

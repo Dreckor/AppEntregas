@@ -1,14 +1,14 @@
-import { Table, Tag, Button } from "antd";
+/* eslint-disable react/prop-types */
+import { Table, Tag, Button } from 'antd';
 import { FileTextOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import '../../css/OrdersList.css'
 
-const OrdersList = ({ orders }) => {
+const RecentOrders = ({ orders }) => {
   const navigate = useNavigate();
 
   // Generar filtros basados en los estados de las órdenes
   const stateFilters = orders?.reduce((filters, order) => {
-    const stateName = order?.state?.name ? order.state.name.toUpperCase() : "SIN ESTADO";
+    const stateName = order?.state?.name ? order.state.name.toUpperCase() : 'SIN ESTADO';
     if (!filters.some(filter => filter.text === stateName)) {
       filters.push({ text: stateName, value: stateName });
     }
@@ -17,56 +17,56 @@ const OrdersList = ({ orders }) => {
 
   const columns = [
     {
-      title: "Número de Seguimiento",
-      dataIndex: "trakingNumber",
-      key: "trakingNumber",
+      title: 'Número de Seguimiento',
+      dataIndex: 'trakingNumber',
+      key: 'trakingNumber',
       sorter: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-      render: (trakingNumber) => trakingNumber || "N/A",
+      render: (trakingNumber) => trakingNumber || 'N/A',
       className: 'listseg',
     },
     {
-      title: "Estado",
-      key: "state",
-      dataIndex: "state",
+      title: 'Estado',
+      key: 'state',
+      dataIndex: 'state',
       filters: stateFilters,
       onFilter: (value, record) => {
-        const stateName = record?.state?.name ? record.state.name.toUpperCase() : "SIN ESTADO";
+        const stateName = record?.state?.name ? record.state.name.toUpperCase() : 'SIN ESTADO';
         return stateName === value;
       },
       render: (state) => {
-        let color = state?.color || "blue";
+        const color = state?.color || 'blue';
         return (
           <Tag className="Estadosbtn" color={color} style={{ marginTop: '8px' }}>
-            {state?.name ? state.name.toUpperCase() : "SIN ESTADO"}
+            {state?.name ? state.name.toUpperCase() : 'SIN ESTADO'}
           </Tag>
         );
       },
     },
     {
-      className:"PuntoInicial",
-      title: "Punto Inicial",
-      dataIndex: "initialPoint",
-      key: "initialPoint",
-      render: (initialPoint) => initialPoint?.name || "No disponible",
+      className: 'PuntoInicial',
+      title: 'Punto Inicial',
+      dataIndex: 'initialPoint',
+      key: 'initialPoint',
+      render: (initialPoint) => initialPoint?.name || 'No disponible',
     },
     {
-      className:"PuntoDestino",
-      title: "Punto de Destino",
-      dataIndex: "destinyPoint",
-      key: "destinyPoint",
-      render: (destinyPoint) => destinyPoint?.name || "No disponible",
+      className: 'PuntoDestino',
+      title: 'Punto de Destino',
+      dataIndex: 'destinyPoint',
+      key: 'destinyPoint',
+      render: (destinyPoint) => destinyPoint?.name || 'No disponible',
     },
     {
-      className:"ProductosLista",
-      title: "Productos",
-      dataIndex: "products",
-      key: "products",
+      className: 'ProductosLista',
+      title: 'Productos',
+      dataIndex: 'products',
+      key: 'products',
       render: (products) => (
         <>
           {products?.length > 0 ? (
             products.map((product, index) => (
               <Tag color="purple" key={index}>
-                   {product.productUnits || 0}  { product.productLabel || "Sin etiqueta"} - Coste: ${product.cost || 0}
+                {product.productUnits || 0} {product.productLabel || 'Sin etiqueta'} - Coste: ${product.cost || 0}
               </Tag>
             ))
           ) : (
@@ -76,14 +76,14 @@ const OrdersList = ({ orders }) => {
       ),
     },
     {
-      title: "Cliente",
-      dataIndex: "user",
-      key: "user",
-      render: (user) => user?.username || "Anónimo",
+      title: 'Cliente',
+      dataIndex: 'user',
+      key: 'user',
+      render: (user) => user?.username || 'Anónimo',
     },
     {
-      title: "Acciones",
-      key: "actions",
+      title: 'Acciones',
+      key: 'actions',
       render: (_, record) => (
         <>
           <Button
@@ -95,7 +95,7 @@ const OrdersList = ({ orders }) => {
             Ver Detalles
           </Button>
           <Button
-          className="Viewfac"
+            className="Viewfac"
             icon={<FileTextOutlined />}
             onClick={() => navigate(`/invoice/${record.invoice}`, { state: { order: record } })}
           >
@@ -107,7 +107,8 @@ const OrdersList = ({ orders }) => {
   ];
 
   return (
-    <Table className="ListOrders"
+    <Table
+      className="ListOrders"
       dataSource={orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))}
       columns={columns}
       rowKey="_id"
@@ -116,4 +117,4 @@ const OrdersList = ({ orders }) => {
   );
 };
 
-export default OrdersList;
+export default RecentOrders;

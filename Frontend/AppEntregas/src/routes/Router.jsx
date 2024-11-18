@@ -13,6 +13,7 @@ import ConfigPage from '../pages/ConfigPage';
 import InvoicesPage from '../pages/invoices/InvoicesPage';
 import InvoicePrintable from '../pages/invoices/InvoicePrintable';
 import InvoicesDetail from '../pages/invoices/InvoicesDetail';
+import Dashboard from '../pages/DashboardPage';
 
 export const CustomRouter = ()=>{
     return (
@@ -30,6 +31,7 @@ export const CustomRouter = ()=>{
                     <Route path="/invoices" element={<><Header /><InvoicesPage /></>} />
                     <Route path="/invoice/:invoiceId" element={<><Header /><InvoicesDetail /></>} />
                     <Route path="/invoice/:invoiceId/print" element={<><InvoicePrintable /></>} />
+                    <Route path="/dashboard/" element={<><Header /><Dashboard /></>} />
                 </Route>
 
                 <Route element={<ProtectedRouteRepartidor/>}>
