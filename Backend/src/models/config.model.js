@@ -31,7 +31,10 @@ const configSchema = new mongoose.Schema(
     paymentMethods:[paymentMethodSchema],
     states: [stateSchema],
     iva: { type: Number, required: true },
-    packagingCost: { type: Number, required: true } 
+    packagingCost: { type: Number, required: true },
+    customsDuty: { type: Number, required: true,},  
+    insurance: { type: Number, required: true, },  
+    otherTaxes: { type: Number, required: true, },
   },
   { timestamps: true },
 );

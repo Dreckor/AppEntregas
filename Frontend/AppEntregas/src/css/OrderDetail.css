@@ -75,6 +75,11 @@
 .detallesord .ant-descriptions-view{
     width: auto!important;
 }
+.logoPrint{
+    visibility: hidden;
+    position: absolute;
+}
+
 @media only screen and (max-width:800px){
     .detallesord{
         flex-direction: column;
@@ -155,5 +160,47 @@
     }
     .detallesord .ant-descriptions-view{
         width: auto!important;
+    }
+}
+@media print {
+    /* Ocultar todo el contenido excepto el div con id "print-section" */
+    body * {
+      visibility: hidden;
+    }
+  
+    .print-section * {
+      visibility: visible;
+    } 
+
+    .detallesord .ant-descriptions-title{
+        font-size: 5vw; 
+    }
+    .detallesord .ant-descriptions{
+        width: 100%;
+        margin-left: 10vw;
+    }
+
+    .detallesord .ant-descriptions-item-label{
+        font-size: 0.8vw!important;
+        padding: 0.5vw 1vw!important;
+    }
+    .detallesord .ant-descriptions-item-label span{
+        font-size: 1.8vw;
+        color: rgb(34, 34, 34);
+        font-weight: 600;
+        font-family: "Rubik", sans-serif;
+    }
+    .detallesord .ant-descriptions-item-content span{
+        font-size: 1.2vw;
+        color: rgb(34, 34, 34);
+        font-weight: 400;
+        font-family: "Rubik", sans-serif;
+    }
+    .logoPrint *{
+        visibility: visible;
+    }
+    .logoPrint{
+        top: 45vw;
+        left: 90vw;
     }
 }

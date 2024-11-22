@@ -6,6 +6,7 @@ import { useConfig } from "../context/ConfigContext";
 import Seguimiento from '../components/helpers/Seguimiento';
 import '../css/OrderDetail.css';
 import { API_URL } from "../config";
+import comerza from '../assets/comerza.png'
 const { Option } = Select;
 
 const OrderDetails = () => {
@@ -20,7 +21,7 @@ const OrderDetails = () => {
   const [destinyPoint, setDestinyPoint] = useState(order?.destinyPoint || {});
   const [evidencePhoto, setEvidencePhoto] = useState(order?.evidencePhoto);
   const [clientSignature, setClientSignature] = useState(order?.clientSignature);
-  const [orderMetod, setOrderMetod] = useState(order?.orderMetod || '');
+  const [paymentMethod, setPaymentMethod] = useState(order?.paymentMethod || '');
   
   const { config, fetchConfig } = useConfig();
   const trakingNumber = order?.trakingNumber || 'N/A';
@@ -28,6 +29,9 @@ const OrderDetails = () => {
   useEffect(() => {
     fetchConfig();
   }, []);
+  const printDetails = () => {
+    window.print();
+  };
 
   const copyToClipboard = () => {
     const url = `${window.location.origin}/order/${trakingNumber}`;
@@ -47,7 +51,7 @@ const OrderDetails = () => {
         initialPoint,
         destinyPoint,
         trakingNumber,
-        orderMetod,
+        paymentMethod,
       };
       await updateOrder(order._id, updatedOrder);
       notification.success({ message: 'Orden actualizada correctamente' });
@@ -69,8 +73,9 @@ const OrderDetails = () => {
 
   return (
     <>
+      <div className='logoPrint'><img className="ComerzaLogo" src={comerza} alt="ComerzaLogo" /><div className="Bienvenidos"><h1>COMERZA</h1></div> </div>
       <div className='detallesord'>
-        <Descriptions title="Detalles de la Orden" bordered>
+        <Descriptions title="Detalles de la Orden" bordered className='print-section'>
           <Descriptions.Item label="Título">
             <Input value={orderTitle} onChange={(e) => setOrderTitle(e.target.value)} />
           </Descriptions.Item>
@@ -118,7 +123,7 @@ const OrderDetails = () => {
             Repartidor: {order?.assignedTo?.username || "No asignado"}, Dirección: {order?.assignedTo?.address || "No disponible"}
           </Descriptions.Item>
           <Descriptions.Item label="Metodo de pago">
-            <Input value={orderMetod} onChange={(e) => setOrderMetod(e.target.value)} />
+          {order?.paymentMethod.name}
           </Descriptions.Item>
         </Descriptions>
 
@@ -144,7 +149,8 @@ const OrderDetails = () => {
         </Button>
         <Button className="Botondetails" onClick={copyToClipboard} style={{ marginRight: 10 }}>Copiar enlace de seguimiento</Button>
         <Button className="Botondetails" onClick={() => navigate(-1)}>Regresar</Button>
-      </div>
+        <Button className="Botondetails" type="primary" onClick={printDetails} style={{ marginRight: 10 }}>Imprimir Guia</Button>
+      </div>      
     </>
   );
 };

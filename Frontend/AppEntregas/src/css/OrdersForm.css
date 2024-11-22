@@ -70,6 +70,12 @@ body{
     display: flex;
     font-size: 0.8vw;
     gap: 1.3vw;
+    flex-wrap: wrap;
+}
+.TotalIva h4{
+    flex: 1 1 calc(10% - 10px); /* Ocupa 50% del ancho menos el espacio del gap */
+  text-align: center;
+  padding: 0vw;
 }
 .FormItem {
     width: 20vw;

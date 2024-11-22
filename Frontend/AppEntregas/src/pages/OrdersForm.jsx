@@ -34,6 +34,12 @@ export default function OrdersForm() {
   const [ivaPrice, setIvaPrice] = useState(0);
   const [packaging, setPackaging] = useState(false);
   const [productPrice, setProductPrice] = useState(0);
+  const [checkCustomsDuty, setCheckCustomsDuty] = useState(false); 
+  const [dutyPrice, setDutyPrice] = useState(0);
+  const [checkInsurance, setCheckInsurance] = useState(false);
+  const [insurancePrice, setInsurancePrice] = useState(0);
+  const [CheckOtherTaxes, setCheckOtherTaxes] = useState (false);
+  const [otherTaxesPrice, setOtherTaxesPrice] = useState (0);
 
   const { createOrder } = useOrders();
   const { createNewInvoice } = useInvoices();
@@ -72,14 +78,28 @@ export default function OrdersForm() {
     // Si packaging está seleccionado, se suma 10 al total
     const finalTotal = packaging ? total + config.packagingCost : total;
     setSubTotalPrice(finalTotal);
-    recalculateTotalPrice(finalTotal, checkIva)
+    recalculateTotalPrice(finalTotal)
   };
-  const recalculateTotalPrice = (subTotal, chkIva) => {
+
+  const recalculateTotalPrice = (subTotal, chkIva ,chkDuty,chkinsurance,chktaxes) => {
     const ivaConfig = config.iva
     const ivaCost = chkIva ?  subTotal * (ivaConfig / 100): 0
     setIvaPrice(ivaCost)
-    // Si IVa está seleccionado
-    const finalTotal = chkIva ? subTotal + ivaCost : subTotal;
+
+    const dutyconfig = config.customsDuty
+    const dutyCost = chkDuty ? subTotal *  (dutyconfig / 100):0
+    setDutyPrice(dutyCost)
+    
+    const insuranceconfig =config.insurance
+    const insuranceCost = chkinsurance ? subTotal * (insuranceconfig /100):0
+    setInsurancePrice(insuranceCost)
+
+    const taxesconfig = config.otherTaxes
+    const taxescost = chktaxes ? subTotal * (taxesconfig /100):0
+    setOtherTaxesPrice(taxescost)
+   
+    const finalTotal = subTotal + ivaCost + dutyCost + insuranceCost + taxescost ;
+    
     setTotalPrice(finalTotal);
   };
   
@@ -93,7 +113,10 @@ export default function OrdersForm() {
         netCost: subTotalPrice,
         packaging: packaging,
         hasIva: checkIva,
-        userId: values.userId
+        userId: values.userId,
+        hasCustomsDuty: checkCustomsDuty,
+        hasInsurance: checkInsurance,
+        hasTaxes: CheckOtherTaxes
       });
      
       await createOrder({
@@ -103,7 +126,10 @@ export default function OrdersForm() {
         netCost: subTotalPrice,
         packaging: packaging,
         hasIva: checkIva,
-        invoice: invoice._id
+        invoice: invoice._id,
+        hasCustomsDuty: checkCustomsDuty,
+        hasInsurance: checkInsurance,
+        hasTaxes: CheckOtherTaxes
       });
       
       console.log({
@@ -113,7 +139,7 @@ export default function OrdersForm() {
         netCost: subTotalPrice,
         packaging: packaging,
         hasIva: checkIva,
-        invoice: invoice._id
+        invoice: invoice._id,
       });
       //console.log(products);
       navigate("/orders");
@@ -137,15 +163,30 @@ export default function OrdersForm() {
     setProductModalVisible(true);
   };
   const handleIVAChange = (value) => {
-
     setCheckIva(value);
-  
-    recalculateTotalPrice(subTotalPrice, value);
+    recalculateTotalPrice(subTotalPrice, value,checkCustomsDuty,checkInsurance);
   };
+
+  const handleDutyChange = (value) => {
+    setCheckCustomsDuty(value); 
+    recalculateTotalPrice(subTotalPrice,checkIva,value, checkInsurance);
+  };
+
+  const handleInsuranceChange =(value)=>{
+    setCheckInsurance(value);
+    recalculateTotalPrice(subTotalPrice,  checkIva,checkCustomsDuty, value,CheckOtherTaxes);
+  }
+
+  const handleTaxesChange =(value)=>{
+    setCheckOtherTaxes(value);
+    recalculateTotalPrice(subTotalPrice,checkIva,checkCustomsDuty,checkInsurance,value)
+  }
+
   const handlePackagingChange = (value) => {
     setPackaging(value);
     recalculateSubTotalPrice(products, value);
   };
+  
   
   const handleEditProduct = (index) => {
     setEditingProduct({ ...products[index], index });
@@ -379,6 +420,7 @@ export default function OrdersForm() {
           ))}
         </Form.Item >
         
+        
         <Form.Item
           className="Ivacheck"
           label="Cobrar embalaje"
@@ -406,6 +448,15 @@ export default function OrdersForm() {
                      e.target.checked,
                   )
                 }/>
+        </Form.Item>
+        <Form.Item className="Ivacheck" label="Cobrar aduanas" name="hasCustomsDuty">
+          <Checkbox onChange={(e) => handleDutyChange(e.target.checked,)} />
+        </Form.Item>
+        <Form.Item className="Ivacheck" label="Cobrar seguro" name="hasInsurance">
+          <Checkbox onChange={(e) => handleInsuranceChange(e.target.checked,)} />
+        </Form.Item>
+        <Form.Item className="Ivacheck" label="Otros impuestos" name="hasOtherTaxes">
+          <Checkbox onChange={(e) => handleTaxesChange(e.target.checked,)} />
         </Form.Item>
         <Form.Item
           className="paymentItem"
@@ -435,10 +486,13 @@ export default function OrdersForm() {
           </Select>
         </Form.Item>
         <div className="TotalIva">
-        <h4>Embalaje: {packaging? config.packagingCost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : 0 }</h4>
-        <h4>Subtotal: {subTotalPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
-        <h4>IVA: {ivaPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
-        <h4>Total: {totalPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
+        <h4>Embalaje: {packaging ? config.packagingCost.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) : 0 }</h4>
+          <h4>Subtotal: {subTotalPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
+          <h4>IVA: {ivaPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
+          <h4>Aduanas: {dutyPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
+          <h4>Seguro: {insurancePrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
+          <h4>Otros impuestos: {otherTaxesPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
+          <h4>Total: {totalPrice.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}</h4>
         </div>
 
         <Form.Item className="FormItem">

@@ -4,6 +4,7 @@ import { Descriptions, Button, Select, notification } from 'antd';
 import { InvoiceContext } from '../../context/InvoiceContext.jsx';
 import { useInvoices } from '../../context/InvoiceContext';
 import "../../css/OrderDetail.css"
+import comerza from '../../assets/comerza.png'
 
 const { Option } = Select;
 
@@ -16,7 +17,9 @@ const InvoiceDetails = () => {
   const [invoice, setInvoice] = useState(locationInvoice || null); // Estado local de la factura
   const { getInvoice, loading, error } = useContext(InvoiceContext);
   const [state, setState] = useState('pending'); // Estado de la factura inicializado en 'pending'
-
+  const printDetails = () => {
+    window.print();
+  };
   // Obtener la factura si no está disponible localmente
   useEffect(() => {
     const fetchInvoice = async () => {
@@ -71,9 +74,11 @@ const InvoiceDetails = () => {
   // Renderizado seguro cuando los datos de la factura están disponibles
   return (
     <>
+        <div className='logoPrint'><img className="ComerzaLogo" src={comerza} alt="ComerzaLogo" /><div className="Bienvenidos"><h1>COMERZA</h1></div> </div>
       {invoice ? (
-        <div className='detallesord'>
-          <Descriptions title="Detalles de la factura" bordered>
+        
+        <div className='detallesord' >
+          <Descriptions title="Detalles de la factura" bordered className='print-section'>
             <Descriptions.Item label="Título">
               Factura #{invoice.invoiceNumber}
             </Descriptions.Item>
@@ -116,6 +121,7 @@ const InvoiceDetails = () => {
             <Descriptions.Item label="Valor total">
               {`${invoice.totalAmount?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`}
             </Descriptions.Item>
+
           </Descriptions>
         </div>
       ) : (
@@ -130,6 +136,7 @@ const InvoiceDetails = () => {
           Cancelar factura
         </Button>
         <Button className="Botondetails" onClick={() => navigate(-1)}>Regresar</Button>
+        <Button className="Botondetails" type="primary" onClick={printDetails} style={{ marginRight: 10 }}>Imprimir Factura</Button>
       </div>
     </>
   );

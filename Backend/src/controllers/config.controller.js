@@ -19,6 +19,9 @@ const initializeConfig = async () => {
         state: [],
         packagingCost: 10,
         iva: 0,
+        customDuty:0,
+        insurance:0,
+        otherTaxes:0,
       });
       await config.save();
     }
@@ -79,7 +82,6 @@ export const updateConfig = async (req, res) => {
             console.log(index);
             if (index != null) {
               config.deliveryPoints[index] = point;
-              console.log("uptated");
             }
           }
         }
@@ -150,7 +152,6 @@ export const updateConfig = async (req, res) => {
                         console.log(index)
                         if(index != null){
                           config.productCategories[index] = category
-                          console.log("uptated")
                         }
                     }
                 }
@@ -218,7 +219,6 @@ export const updateConfig = async (req, res) => {
             console.log(index);
             if (index != null) {
               config.states[index] = state;
-              console.log("uptated");
             }
           }
         }
@@ -229,6 +229,15 @@ export const updateConfig = async (req, res) => {
     }
     if (req.body.packagingCost) {
       config.packagingCost = req.body.packagingCost;
+    }
+    if (req.body.customsDuty !== undefined) {
+      config.customsDuty = req.body.customsDuty; 
+    }
+    if (req.body.insurance !== undefined) {
+      config.insurance = req.body.insurance; 
+    }
+    if (req.body.otherTaxes !== undefined) {
+      config.otherTaxes = req.body.otherTaxes; 
     }
 
     const updatedConfig = await config.save(); // Guardar la configuración actualizada
