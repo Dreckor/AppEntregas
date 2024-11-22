@@ -95,7 +95,7 @@ export default function OrdersForm() {
         hasIva: checkIva,
         userId: values.userId
       });
-      console.log(invoice)
+     
       await createOrder({
         ...values,
         products,
@@ -106,7 +106,15 @@ export default function OrdersForm() {
         invoice: invoice._id
       });
       
-      //console.log(values);
+      console.log({
+        ...values,
+        products,
+        totalCost: totalPrice,
+        netCost: subTotalPrice,
+        packaging: packaging,
+        hasIva: checkIva,
+        invoice: invoice._id
+      });
       //console.log(products);
       navigate("/orders");
       message.success("Orden creada exitosamente");

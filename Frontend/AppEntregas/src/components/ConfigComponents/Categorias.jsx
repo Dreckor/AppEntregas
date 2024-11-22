@@ -10,7 +10,7 @@ const Categorias = () => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    fetchConfig(); // Fetch the initial configuration on component mount
+    fetchConfig(); 
   }, []);
 
   const columns = [
