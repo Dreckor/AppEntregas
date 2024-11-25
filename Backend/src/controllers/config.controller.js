@@ -232,19 +232,19 @@ export const updateConfig = async (req, res) => {
     if (req.body.packagingCost) {
       config.packagingCost = req.body.packagingCost;
     }
-    if (req.body.customsDuty !== undefined) {
+    if (req.body.customsDuty ) {
       config.customsDuty = req.body.customsDuty; 
     }
-    if (req.body.insurance !== undefined) {
+    if (req.body.insurance ) {
       config.insurance = req.body.insurance; 
     }
-    if (req.body.otherTaxes !== undefined) {
+    if (req.body.otherTaxes ) {
       config.otherTaxes = req.body.otherTaxes; 
     }
-    if (req.body.factorConversion !== undefined) {
+    if (req.body.factorConversion) {
       config.factorConversion = req.body.factorConversion; 
     }
-    if (req.body.factorDivision !== undefined) {
+    if (req.body.factorDivision ) {
       config.factorDivision = req.body.factorDivision; 
     }
 
