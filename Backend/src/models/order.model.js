@@ -23,6 +23,10 @@ const orderSchema = new mongoose.Schema(
         productCategory: { type: mongoose.Schema.Types.ObjectId, ref: "ProductCategory", required: true },
         cost: { type: Number, required: true },
         kilos: { type: Number, required: true },
+        largo: {type: Number, required: true},
+        ancho: {type: Number, required: true},
+        altura: {type: Number, required: true},
+        tipoDeCobro: { type: String, enum: ["Por peso", "Por volumen"], default: "pending" }
       },
     ],
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

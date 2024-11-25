@@ -94,17 +94,21 @@ export const createOrder = async (req, res) => {
         const client = await User.findByIdAndUpdate(userId, { $push: { orders: savedOrder._id } });
         const repartidor = await User.findByIdAndUpdate(asignedUserId, { $push: { asignedOrders: savedOrder._id } });
 
-        // Enviar correo con los detalles de la orden
-        await sendOrderEmail({
-            orderTitle,
-            trakingNumber: trakingNumberString,
-            user: client,
-            assignedTo: repartidor,
-            initialPoint: departure,
-            destinyPoint: delivery,
-            products,
-            totalCost
-        });
+         // Intentar enviar el correo, pero si falla, registrar el error sin afectar la respuesta
+         try {
+            await sendOrderEmail({
+                orderTitle,
+                trakingNumber: trakingNumberString,
+                user: client,
+                assignedTo: repartidor,
+                initialPoint: departure,
+                destinyPoint: delivery,
+                products,
+                totalCost
+            });
+        } catch (emailError) {
+            console.error('Error al enviar el correo:', emailError);
+        }
 
         res.status(201).json(savedOrder);
     } catch (error) {

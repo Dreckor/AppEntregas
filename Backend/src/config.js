@@ -4,5 +4,5 @@ export const TOKEN_SECRET = process.env.TOKEN_SECRET || "scrreet122";
 
 export const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
-export const EMAIL_USER = process.env.EMAIL_USER|| ""
-export const EMAIL_PASS= process.env.EMAIL_PASS || ""
+export const EMAIL_USER = process.env.EMAIL_USER|| "no-responder@grupocomerza.com"
+export const EMAIL_PASS= process.env.EMAIL_PASS || "hega0631133"

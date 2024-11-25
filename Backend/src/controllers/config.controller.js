@@ -22,6 +22,8 @@ const initializeConfig = async () => {
         customDuty:0,
         insurance:0,
         otherTaxes:0,
+        factorConversion: 0,
+        factorDivision : 0,
       });
       await config.save();
     }
@@ -238,6 +240,12 @@ export const updateConfig = async (req, res) => {
     }
     if (req.body.otherTaxes !== undefined) {
       config.otherTaxes = req.body.otherTaxes; 
+    }
+    if (req.body.factorConversion !== undefined) {
+      config.factorConversion = req.body.factorConversion; 
+    }
+    if (req.body.factorDivision !== undefined) {
+      config.factorDivision = req.body.factorDivision; 
     }
 
     const updatedConfig = await config.save(); // Guardar la configuración actualizada

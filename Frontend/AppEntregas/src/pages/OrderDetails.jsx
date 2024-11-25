@@ -76,9 +76,7 @@ const OrderDetails = () => {
       <div className='logoPrint'><img className="ComerzaLogo" src={comerza} alt="ComerzaLogo" /><div className="Bienvenidos"><h1>COMERZA</h1></div> </div>
       <div className='detallesord'>
         <Descriptions title="Detalles de la Orden" bordered className='print-section'>
-          <Descriptions.Item label="Título">
-            <Input value={orderTitle} onChange={(e) => setOrderTitle(e.target.value)} />
-          </Descriptions.Item>
+          <Descriptions.Item label="Título">{orderTitle}      </Descriptions.Item>
           <Descriptions.Item label="Estado">
             <Select value={state?.name} onChange={(value) => setState(value)}>
               {config?.states?.length > 0 ? (
