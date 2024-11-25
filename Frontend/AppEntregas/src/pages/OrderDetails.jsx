@@ -114,8 +114,6 @@ const OrderDetails = () => {
                     <br />
                     - Coste: {product.cost || 0}
                     <br />
-                    - Valor declarado: {product.valorDeclarado || 0}
-                    <br />
                     - Tipo de cobro: {product.tipoDeCobro || 0}
                   </li>
                 ))}
