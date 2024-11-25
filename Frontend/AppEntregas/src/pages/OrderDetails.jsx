@@ -1,34 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Descriptions, Button, Input, Select, notification } from 'antd';
+import { Descriptions, Button, Select, notification, QRCode } from 'antd';
 import { useOrders } from '../context/OrderContext';
 import { useConfig } from "../context/ConfigContext";
 import Seguimiento from '../components/helpers/Seguimiento';
 import '../css/OrderDetail.css';
 import { API_URL } from "../config";
-import comerza from '../assets/comerza.png'
+import comerza from '../assets/comerza.png';
+
+
 const { Option } = Select;
 
 const OrderDetails = () => {
   const { updateOrder, deleteOrder } = useOrders();
   const location = useLocation();
   const navigate = useNavigate();
-  const { order } = location.state || {}; // Verificación de si 'order' está presente
-
-  const [orderTitle, setOrderTitle] = useState(order?.orderTitle || '');
-  const [state, setState] = useState(order?.state || {});
-  const [initialPoint, setInitialPoint] = useState(order?.initialPoint || {});
-  const [destinyPoint, setDestinyPoint] = useState(order?.destinyPoint || {});
-  const [evidencePhoto, setEvidencePhoto] = useState(order?.evidencePhoto);
-  const [clientSignature, setClientSignature] = useState(order?.clientSignature);
-  const [paymentMethod, setPaymentMethod] = useState(order?.paymentMethod || '');
-  
+  const { order } = location.state || {};
   const { config, fetchConfig } = useConfig();
-  const trakingNumber = order?.trakingNumber || 'N/A';
 
   useEffect(() => {
     fetchConfig();
   }, []);
+
+  const trakingNumber = order?.trakingNumber || 'N/A';
+  const totalValorDeclarado = order?.products?.reduce(
+    (total, product) => total + (product.valorDeclarado || 0),
+    0
+  );
+  const QRurl = `${window.location.origin}/order/${trakingNumber}`;
+
   const printDetails = () => {
     window.print();
   };
@@ -46,12 +46,6 @@ const OrderDetails = () => {
     try {
       const updatedOrder = {
         ...order,
-        orderTitle,
-        state,
-        initialPoint,
-        destinyPoint,
-        trakingNumber,
-        paymentMethod,
       };
       await updateOrder(order._id, updatedOrder);
       notification.success({ message: 'Orden actualizada correctamente' });
@@ -73,12 +67,20 @@ const OrderDetails = () => {
 
   return (
     <>
-      <div className='logoPrint'><img className="ComerzaLogo" src={comerza} alt="ComerzaLogo" /><div className="Bienvenidos"><h1>COMERZA</h1></div> </div>
+      <div className='logoPrint'>
+        <img className="ComerzaLogo" src={comerza} alt="ComerzaLogo" />
+        <div className="Bienvenidos">
+          <h1>COMERZA</h1>
+        </div>
+      </div>
       <div className='detallesord'>
         <Descriptions title="Detalles de la Orden" bordered className='print-section'>
-          <Descriptions.Item label="Título">{orderTitle}      </Descriptions.Item>
+          <Descriptions.Item label="Título">{order?.orderTitle}</Descriptions.Item>
           <Descriptions.Item label="Estado">
-            <Select value={state?.name} onChange={(value) => setState(value)}>
+            <Select
+              value={order?.state?.name}
+              onChange={(value) => (order.state = value)} // Evitar uso de `useState`
+            >
               {config?.states?.length > 0 ? (
                 config.states.map((state) => (
                   <Option key={state._id} value={state._id}>
@@ -86,27 +88,35 @@ const OrderDetails = () => {
                   </Option>
                 ))
               ) : (
-                <Option disabled>No hay estados disponibles, revise la configuración del panel</Option>
+                <Option disabled>No hay estados disponibles</Option>
               )}
             </Select>
           </Descriptions.Item>
           <Descriptions.Item label="Punto Inicial">
-            {initialPoint?.name || "No disponible"} <br />
-            {initialPoint?.address || "No disponible"}
+            {order?.initialPoint?.name || "No disponible"} <br />
+            {order?.initialPoint?.address || "No disponible"}
           </Descriptions.Item>
           <Descriptions.Item label="Destino">
-            {destinyPoint?.name || "No disponible"} <br />
-            {destinyPoint?.address || "No disponible"}
+            {order?.destinyPoint?.name || "No disponible"} <br />
+            {order?.destinyPoint?.address || "No disponible"}
           </Descriptions.Item>
-          <Descriptions.Item label="Número de Seguimiento">
-            {trakingNumber}
-          </Descriptions.Item>
+          <Descriptions.Item label="Número de Seguimiento">{trakingNumber}</Descriptions.Item>
           <Descriptions.Item label="Productos">
             {order?.products?.length > 0 ? (
               <ul>
                 {order.products.map((product, index) => (
                   <li key={index}>
-                    {product.productLabel || "Sin etiqueta"} - Unidades: {product.productUnits || 0} - Peso: {product.kilos || 0} Kg - Coste: {product.cost || 0}
+                    <strong>{product.productLabel || "Sin etiqueta"}</strong>
+                    <br />
+                    - Unidades: {product.productUnits || 0}
+                    <br />
+                    - Peso: {product.kilos || 0} Kg
+                    <br />
+                    - Coste: {product.cost || 0}
+                    <br />
+                    - Valor declarado: {product.valorDeclarado || 0}
+                    <br />
+                    - Tipo de cobro: {product.tipoDeCobro || 0}
                   </li>
                 ))}
               </ul>
@@ -114,41 +124,108 @@ const OrderDetails = () => {
               'Sin productos'
             )}
           </Descriptions.Item>
-          <Descriptions.Item label="Cliente">
-            Cliente: {order?.user?.username || "Anónimo"}, Dirección: {order?.user?.address || "No disponible"}
-          </Descriptions.Item>
+          
           <Descriptions.Item label="Repartidor">
             Repartidor: {order?.assignedTo?.username || "No asignado"}, Dirección: {order?.assignedTo?.address || "No disponible"}
           </Descriptions.Item>
           <Descriptions.Item label="Metodo de pago">
           {order?.paymentMethod.name}
           </Descriptions.Item>
+          <Descriptions.Item label="Valor asegurado">
+          {order?.insurance.toLocaleString("es-CO", {
+              style: "currency",
+              currency: "COP",
+            })}
+          </Descriptions.Item>
+          <Descriptions.Item label="Valor declarado total">{totalValorDeclarado.toLocaleString("es-CO", {
+              style: "currency",
+              currency: "COP",
+            })}</Descriptions.Item>
+          <Descriptions.Item label="Otros impuestos">
+          {order?.otherTaxes.toLocaleString("es-CO", {
+              style: "currency",
+              currency: "COP",
+            })}
+          </Descriptions.Item>
+          <Descriptions.Item label="Aduanas">
+          {order?.customsDuty.toLocaleString("es-CO", {
+              style: "currency",
+              currency: "COP",
+            })}
+          </Descriptions.Item>
+          <Descriptions.Item label="Cliente">
+            <b>Cliente:</b>  {order?.user?.username || "Anónimo"}, <b>Dirección:</b> {order?.user?.address || "No disponible"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Seguimiento" span={2} >
+          <QRCode
+            errorLevel="H"
+            value={QRurl}
+            icon="https://i.imgur.com/gcWJhAo.png"
+          /></Descriptions.Item>
+          <Descriptions.Item label="Recibo a conformidad - observaciones" span={3} >
+            <br/><br/><br/><br/><br/>
+          Fecha entrega __/__/__
+          </Descriptions.Item>
         </Descriptions>
 
         <Seguimiento history={order?.history || []} />
       </div>
       <div className='upload-section'>
-        <h3> Foto evidencia</h3>
- 
-        {evidencePhoto && <img src={API_URL.replace('api', '') +evidencePhoto} alt="Evidence" style={{ width: '100px', marginTop: '10px' }} />}
+        <h3>Foto evidencia</h3>
+        {order?.evidencePhoto && (
+          <img
+            src={API_URL.replace('api', '') + order.evidencePhoto}
+            alt="Evidence"
+            style={{ width: '100px', marginTop: '10px' }}
+          />
+        )}
       </div>
       <div className='signature-section'>
         <h3>Firma del Cliente</h3>
-       
-
-        {clientSignature && <img src={API_URL.replace('api', '') +clientSignature} alt="Client Signature" style={{ width: '100px', marginTop: '10px' }} />}
+        {order?.clientSignature && (
+          <img
+            src={API_URL.replace('api', '') + order.clientSignature}
+            alt="Client Signature"
+            style={{ width: '100px', marginTop: '10px' }}
+          />
+        )}
       </div>
       <div className='detailsbt'>
-        <Button className="Botondetails" type="primary" onClick={handleUpdate} style={{ marginRight: 10 }}>
+        <Button
+          className="Botondetails"
+          type="primary"
+          onClick={handleUpdate}
+          style={{ marginRight: 10 }}
+        >
           Actualizar
         </Button>
-        <Button className="Botondetails" danger onClick={handleDelete} style={{ marginRight: 10 }}>
+        <Button
+          className="Botondetails"
+          danger
+          onClick={handleDelete}
+          style={{ marginRight: 10 }}
+        >
           Eliminar
         </Button>
-        <Button className="Botondetails" onClick={copyToClipboard} style={{ marginRight: 10 }}>Copiar enlace de seguimiento</Button>
-        <Button className="Botondetails" onClick={() => navigate(-1)}>Regresar</Button>
-        <Button className="Botondetails" type="primary" onClick={printDetails} style={{ marginRight: 10 }}>Imprimir Guia</Button>
-      </div>      
+        <Button
+          className="Botondetails"
+          onClick={copyToClipboard}
+          style={{ marginRight: 10 }}
+        >
+          Copiar enlace de seguimiento
+        </Button>
+        <Button className="Botondetails" onClick={() => navigate(-1)}>
+          Regresar
+        </Button>
+        <Button
+          className="Botondetails"
+          type="primary"
+          onClick={printDetails}
+          style={{ marginRight: 10 }}
+        >
+          Imprimir Guía
+        </Button>
+      </div>
     </>
   );
 };

@@ -5,7 +5,7 @@ import "../../css/OrdersForm.css";
 const { Option } = Select;
 
 export default function ProductsModal({productModalHook, editingProduct, setEditingProduct, config}) {
-    const { productModalVisible, productPrice, handleSaveProduct, handleOnCancel, handleCategoryChange, handleKilosChange } = productModalHook;
+    const { productModalVisible, productPrice, handleSaveProduct, handleOnCancel, handleCategoryChange, handleKilosChange, handleTipoDepagoChange,handleDimensionChange} = productModalHook;
   return (
     <Modal
       className="ProductsForm"
@@ -47,6 +47,51 @@ export default function ProductsModal({productModalHook, editingProduct, setEdit
             )}
           </Select>
         </Form.Item>
+        <Form.Item label="Tipo de Cobro" className="ProductInput">
+          <Select
+            placeholder="Selecciona una cobro"
+            value={editingProduct?.tipoDeCobro || ""}
+            onChange={handleTipoDepagoChange}
+          >
+            <Option key={"peso133432"} value={"Por peso"} >Por peso</Option>
+            <Option key={"Volumen133432"} value={"Por volumen"}>Por volumen</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="Largo" className="ProductInput">
+          <InputNumber
+            name="largo"
+            min={1}
+            value={editingProduct?.largo}
+            onChange={(value) => handleDimensionChange("largo", value)}
+          />
+        </Form.Item>
+        <Form.Item label="Ancho" className="ProductInput">
+          <InputNumber
+            name="ancho"
+            min={1}
+            value={editingProduct?.ancho}
+            onChange={(value) => handleDimensionChange("ancho", value)}
+          />
+        </Form.Item>
+        <Form.Item label="Altura" className="ProductInput">
+          <InputNumber
+            name="altura"
+            min={1}
+            value={editingProduct?.altura}
+            onChange={(value) => handleDimensionChange("altura", value)}
+          />
+        </Form.Item>
+        <Form.Item label="Valor declarado" className="ProductInput">
+          <InputNumber
+            name="valorDeclarado"
+            min={1}
+            value={editingProduct?.valorDeclarado}
+            formatter={(value) =>
+              value ? value.toLocaleString("es-CO", { style: "currency", currency: "COP" }) : ""
+            }
+            onChange={(value) => handleDimensionChange("valorDeclarado", value)}
+          />
+        </Form.Item>
         <Form.Item label="Unidades" className="ProductInput">
           <InputNumber
             name="productUnits"
@@ -65,7 +110,10 @@ export default function ProductsModal({productModalHook, editingProduct, setEdit
             onChange={handleKilosChange}
           />
         </Form.Item>
-        <h3>Precio: ${productPrice?.toFixed(2)}</h3>{" "}
+        <h3>Precio: {productPrice?.toLocaleString("es-CO", {
+              style: "currency",
+              currency: "COP",
+            })}</h3>{" "}
         {/* Display the product price */}
       </Form>
     </Modal>

@@ -23,12 +23,16 @@ export const useProductModalHook = (config, editingProduct, products, setProduct
     };
 
     const handleAddProduct = () => {
-
       setEditingProduct({
         productLabel: "",
         productUnits: 1,
         productCategory: "",
+        tipoDeCobro: "",
         kilos: 1,
+        largo: 1,
+        ancho: 1,
+        altura: 1,
+        valorDeclarado: 0,
         cost: 0,
       });
       setProductModalVisible(true);
@@ -65,6 +69,20 @@ export const useProductModalHook = (config, editingProduct, products, setProduct
         cost, // Update the product's cost
       });
     };
+    const handleTipoDepagoChange = (tipo) => {
+      setEditingProduct({
+        ...editingProduct,
+        tipoDeCobro:tipo
+      });
+    };
+
+    const handleDimensionChange = (field, value) => {
+      setEditingProduct({
+        ...editingProduct,
+        [field]: value,
+      });
+    };
+
 
     const handleDeleteProduct = (index) => {
       const updatedProducts = products.filter((_, i) => i !== index);
@@ -82,6 +100,8 @@ export const useProductModalHook = (config, editingProduct, products, setProduct
       handleOnCancel,
       handleCategoryChange,
       handleKilosChange,
-      handleDeleteProduct
+      handleDeleteProduct,
+      handleTipoDepagoChange,
+      handleDimensionChange
   }
 }

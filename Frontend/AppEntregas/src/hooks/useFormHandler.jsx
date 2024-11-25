@@ -33,7 +33,7 @@ export const useFormHook = () => {
   const [CheckOtherTaxes, setCheckOtherTaxes] = useState(false);
   const [otherTaxesPrice, setOtherTaxesPrice] = useState(0);
 
-  const { createOrder } = useOrders();
+  const { createOrder, errors } = useOrders();
   const { createNewInvoice } = useInvoices();
   
   const navigate = useNavigate();
@@ -61,6 +61,33 @@ export const useFormHook = () => {
     fetchConfig(); // Fetch the initial configuration
   }, []);
 
+  useEffect(() => {
+    if (errors && errors.length > 0) {
+      errors.forEach((error) => {
+        handleError(error.data.errorCode, error.data.message); 
+      });
+    }
+  }, [errors]);
+
+  const handleError = (errorCode, errorMessage) => {
+    switch (errorCode) {
+      case "USER_NOT_FOUND":
+        message.error("El usuario no existe. Por favor, verifica tu correo.");
+        break;
+      case "EAUTH":
+        message.error("La contraseña del correo es incorrecta. Intenta nuevamente.");
+        break;
+      case "SEwRVER_ERROR":
+          message.error("Ocurrió un error en el servidor. Intenta más tarde.");
+          break;
+      case "SERVER_ERROR":
+        message.error("Ocurrió un error en el servidor. Intenta más tarde.");
+        break;
+      default:
+        message.error(errorMessage || "Error desconocido");
+    }
+  };
+
   const onFinish = async (values) => {
     setLoading(true);
 
@@ -72,11 +99,12 @@ export const useFormHook = () => {
         packaging: packaging,
         hasIva: checkIva,
         userId: values.userId,
-        hasCustomsDuty: checkCustomsDuty,
-        hasInsurance: checkInsurance,
-        hasTaxes: CheckOtherTaxes,
+        customsDuty: dutyPrice,
+        iva: ivaPrice,
+        insurance: insurancePrice,
+        otherTaxes: otherTaxesPrice,
       });
-
+ 
       await createOrder({
         ...values,
         products,
@@ -85,21 +113,13 @@ export const useFormHook = () => {
         packaging: packaging,
         hasIva: checkIva,
         invoice: invoice._id,
-        hasCustomsDuty: checkCustomsDuty,
-        hasInsurance: checkInsurance,
-        hasTaxes: CheckOtherTaxes,
+        customsDuty: dutyPrice,
+        iva: ivaPrice,
+        insurance: insurancePrice,
+        otherTaxes: otherTaxesPrice,
+       
       });
 
-      console.log({
-        ...values,
-        products,
-        totalCost: totalPrice,
-        netCost: subTotalPrice,
-        packaging: packaging,
-        hasIva: checkIva,
-        invoice: invoice._id,
-      });
-      //console.log(products);
       navigate("/orders");
       message.success("Orden creada exitosamente");
     } catch (error) {
@@ -146,7 +166,7 @@ export const useFormHook = () => {
         checkIva,
         checkCustomsDuty,
         checkInsurance,
-        otherTaxesPrice
+        CheckOtherTaxes
       );
       setTotalPrice(updateValues.finalTotal);
       setIvaPrice(updateValues.ivaCost);
@@ -162,7 +182,7 @@ export const useFormHook = () => {
     checkIva,
     checkCustomsDuty,
     checkInsurance,
-    otherTaxesPrice,
+    CheckOtherTaxes,
   ]);
 
   return {

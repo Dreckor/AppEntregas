@@ -17,8 +17,12 @@ const InvoiceSchema = new mongoose.Schema({
   taxAmount: { type: Number, required: true },
   netAmount: { type: Number, required: true },
   issueDate: { type: Date, default: Date.now },
+  customsDuty: { type: Number, required: true},
+  iva: { type: Number, required: true },  
+  insurance: { type: Number, required: true, },  
+  otherTaxes: { type: Number, required: true, },
   status: { type: String, enum: ["paid", "unpaid", "pending", "cancelled"], default: "pending" },
 });
 
-
+ 
 export default mongoose.model("Invoice", InvoiceSchema);

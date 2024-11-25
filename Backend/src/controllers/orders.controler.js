@@ -22,6 +22,7 @@ export const getOrders = async (req, res) => {
                 .populate('initialPoint')
                 .populate('destinyPoint')
                 .populate('state')
+                .populate('paymentMethod')
                 .populate({
                     path: 'history.stateLabel',
                     model: 'State'
@@ -35,6 +36,7 @@ export const getOrders = async (req, res) => {
             .populate('initialPoint')
             .populate('destinyPoint')
             .populate('state')
+            .populate('paymentMethod')
             .populate({
                 path: 'history.stateLabel',
                 model: 'State'
@@ -50,7 +52,7 @@ export const getOrders = async (req, res) => {
 
 
 export const createOrder = async (req, res) => {
-    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId, netCost, totalCost, packaging, hasIva, invoice,evidencePhoto = '', clientSignature = '', paymentMethod } = req.body;
+    const { orderTitle, state, userId, initialPoint, destinyPoint, products, asignedUserId, netCost, totalCost, packaging, hasIva, invoice,evidencePhoto = '', clientSignature = '', paymentMethod, customsDuty, iva, insurance, otherTaxes } = req.body;
     console.log(req.user)
     if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Solo un usuario administrador puede crear ordenes' });
@@ -86,7 +88,11 @@ export const createOrder = async (req, res) => {
             invoice,
             evidencePhoto, 
             clientSignature,
-            paymentMethod
+            paymentMethod,
+            customsDuty: customsDuty,
+            iva: iva,
+            insurance: insurance,
+            otherTaxes: otherTaxes,
 
         });
 
@@ -128,6 +134,7 @@ export const getOrder = async (req, res) => {
         .populate('initialPoint')
         .populate('destinyPoint')
         .populate('state')
+        .populate('paymentMethod')
         .populate({
             path: 'history.stateLabel',
             model: 'State'

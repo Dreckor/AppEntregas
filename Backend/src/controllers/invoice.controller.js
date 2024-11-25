@@ -5,7 +5,7 @@ import {Config} from '../models/config.model.js'
 // Create new invoice
 export const createInvoice = async (req, res) => {
   try {
-    const {  products, packaging, hasIva, userId, totalCost, netCost } = req.body;
+    const {  products, packaging, hasIva, userId, totalCost, netCost, customsDuty, iva, insurance, otherTaxes } = req.body;
     const config = await Config.findOne();
     const taxPrice = hasIva && config.iva ? netCost * (config.iva / 100) : 0;
     const packagingPrice = packaging && config.packaging ? config.packaging : 0;
@@ -19,6 +19,10 @@ export const createInvoice = async (req, res) => {
       taxAmount: taxPrice,
       packaging: packagingPrice,
       netAmount: netCost,
+      customsDuty: customsDuty,
+      iva: iva,
+      insurance: insurance,
+      otherTaxes: otherTaxes,
     });
 
     const savedInvoice = await newInvoice.save();
@@ -62,7 +66,7 @@ export const getAllInvoices = async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: "Error fetching invoices" });
   }
-};
+}; 
 
 // Update invoice status
 export const updateInvoiceStatus = async (req, res) => {

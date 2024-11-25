@@ -16,7 +16,7 @@ export const sendOrderEmail = async (orderDetails) => {
     const mailOptions = {
         from: EMAIL_USER,
         to: user.email, // Correo del usuario que creó la orden
-        subject: `Nueva Orden Creada: ${orderTitle}`,
+        subject: `Nueva Orden Creada: ${trakingNumber}`,
         html: `
             <h2>Detalles de la Orden</h2>
             <p><b>Título:</b> ${orderTitle}</p>
