@@ -295,7 +295,7 @@ export default function Formulario() {
           <h4>
             Embalaje:{" "}
             {packaging
-              ? config.packagingCost.toLocaleString("es-CO", {
+              ? (config.packagingCost ?? 0).toLocaleString("es-CO", {
                   style: "currency",
                   currency: "COP",
                 })
@@ -303,42 +303,43 @@ export default function Formulario() {
           </h4>
           <h4>
             Subtotal:{" "}
-            {subTotalPrice.toLocaleString("es-CO", {
+            {(subTotalPrice ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
           </h4>
           <h4>
             IVA:{" "}
-            {ivaPrice.toLocaleString("es-CO", {
+            {(ivaPrice ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
           </h4>
           <h4>
             Aduanas:{" "}
-            {dutyPrice.toLocaleString("es-CO", {
+            {(dutyPrice ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
           </h4>
           <h4>
             Seguro:{" "}
-            {insurancePrice.toLocaleString("es-CO", {
+            
+            {(insurancePrice ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
           </h4>
           <h4>
             Otros impuestos:{" "}
-            {otherTaxesPrice.toLocaleString("es-CO", {
+            {(otherTaxesPrice ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
           </h4>
           <h4>
             Total:{" "}
-            {totalPrice.toLocaleString("es-CO", {
+            {(totalPrice ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}

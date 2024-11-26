@@ -136,7 +136,6 @@ export const useFormHook = () => {
 
   const handleDutyChange = (value) => {
     setCheckCustomsDuty(value);
-    recalculateTotalPrice(subTotalPrice, checkIva, value, checkInsurance);
   };
 
   const handleInsuranceChange = (value) => {
@@ -172,7 +171,7 @@ export const useFormHook = () => {
       setIvaPrice(updateValues.ivaCost);
       setDutyPrice(updateValues.dutyCost);
       setInsurancePrice(updateValues.insuranceCost);
-      setOtherTaxesPrice(updateValues.taxescost);
+      setOtherTaxesPrice(updateValues.taxesCost);
     };
     updadeAllValues();
   }, [

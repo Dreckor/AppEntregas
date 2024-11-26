@@ -127,10 +127,10 @@ const OrderDetails = () => {
             Repartidor: {order?.assignedTo?.username || "No asignado"}, Dirección: {order?.assignedTo?.address || "No disponible"}
           </Descriptions.Item>
           <Descriptions.Item label="Metodo de pago">
-          {order?.paymentMethod.name}
+          {order?.paymentMethod?.name || "No disponible"}
           </Descriptions.Item>
           <Descriptions.Item label="Valor asegurado">
-          {order?.insurance.toLocaleString("es-CO", {
+          {(order?.insurance ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
@@ -140,13 +140,13 @@ const OrderDetails = () => {
               currency: "COP",
             })}</Descriptions.Item>
           <Descriptions.Item label="Otros impuestos">
-          {order?.otherTaxes.toLocaleString("es-CO", {
+          {(order?.otherTaxes ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
           </Descriptions.Item>
           <Descriptions.Item label="Aduanas">
-          {order?.customsDuty.toLocaleString("es-CO", {
+          {(order?.customsDuty ?? 0).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
