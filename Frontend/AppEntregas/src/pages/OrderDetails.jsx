@@ -106,15 +106,15 @@ const OrderDetails = () => {
               <ul>
                 {order.products.map((product, index) => (
                   <li key={index}>
-                    <strong>{product.productLabel || "Sin etiqueta"}</strong>
+                    <strong>{product?.productLabel || "Sin etiqueta"}</strong>
                     <br />
-                    - Unidades: {product.productUnits || 0}
+                    - Unidades: {product?.productUnits || 0}
                     <br />
-                    - Peso: {product.kilos || 0} Kg
+                    - Peso: {product?.kilos || 0} Kg
                     <br />
-                    - Coste: {product.cost || 0}
+                    - Coste: {product?.cost || 0}
                     <br />
-                    - Tipo de cobro: {product.tipoDeCobro || 0}
+                    - Tipo de cobro: {product?.tipoDeCobro || 0}
                   </li>
                 ))}
               </ul>
