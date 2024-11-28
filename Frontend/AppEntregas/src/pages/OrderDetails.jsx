@@ -106,15 +106,17 @@ const OrderDetails = () => {
               <ul>
                 {order.products.map((product, index) => (
                   <li key={index}>
-                    <strong>{product.productLabel || "Sin etiqueta"}</strong>
+                    <strong>{product?.productLabel || "Sin etiqueta"}</strong>
                     <br />
-                    - Unidades: {product.productUnits || 0}
+                    - Unidades: {product?.productUnits || 0}
                     <br />
-                    - Peso: {product.kilos || 0} Kg
+                    - Peso: {product?.kilos || 0} Kg
                     <br />
-                    - Coste: {product.cost || 0}
+                    - Coste: {product?.cost || 0}
                     <br />
-                    - Tipo de cobro: {product.tipoDeCobro || 0}
+                    - Valor declarado: {product?.valorDeclarado || 0}
+                    <br />
+                    - Tipo de cobro: {product?.tipoDeCobro || 0}
                   </li>
                 ))}
               </ul>
@@ -127,10 +129,10 @@ const OrderDetails = () => {
             Repartidor: {order?.assignedTo?.username || "No asignado"}, Dirección: {order?.assignedTo?.address || "No disponible"}
           </Descriptions.Item>
           <Descriptions.Item label="Metodo de pago">
-          {order?.paymentMethod.name}
+          {order?.paymentMethod?.name}
           </Descriptions.Item>
           <Descriptions.Item label="Valor asegurado">
-          {order?.insurance.toLocaleString("es-CO", {
+          {order?.insurance?.toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
@@ -140,13 +142,13 @@ const OrderDetails = () => {
               currency: "COP",
             })}</Descriptions.Item>
           <Descriptions.Item label="Otros impuestos">
-          {order?.otherTaxes.toLocaleString("es-CO", {
+          {order?.otherTaxes?.toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
           </Descriptions.Item>
           <Descriptions.Item label="Aduanas">
-          {order?.customsDuty.toLocaleString("es-CO", {
+          {order?.customsDuty?.toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}

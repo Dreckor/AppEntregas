@@ -1,15 +1,30 @@
-import { useState, useEffect } from 'react';
-import { Table, Button, Modal, Form, Input, Select, Divider, Popconfirm, message } from 'antd';
+import { useEffect } from 'react';
+import { Table, Button, Form, Divider, Popconfirm, message } from 'antd';
 import { useUser } from '../../context/UserContext';
+import { useUserHook } from '../../hooks/configHooks/useUserHook';
+import  UsersModal  from "./ConfigModals/UsersModal.jsx";
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
-const { Option } = Select;
-
 const Users = () => {
-  const { users, repartidores, administradores, fetchUsers, updateUser, createUser, deleteUser, loading, error } = useUser();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editingUser, setEditingUser] = useState(null);
   const [form] = Form.useForm();
+  const {
+    users,
+    repartidores,
+    administradores,
+    fetchUsers,
+    updateUser,
+    createUser,
+    deleteUser,
+    loading,
+    error,
+  } = useUser();
+  const configUserHook = useUserHook({ form, updateUser, createUser, deleteUser });
+
+  const isModalVisible = configUserHook.isModalVisible
+  const openModal = configUserHook.openModal
+  //const closeModal = configUserHook.closeModal
+  const handleDelete = configUserHook.handleDelete
+  //const editingUser = configUserHook.editingUser
 
   useEffect(() => {
     fetchUsers();
@@ -17,67 +32,20 @@ const Users = () => {
 
   useEffect(() => {
     if (error && error.length > 0) {
-      error.forEach((error) => {
-        handleError(error.data.errorCode, error.data.message); 
-      });
+      error.forEach(({ data }) => handleError(data.errorCode, data.message));
     }
   }, [error]);
 
   const handleError = (errorCode, errorMessage) => {
-    switch (errorCode) {
-      case "USER_NOT_FOUND":
-        message.error("El usuario no existe. Por favor, verifica tu correo.");
-        break;
-      case "INVALID_CREDENTIALS":
-        message.error("La contraseña es incorrecta. Intenta nuevamente.");
-        break;
-      case "SERVER_ERROR":
-        message.error("Ocurrió un error en el servidor. Intenta más tarde.");
-        break;
-      default:
-        message.error(errorMessage || "Error desconocido");
-    }
+    const messages = {
+      USER_NOT_FOUND: 'El usuario no existe. Verifica tu correo.',
+      INVALID_CREDENTIALS: 'Contraseña incorrecta. Intenta nuevamente.',
+      SERVER_ERROR: 'Error en el servidor. Intenta más tarde.',
+    };
+    message.error(messages[errorCode] || errorMessage || 'Error desconocido');
   };
 
-  const handleEdit = (user) => {
-    setEditingUser(user);
-    form.setFieldsValue(user); // Carga los valores del usuario a editar
-    setIsModalVisible(true);
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteUser(id);
-      message.success('Usuario eliminado exitosamente');
-    } catch {
-      message.error('Error al eliminar el usuario');
-    }
-  };
-
-  const handleOk = async () => {
-    try {
-      const values = await form.validateFields();
-      if (editingUser) {
-        // Actualizar usuario
-        await updateUser(editingUser.id, values);
-      } else {
-        // Crear nuevo usuario
-        console.log(values)
-        await createUser(values);
-      }
-      setIsModalVisible(false);
-      form.resetFields();
-    } catch (error) {
-      console.error("Error en la validación del formulario:", error);
-    }
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form.resetFields();
-  };
-
-  const columns = (role) => [
+  const getColumns = () => [
     {
       title: 'Nombre',
       dataIndex: 'username',
@@ -93,7 +61,11 @@ const Users = () => {
       key: 'action',
       render: (_, record) => (
         <>
-          <Button icon={<EditOutlined />} onClick={() => handleEdit(record)} style={{ marginRight: 8 }}>
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => openModal(record)}
+            style={{ marginRight: 8 }}
+          >
             Editar
           </Button>
           <Popconfirm
@@ -111,81 +83,23 @@ const Users = () => {
     },
   ];
 
+  const renderTable = (data, title) => (
+    <>
+      <Divider orientation="left">{title}</Divider>
+      <Table columns={getColumns()} dataSource={data} rowKey="id" loading={loading} />
+    </>
+  );
+
   return (
     <div>
-      <Divider orientation="left">Usuarios</Divider>
-      <Button type="primary" onClick={() => { setEditingUser(null); setIsModalVisible(true); }}>Crear nuevo usuario</Button>
-      <Table
-        columns={columns("user")}
-        dataSource={users}
-        rowKey="id"
-        loading={loading}
+      <Button type="primary" onClick={() => openModal()}>Crear nuevo usuario</Button>
+      {renderTable(users, 'Usuarios')}
+      {renderTable(repartidores, 'Repartidores')}
+      {renderTable(administradores, 'Administradores')}
+      <UsersModal
+      form= {form}
+      configUserHook= {configUserHook}
       />
-
-      <Divider orientation="left">Repartidores</Divider>
-      <Table
-        columns={columns("repartidor")}
-        dataSource={repartidores}
-        rowKey="id"
-        loading={loading}
-      />
-
-      <Divider orientation="left">Administradores</Divider>
-      <Table
-        columns={columns("admin")}
-        dataSource={administradores}
-        rowKey="id"
-        loading={loading}
-      />
-
-      <Modal
-        title={editingUser ? 'Editar usuario' : 'Agregar usuario'}
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            name="username"
-            label="Nombre"
-            rules={[{ required: true, message: 'Ingrese un nombre!' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[{ required: true, message: 'Ingrese un correo' }, { type: 'email', message: 'El correo no es válido' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="role"
-            label="Rol"
-            rules={[{ required: true, message: 'Seleccione un rol' }]}
-          >
-            <Select disabled={!!editingUser}>
-              <Option value="user">User</Option>
-              <Option value="repartidor">Repartidor</Option>
-              <Option value="admin">Admin</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="address"
-            label="Dirección"
-            rules={[{ required: true, message: 'Ingrese una dirección' }, { type: 'text', message: 'Ingresa una dirección' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name={editingUser ? "newPassword": "password" }
-            label="Nueva Contraseña"
-            rules={[{ required: !editingUser, message: 'Ingrese una contraseña' }]} 
-          >
-            <Input.Password />
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };
