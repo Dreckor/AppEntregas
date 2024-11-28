@@ -117,11 +117,11 @@ export default function Formulario() {
           rules={[
             {
               required: true,
-              message: "Por favor ingresa un título para la orden",
+              message: "Por favor ingresa el destinatario",
             },
           ]}
         >
-          <Input placeholder="Introduce el título de la orden" />
+          <Input placeholder="Introduce el destinatario" />
         </Form.Item>
 
         <Form.Item
