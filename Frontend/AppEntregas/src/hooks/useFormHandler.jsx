@@ -207,6 +207,8 @@ export const useFormHook = () => {
     handleDutyChange,
     handleInsuranceChange,
     handleTaxesChange,
-    handlePackagingChange
+    handlePackagingChange,
+    setUsers,
+    setRepartidores
   };
 };

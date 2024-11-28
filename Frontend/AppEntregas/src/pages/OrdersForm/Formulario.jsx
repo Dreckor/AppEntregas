@@ -1,8 +1,12 @@
-import { Form, Input, Button, Select, Spin, Checkbox} from "antd";
+import { useState, useEffect  } from "react";
+import { Form, Input, Button, Select, Spin, Checkbox, message} from "antd";
 import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import ProductsModal from "./ProductModal.jsx";
 import { useFormHook } from "../../hooks/useFormHandler";
+import QuickUserModal from "./QuickUserModal.jsx";
 import { useProductModalHook } from "../../hooks/useProductHook";
+import { useUserHook } from "../../hooks/configHooks/useUserHook.jsx"
+import { useUser } from "../../context/UserContext.jsx";
 import "../../css/OrdersForm.css";
 
 const { Option } = Select;
@@ -15,12 +19,12 @@ export default function Formulario() {
         config,
         editingProduct,
         products, 
+        users, 
+        repartidores,
         setProducts, 
         setEditingProduct,
         dataloading,
         loading,
-        users,
-        repartidores,
         packaging,
         subTotalPrice,
         ivaPrice,
@@ -33,15 +37,78 @@ export default function Formulario() {
         handleDutyChange,
         handleInsuranceChange,
         handleTaxesChange,
-        handlePackagingChange
+        handlePackagingChange,
+        setUsers,
+        setRepartidores
       } = useFormHook()
+      const {
+        updateUser,
+        createUser,
+        deleteUser,
+        error
+      } = useUser();
+      
+      const [userRole, setUserRole] = useState(null); // Para controlar el rol en el modal
+      const [form] = Form.useForm();
+      const [form2] = Form.useForm();
+      const configUserHook = useUserHook( {form, updateUser, createUser, deleteUser});
     
       const productModalHook = useProductModalHook(config, editingProduct, products, setProducts, setEditingProduct );
       const handleAddProduct = productModalHook.handleAddProduct
       const handleEditProduct = productModalHook.handleEditProduct
       const handleDeleteProduct = productModalHook.handleDeleteProduct
+
+      const handleAddNewUser = (role) => {
+        setUserRole(role);
+        configUserHook.openModal();
+      };
+      useEffect(() => { 
+        
+        if (configUserHook?.selectedUser && userRole == 'user') {
+          // Verifica si el usuario ya está en la lista, si no, agrégalo.
+          setUsers((users) => {
+            const exists = users.some((user) => user.id === configUserHook.selectedUser.id);
+            // Actualiza el campo del formulario
+            form2.setFieldsValue({
+              userId: configUserHook.selectedUser.id, // Usa el ID del usuario seleccionado
+            });
+            return exists ? users : [...users, configUserHook.selectedUser];
+          });}
+          if (configUserHook?.selectedUser && userRole == 'repartidor') {
+            // Verifica si el usuario ya está en la lista, si no, agrégalo.
+            setRepartidores((repartidores) => {
+              const exists = repartidores.some((user) => user.id === configUserHook.selectedUser.id);
+              // Actualiza el campo del formulario
+              form2.setFieldsValue({
+                asignedUserId: configUserHook.selectedUser.id, // Usa el ID del usuario seleccionado
+              });
+              return exists ? users : [...users, configUserHook.selectedUser];
+            });}
+       
+          
+        
+      }, [configUserHook.selectedUser, form2, setUsers, setRepartidores , userRole]);
+
+      useEffect(() => {
+        if (error && error.length > 0 ) {
+          error.forEach(({ data }) => handleError(data.errorCode, data.message));
+        }
+        if (configUserHook.errorUserHook && configUserHook.errorUserHook.length > 0 ) {
+          configUserHook.errorUserHook.forEach(({ data }) => handleError(data.errorCode, data.message));
+        }
+      }, [error, configUserHook.errorUserHook]);
+    
+      const handleError = (errorCode, errorMessage) => {
+        const messages = {
+          USER_NOT_FOUND: 'El usuario no existe. Verifica tu correo.',
+          INVALID_CREDENTIALS: 'Contraseña incorrecta. Intenta nuevamente.',
+          SERVER_ERROR: 'Error en el servidor. Intenta más tarde.',
+        };
+        message.error(messages[errorCode] || errorMessage || 'Error desconocido');
+      };
+      
   return (
-    <Form className="OrderFormContent" layout="vertical" onFinish={onFinish}>
+    <Form className="OrderFormContent" layout="vertical" onFinish={onFinish} form={form2}>
         <h1 className="Orderclass">Crear Nueva Orden</h1>
         <Form.Item
           className="FormItem"
@@ -77,12 +144,21 @@ export default function Formulario() {
             }
             disabled={dataloading}
             notFoundContent={dataloading ? <Spin size="small" /> : null}
+            onSelect={(value) => {
+              if (value === "addUser") {
+                handleAddNewUser("user");
+              }
+            }}
+            
           >
             {users.map((user) => (
               <Option key={user.id} value={user.id}>
                 {user.username}
               </Option>
             ))}
+            <Option value="addUser" >
+              <PlusOutlined /> Agregar nuevo cliente
+            </Option>
           </Select>
         </Form.Item>
 
@@ -186,12 +262,20 @@ export default function Formulario() {
             }
             disabled={dataloading}
             notFoundContent={dataloading ? <Spin size="small" /> : null}
+            onSelect={(value) => {
+              if (value === "addUser") {
+                handleAddNewUser("repartidor");
+              }
+            }}
           >
             {repartidores.map((repartidor) => (
               <Option key={repartidor.id} value={repartidor.id}>
                 {repartidor.username}
               </Option>
             ))}
+             <Option value="addUser" >
+              <PlusOutlined /> Agregar nuevo cliente
+            </Option>
           </Select>
         </Form.Item>
 
@@ -362,6 +446,11 @@ export default function Formulario() {
           setEditingProduct={setEditingProduct}
           config={config}
         />
+        <QuickUserModal
+        form={configUserHook.form}
+        configUserHook= {configUserHook}
+        defaultRole={userRole}
+      />
       </Form>
   );
 }
