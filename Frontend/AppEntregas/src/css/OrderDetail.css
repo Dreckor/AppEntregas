@@ -1,3 +1,6 @@
+ul{
+    list-style: none;
+}
 .detallesord{
     display: flex;
     justify-content: center;
@@ -78,6 +81,12 @@
 .logoPrint{
     visibility: hidden;
     position: absolute;
+}
+.qr span{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 @media only screen and (max-width:800px){
@@ -173,9 +182,10 @@
     } 
 
     .detallesord .ant-descriptions-title{
-        font-size: 5vw; 
+        font-size: 3vw; 
     }
     .detallesord .ant-descriptions{
+        margin-top: -5vw;
         width: 100%;
         margin-left: 10vw;
     }
@@ -185,7 +195,7 @@
         padding: 0.5vw 1vw!important;
     }
     .detallesord .ant-descriptions-item-label span{
-        font-size: 1.8vw;
+        font-size: 1.5vw;
         color: rgb(34, 34, 34);
         font-weight: 600;
         font-family: "Rubik", sans-serif;

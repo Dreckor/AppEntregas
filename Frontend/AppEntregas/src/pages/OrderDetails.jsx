@@ -75,10 +75,56 @@ const OrderDetails = () => {
       </div>
       <div className='detallesord'>
         <Descriptions title="Detalles de la Orden" bordered className='print-section'>
-          <Descriptions.Item label="Título">{order?.orderTitle}</Descriptions.Item>
+        <Descriptions.Item label="Remitente" className='print2'>
+            <b>Cliente:</b>  {order?.user?.username || "Anónimo"}, <b>Dirección:</b> {order?.user?.address || "No disponible"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Punto Inicial">
+            {order?.initialPoint?.name || "No disponible"} <br />
+            {order?.initialPoint?.address || "No disponible"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Correo" >
+          {order?.user?.email || "No disponible" }
+          </Descriptions.Item>
+          <Descriptions.Item label="Destinatario">{order?.orderTitle}</Descriptions.Item>
+          <Descriptions.Item label="Destino">
+            {order?.destinyPoint?.name || "No disponible"} <br />
+            {order?.destinyPoint?.address || "No disponible"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Correo del repartidor">
+          {order?.assignedTo?.email || "No disponible"}
+          </Descriptions.Item>
+          <Descriptions.Item label="Dice contener">
+            {order?.products?.length > 0 ? (
+              <ul style={{paddingLeft:0}}>
+                {order.products.map((product, index) => (
+                  <li key={index}>
+                    <strong>{product?.productLabel || "Sin etiqueta"}</strong>
+                    <br />
+                    - Unidades: {product?.productUnits || 0}
+                    <br />
+                    - Peso: {product?.kilos || 0} Kg
+                    <br />
+                    - Coste: {product?.cost || 0}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              'Sin productos'
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label="Valor asegurado">
+            {order?.insurance?.toLocaleString("es-CO", {
+              style: "currency",
+              currency: "COP",
+            })}
+          </Descriptions.Item>
+          <Descriptions.Item label="Valor declarado total">{totalValorDeclarado.toLocaleString("es-CO", {
+              style: "currency",
+              currency: "COP",
+            })}</Descriptions.Item>
           <Descriptions.Item label="Estado">
             <Select
-              value={order?.state?.name}
+              value={order?.state?.name}  
               onChange={(value) => (order.state = value)} // Evitar uso de `useState`
             >
               {config?.states?.length > 0 ? (
@@ -91,56 +137,11 @@ const OrderDetails = () => {
                 <Option disabled>No hay estados disponibles</Option>
               )}
             </Select>
-          </Descriptions.Item>
-          <Descriptions.Item label="Punto Inicial">
-            {order?.initialPoint?.name || "No disponible"} <br />
-            {order?.initialPoint?.address || "No disponible"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Destino">
-            {order?.destinyPoint?.name || "No disponible"} <br />
-            {order?.destinyPoint?.address || "No disponible"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Número de Seguimiento">{trakingNumber}</Descriptions.Item>
-          <Descriptions.Item label="Productos">
-            {order?.products?.length > 0 ? (
-              <ul>
-                {order.products.map((product, index) => (
-                  <li key={index}>
-                    <strong>{product?.productLabel || "Sin etiqueta"}</strong>
-                    <br />
-                    - Unidades: {product?.productUnits || 0}
-                    <br />
-                    - Peso: {product?.kilos || 0} Kg
-                    <br />
-                    - Coste: {product?.cost || 0}
-                    <br />
-                    - Valor declarado: {product?.valorDeclarado || 0}
-                    <br />
-                    - Tipo de cobro: {product?.tipoDeCobro || 0}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              'Sin productos'
-            )}
+          </Descriptions.Item>                
+          <Descriptions.Item label="Metodo de pago">
+            {order?.paymentMethod?.name}
           </Descriptions.Item>
           
-          <Descriptions.Item label="Repartidor">
-            Repartidor: {order?.assignedTo?.username || "No asignado"}, Dirección: {order?.assignedTo?.address || "No disponible"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Metodo de pago">
-          {order?.paymentMethod?.name}
-          </Descriptions.Item>
-          <Descriptions.Item label="Valor asegurado">
-          {order?.insurance?.toLocaleString("es-CO", {
-              style: "currency",
-              currency: "COP",
-            })}
-          </Descriptions.Item>
-          <Descriptions.Item label="Valor declarado total">{totalValorDeclarado.toLocaleString("es-CO", {
-              style: "currency",
-              currency: "COP",
-            })}</Descriptions.Item>
           <Descriptions.Item label="Otros impuestos">
           {order?.otherTaxes?.toLocaleString("es-CO", {
               style: "currency",
@@ -153,18 +154,16 @@ const OrderDetails = () => {
               currency: "COP",
             })}
           </Descriptions.Item>
-          <Descriptions.Item label="Cliente">
-            <b>Cliente:</b>  {order?.user?.username || "Anónimo"}, <b>Dirección:</b> {order?.user?.address || "No disponible"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Seguimiento" span={2} >
-          <QRCode
+          
+          <Descriptions.Item className='qr' label="Seguimiento" span={2} >
+          <QRCode 
             errorLevel="H"
             value={QRurl}
             icon="https://i.imgur.com/gcWJhAo.png"
-          /></Descriptions.Item>
-          <Descriptions.Item label="Recibo a conformidad - observaciones" span={3} >
-            <br/><br/><br/><br/><br/>
-          Fecha entrega __/__/__
+            
+          />{trakingNumber}</Descriptions.Item>
+          <Descriptions.Item label="Observaciones y firma de quien recibe" span={3} >
+            <br/><br/><br/>
           </Descriptions.Item>
         </Descriptions>
 

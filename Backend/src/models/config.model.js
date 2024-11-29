@@ -35,8 +35,8 @@ const configSchema = new mongoose.Schema(
     customsDuty: { type: Number, required: true,},  
     insurance: { type: Number, required: true, },  
     otherTaxes: { type: Number, required: true, },
-    factorConversion: { type: Number, required: true, },
-    factorDivision : { type: Number, required: true, },
+    factorConversion: { type: Number, required: false, },
+    factorDivision : { type: Number, required: false, },
   },
   { timestamps: true },
 );
