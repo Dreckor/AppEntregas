@@ -12,6 +12,7 @@ export const useUser = () => {
     return context;
 };
 
+// eslint-disable-next-line react/prop-types
 export const UserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);
     const [repartidores, setRepartidores] = useState([]);
@@ -39,10 +40,13 @@ export const UserProvider = ({ children }) => {
             if(res.status != 200){
                 throw new Error(res)
             }
+            console.log(res.data.user)
+            return res.data.User
         }
          catch (err) {
             setError(err.response ? err.response.data : "Server error");
         }
+        
     }
 
     const updateUser = async (id, updatedData) => {
