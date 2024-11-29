@@ -1,6 +1,6 @@
 import { useState, useEffect  } from "react";
-import { Form, Input, Button, Select, Spin, Checkbox, message} from "antd";
-import { PlusOutlined, EditOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Select, Spin, Checkbox, message,Popconfirm} from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import ProductsModal from "./ProductModal.jsx";
 import { useFormHook } from "../../hooks/useFormHandler";
 import QuickUserModal from "./QuickUserModal.jsx";
@@ -58,10 +58,6 @@ export default function Formulario() {
       const handleEditProduct = productModalHook.handleEditProduct
       const handleDeleteProduct = productModalHook.handleDeleteProduct
 
-      const handleAddNewUser = (role) => {
-        setUserRole(role);
-        configUserHook.openModal();
-      };
       useEffect(() => { 
         
         if (configUserHook?.selectedUser && userRole == 'user') {
@@ -87,15 +83,15 @@ export default function Formulario() {
        
           
         
-      }, [configUserHook.selectedUser, form2, setUsers, setRepartidores , userRole]);
+      }, [configUserHook.selectedUser, form2, setUsers, setRepartidores , userRole, ]);
 
       useEffect(() => {
         if (error && error.length > 0 ) {
           error.forEach(({ data }) => handleError(data.errorCode, data.message));
         }
-        if (configUserHook.errorUserHook && configUserHook.errorUserHook.length > 0 ) {
-          configUserHook.errorUserHook.forEach(({ data }) => handleError(data.errorCode, data.message));
-        }
+        //if (configUserHook.errorUserHook && configUserHook.errorUserHook.length > 0 ) {
+        //  configUserHook.errorUserHook.forEach(({ data }) => handleError(data.errorCode, data.message));
+        //}
       }, [error, configUserHook.errorUserHook]);
     
       const handleError = (errorCode, errorMessage) => {
@@ -105,6 +101,34 @@ export default function Formulario() {
           SERVER_ERROR: 'Error en el servidor. Intenta más tarde.',
         };
         message.error(messages[errorCode] || errorMessage || 'Error desconocido');
+      };
+      const handleAddNewUser = (role) => {
+        setUserRole(role);
+        configUserHook.openModal();
+      };
+
+      const handleEditUser = (updatedUser) => {
+        configUserHook.openModal(updatedUser);
+        if (updatedUser) {
+          setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              user.id === updatedUser.id ? updatedUser : user
+            )
+          );
+          message.success("Usuario actualizado correctamente.");
+        }
+        
+      };
+      
+      const handleDeleteUser = (userId) => {
+        deleteUser(userId)
+          .then(() => {
+            setUsers((prev) => prev.filter((user) => user.id !== userId));
+            message.success("Usuario eliminado correctamente.");
+          })
+          .catch(() => {
+            message.error("Error al eliminar el usuario.");
+          });
       };
       
   return (
@@ -125,42 +149,71 @@ export default function Formulario() {
         </Form.Item>
 
         <Form.Item
-          className="FormItem"
-          label=""
-          name="userId"
-          rules={[
-            {
-              required: true,
-              message: "Por favor selecciona un cliente asignado",
-            },
-          ]}
-        >
-          <Select
-            className="FormItem"
-            placeholder={
-              dataloading
-                ? "Cargando usuarios..."
-                : "Selecciona un cliente asignado"
-            }
-            disabled={dataloading}
-            notFoundContent={dataloading ? <Spin size="small" /> : null}
-            onSelect={(value) => {
-              if (value === "addUser") {
-                handleAddNewUser("user");
-              }
-            }}
-            
+  className="FormItem"
+  label=""
+  name="userId"
+  rules={[
+    {
+      required: true,
+      message: "Por favor selecciona un cliente asignado",
+    },
+  ]}
+>
+  <Select
+    className="FormItem"
+    showSearch
+    placeholder={
+      dataloading
+        ? "Cargando usuarios..."
+        : "Selecciona un cliente asignado"
+    }
+    disabled={dataloading}
+    notFoundContent={dataloading ? <Spin size="small" /> : null}
+    filterOption={(input, option) => {
+      return (
+        option.key.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+        option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
+      
+    }}
+    dropdownRender={(menu) => (
+      <div>
+        {menu}
+        <div style={{ display: "flex", justifyContent: "space-between", padding: 8 }}>
+          <Button
+            type="text"
+            icon={<PlusOutlined />}
+            onClick={() => handleAddNewUser("user")}
           >
-            {users.map((user) => (
-              <Option key={user.id} value={user.id}>
-                {user.username}
-              </Option>
-            ))}
-            <Option value="addUser" >
-              <PlusOutlined /> Agregar nuevo cliente
-            </Option>
-          </Select>
-        </Form.Item>
+            Agregar nuevo cliente
+          </Button>
+        </div>
+      </div>
+    )}
+  >
+    {users.map((user) => (
+      <Option key={user.id} value={user.id} title={user.username}>
+        <span style={{ marginRight: 18 }}>{user.username}</span>
+        <Button
+          type="link"
+          icon={<EditOutlined />}
+          onClick={() => handleEditUser(user)}
+        />
+        <Popconfirm
+            title="¿Estás seguro de eliminar este usuario?"
+            onConfirm={() => handleDeleteUser(user.id)}
+            okText="Sí"
+            cancelText="No"
+          >
+            <Button type="link" icon={<DeleteOutlined /> } danger>
+              Eliminar
+            </Button>
+          </Popconfirm>
+      </Option>
+    ))}
+    
+  </Select>
+</Form.Item>
 
         <Form.Item
           className="FormItem"
@@ -254,29 +307,60 @@ export default function Formulario() {
           ]}
         >
           <Select
-            className="FormItem"
-            placeholder={
-              dataloading
-                ? "Cargando repartidores..."
-                : "Selecciona un repartidor asignado"
-            }
-            disabled={dataloading}
-            notFoundContent={dataloading ? <Spin size="small" /> : null}
-            onSelect={(value) => {
-              if (value === "addUser") {
-                handleAddNewUser("repartidor");
-              }
-            }}
+    className="FormItem"
+    showSearch
+    placeholder={
+      dataloading
+        ? "Cargando repartidores..."
+        : "Selecciona un repartidor asignado"
+    }
+    disabled={dataloading}
+    notFoundContent={dataloading ? <Spin size="small" /> : null}
+    filterOption={(input, option) => {
+      return (
+        option.key.toLowerCase().indexOf(input.toLowerCase()) >= 0 ||
+        option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
+      
+    }}
+    dropdownRender={(menu) => (
+      <div>
+        {menu}
+        <div style={{ display: "flex", justifyContent: "space-between", padding: 8 }}>
+          <Button
+            type="text"
+            icon={<PlusOutlined />}
+            onClick={() => handleAddNewUser("repartidor")}
           >
-            {repartidores.map((repartidor) => (
-              <Option key={repartidor.id} value={repartidor.id}>
-                {repartidor.username}
-              </Option>
-            ))}
-             <Option value="addUser" >
-              <PlusOutlined /> Agregar nuevo cliente
-            </Option>
-          </Select>
+            Agregar nuevo cliente
+          </Button>
+        </div>
+      </div>
+    )}
+  >
+    {repartidores.map((user) => (
+      <Option key={user.id} value={user.id} title={user.username}>
+        <span style={{ marginRight: 18 }}>{user.username}</span>
+        <Button
+          type="link"
+          icon={<EditOutlined />}
+          onClick={() => handleEditUser(user)}
+        />
+        <Popconfirm
+            title="¿Estás seguro de eliminar este usuario?"
+            onConfirm={() => handleDeleteUser(user.id)}
+            okText="Sí"
+            cancelText="No"
+          >
+            <Button type="link" icon={<DeleteOutlined /> } danger>
+              Eliminar
+            </Button>
+          </Popconfirm>
+      </Option>
+    ))}
+    
+  </Select>
+          
         </Form.Item>
 
         <Form.Item label="" className="ContentProducts">

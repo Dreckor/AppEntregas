@@ -24,7 +24,8 @@ export const useUserHook = ({ form: externalForm, updateUser, createUser, delete
       try {
         const values = await form.validateFields();
         if (editingUser) {
-          await updateUser(editingUser.id, values); // Actualizar
+          const editedUser = await updateUser(editingUser.id, values); // Actualizar
+          setEditingUser(editedUser);
         } else {
           const idNewUser = await createUser(values); // Crear nuevo usuario
           setSelectedUser(idNewUser); // Actualizar estado local si es necesario
