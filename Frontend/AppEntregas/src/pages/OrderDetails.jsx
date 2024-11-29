@@ -137,7 +137,6 @@ const OrderDetails = () => {
                 <Option disabled>No hay estados disponibles</Option>
               )}
             </Select>
-<<<<<<< HEAD
           </Descriptions.Item>
           <Descriptions.Item label="Punto Inicial">
             {order?.initialPoint?.name || "No disponible"} <br />
@@ -188,25 +187,12 @@ const OrderDetails = () => {
             })}</Descriptions.Item>
           <Descriptions.Item label="Otros impuestos">
           {(order?.otherTaxes ?? 0).toLocaleString("es-CO", {
-=======
-          </Descriptions.Item>                
-          <Descriptions.Item label="Metodo de pago">
-            {order?.paymentMethod?.name}
-          </Descriptions.Item>
-          
-          <Descriptions.Item label="Otros impuestos">
-          {order?.otherTaxes?.toLocaleString("es-CO", {
->>>>>>> dreckor
               style: "currency",
               currency: "COP",
             })}
           </Descriptions.Item>
           <Descriptions.Item label="Aduanas">
-<<<<<<< HEAD
           {(order?.customsDuty ?? 0).toLocaleString("es-CO", {
-=======
-          {order?.customsDuty?.toLocaleString("es-CO", {
->>>>>>> dreckor
               style: "currency",
               currency: "COP",
             })}
@@ -220,7 +206,9 @@ const OrderDetails = () => {
             
           />{trakingNumber}</Descriptions.Item>
           <Descriptions.Item label="Observaciones y firma de quien recibe" span={3} >
-            <br/><br/><br/>
+            <br/><br/><br/><br/>
+
+            __/__/__
           </Descriptions.Item>
         </Descriptions>
 
