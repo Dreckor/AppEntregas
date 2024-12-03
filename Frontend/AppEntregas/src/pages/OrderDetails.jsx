@@ -137,62 +137,19 @@ const OrderDetails = () => {
                 <Option disabled>No hay estados disponibles</Option>
               )}
             </Select>
-          </Descriptions.Item>
-          <Descriptions.Item label="Punto Inicial">
-            {order?.initialPoint?.name || "No disponible"} <br />
-            {order?.initialPoint?.address || "No disponible"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Destino">
-            {order?.destinyPoint?.name || "No disponible"} <br />
-            {order?.destinyPoint?.address || "No disponible"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Número de Seguimiento">{trakingNumber}</Descriptions.Item>
-          <Descriptions.Item label="Productos">
-            {order?.products?.length > 0 ? (
-              <ul>
-                {order.products.map((product, index) => (
-                  <li key={index}>
-                    <strong>{product?.productLabel || "Sin etiqueta"}</strong>
-                    <br />
-                    - Unidades: {product?.productUnits || 0}
-                    <br />
-                    - Peso: {product?.kilos || 0} Kg
-                    <br />
-                    - Coste: {product?.cost || 0}
-                    <br />
-                    - Tipo de cobro: {product?.tipoDeCobro || 0}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              'Sin productos'
-            )}
+          </Descriptions.Item>                
+          <Descriptions.Item label="Metodo de pago">
+            {order?.paymentMethod?.name}
           </Descriptions.Item>
           
-          <Descriptions.Item label="Repartidor">
-            Repartidor: {order?.assignedTo?.username || "No asignado"}, Dirección: {order?.assignedTo?.address || "No disponible"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Metodo de pago">
-          {order?.paymentMethod?.name || "No disponible"}
-          </Descriptions.Item>
-          <Descriptions.Item label="Valor asegurado">
-          {(order?.insurance ?? 0).toLocaleString("es-CO", {
-              style: "currency",
-              currency: "COP",
-            })}
-          </Descriptions.Item>
-          <Descriptions.Item label="Valor declarado total">{totalValorDeclarado.toLocaleString("es-CO", {
-              style: "currency",
-              currency: "COP",
-            })}</Descriptions.Item>
           <Descriptions.Item label="Otros impuestos">
-          {(order?.otherTaxes ?? 0).toLocaleString("es-CO", {
+          {order?.otherTaxes?.toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
           </Descriptions.Item>
           <Descriptions.Item label="Aduanas">
-          {(order?.customsDuty ?? 0).toLocaleString("es-CO", {
+          {order?.customsDuty?.toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
             })}
@@ -206,9 +163,7 @@ const OrderDetails = () => {
             
           />{trakingNumber}</Descriptions.Item>
           <Descriptions.Item label="Observaciones y firma de quien recibe" span={3} >
-            <br/><br/><br/><br/>
-
-            __/__/__
+            <br/><br/><br/>
           </Descriptions.Item>
         </Descriptions>
 
@@ -218,7 +173,7 @@ const OrderDetails = () => {
         <h3>Foto evidencia</h3>
         {order?.evidencePhoto && (
           <img
-            src={API_URL.replace('api', '') + order.evidencePhoto}
+            src={API_URL.replace('api', '') + order?.evidencePhoto}
             alt="Evidence"
             style={{ width: '100px', marginTop: '10px' }}
           />
@@ -228,7 +183,7 @@ const OrderDetails = () => {
         <h3>Firma del Cliente</h3>
         {order?.clientSignature && (
           <img
-            src={API_URL.replace('api', '') + order.clientSignature}
+            src={API_URL.replace('api', '') + order?.clientSignature}
             alt="Client Signature"
             style={{ width: '100px', marginTop: '10px' }}
           />
